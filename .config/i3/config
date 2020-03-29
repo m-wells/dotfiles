@@ -1,0 +1,199 @@
+# vim: set ft=i3config:
+# Please see http://i3wm.org/docs/userguide.html for a complete reference!
+
+exec_always --no-startup-id "~/.screenlayout/launch.sh && ~/.config/conky/launch.sh && ~/.config/polybar/launch.sh"
+
+# i3-gaps
+for_window [class="^.*"] border pixel 1
+
+assign [class="Franz"] → 10
+# for_window [class="Franz"] fullscreen disable
+
+for_window [class="matplotlib"] floating enable
+for_window [title="Mayavi Scene"] floating enable
+for_window [title="GKS QtTerm"] floating enable
+
+gaps inner 10
+gaps outer -9
+
+smart_gaps    on
+smart_borders on
+
+#mouse_warping none
+mouse_warping output
+
+exec --no-startup-id "clight"
+exec --no-startup-id "lxpolkit"
+exec --no-startup-id "compton -b"
+# exec --no-startup-id volumeicon
+exec --no-startup-id blueman-applet
+exec --no-startup-id nm-applet
+
+# Pulse Audio controls (let volumeicon handle this)
+bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume 0 +5%       # increase sound volume
+bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume 0 -5%       # decrease sound volume
+bindsym XF86AudioMute        exec --no-startup-id pactl set-sink-mute   0 toggle    # mute sound
+
+# Sreen brightness controls
+#bindsym XF86MonBrightnessDown exec xbacklight -dec 10 && notify-send --expire-time=500 -h int:value:$(xbacklight) "brightness"
+#bindsym XF86MonBrightnessUp   exec xbacklight -inc 10 && notify-send --expire-time=500 -h int:value:$(xbacklight) "brightness"
+bindsym XF86MonBrightnessDown exec xbacklight -dec 5
+bindsym XF86MonBrightnessUp   exec xbacklight -inc 5
+
+# Media player controls
+# bindsym XF86AudioPlay exec playerctl play-pause
+# bindsym XF86AudioNext exec playerctl next
+# bindsym XF86AudioPrev exec playerctl previous
+
+set $mod Mod4
+
+# Font for window titles. Will also be used by the bar unless a different font
+# is used in the bar {} block below.
+# This font is widely installed, provides lots of unicode glyphs, right-to-left
+# text rendering and scalability on retina/hidpi displays (thanks to pango).
+font pango:DejaVu Sans Mono 8
+
+# Use Mouse+$mod to drag floating windows to their wanted position
+floating_modifier $mod
+
+# start a terminal
+#bindsym $mod+Shift+Return exec ~/.config/i3/urxvt.sh
+#bindsym $mod+Shift+Return exec termite
+bindsym $mod+Shift+Return exec --no-startup-id alacritty
+
+# kill focused window
+bindsym $mod+Shift+c kill
+
+# start dmenu (a program launcher)
+bindsym $mod+p       exec --no-startup-id dmenu_run -nb '#002b36' -nf '#839496' -sb '#268bd2' -sf '#fdf6e3'
+bindsym $mod+Shift+p exec --no-startup-id j4-dmenu-desktop --dmenu="dmenu -nb '#002b36' -nf '#839496' -sb '#268bd2' -sf '#fdf6e3'"
+
+# change focus
+bindsym $mod+h focus left
+bindsym $mod+j focus down
+bindsym $mod+k focus up
+bindsym $mod+l focus right
+
+# move focused window
+bindsym $mod+Shift+h move left
+bindsym $mod+Shift+j move down
+bindsym $mod+Shift+k move up
+bindsym $mod+Shift+l move right
+
+# split in horizontal orientation
+bindsym $mod+Shift+v split h
+
+# split in vertical orientation
+bindsym $mod+v split v
+
+# enter fullscreen mode for the focused container
+bindsym $mod+f fullscreen toggle
+
+# change container layout (stacked, tabbed, toggle split)
+bindsym $mod+s layout stacking
+bindsym $mod+w layout tabbed
+bindsym $mod+e layout toggle split
+
+# toggle tiling / floating
+bindsym $mod+Shift+space floating toggle
+
+# change focus between tiling / floating windows
+bindsym $mod+space focus mode_toggle
+
+# focus the parent container
+#bindsym $mod+a focus parent
+
+# focus the child container
+#bindsym $mod+d focus child
+
+# useful for Google Chrome in full screen, allows fullscreened windows to be in a container
+bindsym $mod+y fullscreen disable; floating enable;
+
+# Switch to workspace like xmonad
+bindsym $mod+1 exec i3-wk-switch 1
+bindsym $mod+2 exec i3-wk-switch 2
+bindsym $mod+3 exec i3-wk-switch 3
+bindsym $mod+4 exec i3-wk-switch 4
+bindsym $mod+5 exec i3-wk-switch 5
+bindsym $mod+6 exec i3-wk-switch 6
+bindsym $mod+7 exec i3-wk-switch 7
+bindsym $mod+8 exec i3-wk-switch 8
+bindsym $mod+9 exec i3-wk-switch 9
+bindsym $mod+0 exec i3-wk-switch 10
+
+# Switch to workspace like xmonad
+bindsym Control+$mod+1 workspace 1
+bindsym Control+$mod+2 workspace 2
+bindsym Control+$mod+3 workspace 3
+bindsym Control+$mod+4 workspace 4
+bindsym Control+$mod+5 workspace 5
+bindsym Control+$mod+6 workspace 6
+bindsym Control+$mod+7 workspace 7
+bindsym Control+$mod+8 workspace 8
+bindsym Control+$mod+9 workspace 9
+bindsym Control+$mod+0 workspace 10
+
+# move focused container to workspace
+bindsym $mod+Shift+1 move container to workspace 1
+bindsym $mod+Shift+2 move container to workspace 2
+bindsym $mod+Shift+3 move container to workspace 3
+bindsym $mod+Shift+4 move container to workspace 4
+bindsym $mod+Shift+5 move container to workspace 5
+bindsym $mod+Shift+6 move container to workspace 6
+bindsym $mod+Shift+7 move container to workspace 7
+bindsym $mod+Shift+8 move container to workspace 8
+bindsym $mod+Shift+9 move container to workspace 9
+bindsym $mod+Shift+0 move container to workspace 10
+
+# reload the configuration file
+#bindsym $mod+Shift+q reload
+# restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
+bindsym $mod+Shift+r restart
+# exit i3 (logs you out of your X session)
+bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
+
+# resize window (you can also use the mouse for that)
+mode "resize" {
+        # These bindings trigger as soon as you enter the resize mode
+
+        bindsym h resize shrink width  10 px or 10 ppt
+        bindsym j resize grow   height 10 px or 10 ppt
+        bindsym k resize shrink height 10 px or 10 ppt
+        bindsym l resize grow   width  10 px or 10 ppt
+
+        # back to normal: Enter or Escape
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+}
+
+bindsym $mod+r mode "resize"
+
+# remove titlebars from windows
+new_window 1pixel
+
+# Toggle between hide state and show state
+bindsym $mod+m bar hidden_state toggle
+
+#state Toggle between dock mode and hide mode
+#bindsym $mod+b bar mode toggle
+bindsym $mod+b exec ~/.config/polybar/toggle.sh
+
+
+#bindsym $mod+Shift+b exec "killall i3bar; i3bar --bar_id=bar-1"
+
+#bar {
+#    font pango:Fira Mono for Powerline, FontAwesome, Unifont
+#    position top
+#    tray_output eDP1
+#    status_command i3status-rs $HOME/dotfiles/i3/status.toml
+#    #status_command exec j4status
+#    colors {
+#        separator           #666666
+#        # background        #222222
+#        statusline          #dddddd
+#        focused_workspace   #0088CC #0088CC #ffffff
+#        active_workspace    #333333 #333333 #ffffff
+#        inactive_workspace  #333333 #333333 #888888
+#        urgent_workspace    #2f343a #900000 #ffffff
+#    }
+#}
