@@ -20,9 +20,14 @@ function conky_temp(n)
     return tonumber(conky_parse("${platform coretemp.0/hwmon/hwmon4 temp " .. n .. "}"))
 end
 
+function conky_tempcolor(n)
+    t = conky_temp(n)
+    return conky_green2red(t)
+end
+
 function conky_temperature(n)
     t = conky_temp(n)
-    return conky_green2red(t)..tostring(t).."C"
+    return conky_green2red(t)..tostring(t).."°C"
 end
 
 function conky_ppad(n)
