@@ -1,11 +1,5 @@
 #! /bin/bash
 #
-# launch.sh
-# Copyright (C) 2019 Mark Wells <mwellsa@gmail.com>
-#
-# Distributed under terms of the MIT license.
-#
-
 # Terminate already running conky instances
 killall -q conky
 

@@ -2,7 +2,7 @@
 # Please see http://i3wm.org/docs/userguide.html for a complete reference!
 
 #exec_always --no-startup-id "~/.screenlayout/launch.sh && ~/.config/conky/launch.sh && ~/.config/polybar/launch.sh"
-#   exec_always --no-startup-id ~/.config/polybar/launch.sh"
+exec_always --no-startup-id "~/.config/polybar/launch.sh"
 
 # i3-gaps
 for_window [class="^.*"] border pixel 1
@@ -36,10 +36,10 @@ bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume 0 -5%   
 bindsym XF86AudioMute        exec --no-startup-id pactl set-sink-mute   0 toggle    # mute sound
 
 # Sreen brightness controls
-#bindsym XF86MonBrightnessDown exec xbacklight -dec 10 && notify-send --expire-time=500 -h int:value:$(xbacklight) "brightness"
-#bindsym XF86MonBrightnessUp   exec xbacklight -inc 10 && notify-send --expire-time=500 -h int:value:$(xbacklight) "brightness"
-bindsym XF86MonBrightnessDown exec xbacklight -dec 5
-bindsym XF86MonBrightnessUp   exec xbacklight -inc 5
+bindsym XF86MonBrightnessDown exec --no-startup-id xbacklight -dec 1 && notify-send --expire-time=500 -h int:value:$(xbacklight) "brightness"
+bindsym XF86MonBrightnessUp   exec --no-startup-id xbacklight -inc 1 && notify-send --expire-time=500 -h int:value:$(xbacklight) "brightness"
+#bindsym XF86MonBrightnessDown exec --no-startup-id xbacklight -dec 5
+#bindsym XF86MonBrightnessUp   exec xbacklight -inc 5
 
 # Media player controls
 # bindsym XF86AudioPlay exec playerctl play-pause
@@ -66,8 +66,24 @@ bindsym $mod+Shift+Return exec --no-startup-id alacritty
 bindsym $mod+Shift+c kill
 
 # start dmenu (a program launcher)
-bindsym $mod+p       exec --no-startup-id dmenu_run -nb '#002b36' -nf '#839496' -sb '#268bd2' -sf '#fdf6e3'
-bindsym $mod+Shift+p exec --no-startup-id j4-dmenu-desktop --dmenu="dmenu -nb '#002b36' -nf '#839496' -sb '#268bd2' -sf '#fdf6e3'"
+#bindsym $mod+p       exec --no-startup-id dmenu_run -fn 'FuraCode Nerd Font 15' -nb '#002b36' -nf '#839496' -sb '#268bd2' -sf '#fdf6e3'
+#bindsym $mod+Shift+p exec --no-startup-id j4-dmenu-desktop --dmenu="dmenu -nb '#002b36' -nf '#839496' -sb '#268bd2' -sf '#fdf6e3'"
+
+
+set $tf #aaaaaa 
+set $tb #000000
+set $ff #00ff00
+set $fb #000000
+set $nf #ffffff
+set $nb #000000
+set $hf #00ff00
+set $hb #222222
+set $fn "FuraCode Nerd Font 12"
+bindsym $mod+p exec --no-startup-id BEMENU_BACKEND=x11 bemenu-run -i -n \
+    --prompt="launcher: " --tf=$tf --tb=$tb --ff=$ff --fb=$fb --nf=$nf --nb=$nb --hf=$hf --hb=$hb --fn $fn
+
+bindsym $mod+Shift+p exec --no-startup-id BEMENU_BACKEND=x11 j4-dmenu-desktop --dmenu='bemenu -i -n \
+    --prompt="Destop: " --tf=$tf --tb=$tb --ff=$ff --fb=$fb --nf=$nf --nb=$nb --hf=$hf --hb=$hb --fn $fn'
 
 # change focus
 bindsym $mod+h focus left
@@ -170,7 +186,7 @@ mode "resize" {
 bindsym $mod+r mode "resize"
 
 # remove titlebars from windows
-new_window 1pixel
+#new_window 1pixel
 
 # Toggle between hide state and show state
 bindsym $mod+m bar hidden_state toggle
