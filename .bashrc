@@ -23,8 +23,18 @@ if [ -t 1 ]; then
         eval "$(dircolors ${HOME}/.config/dircolors/solarized.ansi-dark)"
     fi
 
+    # NEOFETCH
+    if [ -x "$(command -v neofetch)" ]; then
+        if [ "${TERM}" == "linux" ]; then
+            # turning bold off fixes tty issues
+            neofetch  --bold off --ascii_bold off --color_blocks on
+        else
+            neofetch -color_blocks on
+        fi
+    fi
+
     # POWERLINE
-    if [ -x "$(command -v powerline-daemon)" ]; then
+    if [ -x "$(command -v powerline-daemon)" ] && [ "${TERM}" != "linux" ]; then
         powerline-daemon -q
         POWERLINE_BASH_CONTINUATION=1
         POWERLINE_BASH_SELECT=1
@@ -32,12 +42,14 @@ if [ -t 1 ]; then
             source /usr/lib/python3.8/site-packages/powerline/bindings/bash/powerline.sh
         fi
     else
-        PS1='$(pwd)\n\u@\h:> \[$(tput sgr0)\]'
+        txtgrn='\[\e[0;32m\]'
+        txtcyn='\[\e[0;36m\]'
+        txtrst='\[\e[0m\]'
+        PS1="${txtcyn}$(pwd)\n${txtgrn}\u${txtrst}@\h:> \[$(tput sgr0)\]"
     fi
 
-    # NEOFETCH
-    if [ -x "$(command -v neofetch)" ]; then
-        neofetch --color_blocks on
+    if [ -f ~/.config/tty-solarized-dark.sh ] && [ "${TERM}" != "linux" ]; then
+        source ~/.config/tty-solarized-dark.sh
     fi
 fi
 

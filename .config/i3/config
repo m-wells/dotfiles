@@ -1,7 +1,8 @@
 # vim: set ft=i3config:
 # Please see http://i3wm.org/docs/userguide.html for a complete reference!
 
-exec_always --no-startup-id "~/.screenlayout/launch.sh && ~/.config/conky/launch.sh && ~/.config/polybar/launch.sh"
+#exec_always --no-startup-id "~/.screenlayout/launch.sh && ~/.config/conky/launch.sh && ~/.config/polybar/launch.sh"
+#   exec_always --no-startup-id ~/.config/polybar/launch.sh"
 
 # i3-gaps
 for_window [class="^.*"] border pixel 1

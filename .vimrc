@@ -20,13 +20,11 @@ if has("autocmd")
         Plug 'scrooloose/nerdtree'
         Plug 'ryanoasis/vim-devicons'
         Plug 'shime/vim-livedown'
-        " Plug 'aperezdc/vim-template'
         Plug 'lervag/vimtex'
         Plug 'christoomey/vim-tmux-navigator'
         Plug 'jpalardy/vim-slime'
-        " Plug '~/devel/vim-slime'
+        Plug 'altercation/vim-colors-solarized'
         Plug 'lifepillar/vim-solarized8'
-        " Plug 'lilydjwg/colorizer'
         Plug 'JuliaEditorSupport/julia-vim'
         Plug 'neoclide/coc.nvim', {'branch': 'release'}
         Plug 'godlygeek/tabular'
@@ -201,9 +199,13 @@ if $COLORTERM == 'truecolor'
 
 endif
 
-try
-    colorscheme solarized8
-endtry
+if $TERM == 'linux'
+    colorscheme solarized
+else
+    try
+        colorscheme solarized8
+    endtry
+endif
 
 if &term =~ "rxvt-unicode"
     " pretty cursor setting for urxvt
