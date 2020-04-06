@@ -1,8 +1,8 @@
 do
+    local config = {}
     ------------------------------------------------------------------------------------------------
     --Configuration Variables
     --number of cpus
-    local config = {}
     config.ncpus = 8
     --number of temperature sensors
     config.ntemps = 5
