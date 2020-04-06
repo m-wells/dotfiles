@@ -6,7 +6,9 @@ killall -q conky
 # Wait until the processes have been shut down
 while pgrep -u $UID -x conky >/dev/null; do sleep 1; done
 
-conky
+if [ "${HOSTNAME}" == "lithium" ]; then
+    conky -c ~/.config/conky/lithium/conky.conf
+fi
 
 #xgap=10
 # Launch Conky on each monitor, using default config location ~/.config/conky/conky.conf
