@@ -1,0 +1,1 @@
+/home/mark/Dotfiles/HOME/.config/conky/conky_draw_config.lua
