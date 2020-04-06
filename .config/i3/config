@@ -31,6 +31,9 @@ exec --no-startup-id "picom -b"
 exec --no-startup-id blueman-applet
 exec --no-startup-id nm-applet
 
+# Toggle Polybar between dock mode and hide mode
+bindsym $mod+b exec --no-startup-id ~/.config/polybar/toggle.sh
+
 # Pulse Audio controls (let volumeicon handle this)
 bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume 0 +5%       # increase sound volume
 bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume 0 -5%       # decrease sound volume
@@ -46,6 +49,7 @@ bindsym XF86MonBrightnessUp   exec --no-startup-id xbacklight -inc 1 && notify-s
 # bindsym XF86AudioPlay exec playerctl play-pause
 # bindsym XF86AudioNext exec playerctl next
 # bindsym XF86AudioPrev exec playerctl previous
+
 
 set $mod Mod4
 
@@ -70,7 +74,6 @@ bindsym $mod+Shift+c kill
 #bindsym $mod+p       exec --no-startup-id dmenu_run -fn 'FuraCode Nerd Font 15' -nb '#002b36' -nf '#839496' -sb '#268bd2' -sf '#fdf6e3'
 #bindsym $mod+Shift+p exec --no-startup-id j4-dmenu-desktop --dmenu="dmenu -nb '#002b36' -nf '#839496' -sb '#268bd2' -sf '#fdf6e3'"
 
-
 set $tf #aaaaaa 
 set $tb #000000
 set $ff #00ff00
@@ -84,7 +87,7 @@ bindsym $mod+p exec --no-startup-id BEMENU_BACKEND=x11 bemenu-run -i -n \
     --prompt="launcher: " --tf=$tf --tb=$tb --ff=$ff --fb=$fb --nf=$nf --nb=$nb --hf=$hf --hb=$hb --fn $fn
 
 bindsym $mod+Shift+p exec --no-startup-id BEMENU_BACKEND=x11 j4-dmenu-desktop --dmenu='bemenu -i -n \
-    --prompt="Destop: " --tf=$tf --tb=$tb --ff=$ff --fb=$fb --nf=$nf --nb=$nb --hf=$hf --hb=$hb --fn $fn'
+    --prompt="Desktop: " --tf=$tf --tb=$tb --ff=$ff --fb=$fb --nf=$nf --nb=$nb --hf=$hf --hb=$hb --fn $fn'
 
 # change focus
 bindsym $mod+h focus left
@@ -124,7 +127,7 @@ bindsym $mod+space focus mode_toggle
 # focus the child container
 #bindsym $mod+d focus child
 
-# useful for Google Chrome in full screen, allows fullscreened windows to be in a container
+# allows fullscreened windows to be in a container
 bindsym $mod+y fullscreen disable; floating enable;
 
 # Switch to workspace like xmonad
@@ -190,28 +193,5 @@ bindsym $mod+r mode "resize"
 #new_window 1pixel
 
 # Toggle between hide state and show state
-bindsym $mod+m bar hidden_state toggle
+#bindsym $mod+m bar hidden_state toggle
 
-#state Toggle between dock mode and hide mode
-#bindsym $mod+b bar mode toggle
-bindsym $mod+b exec ~/.config/polybar/toggle.sh
-
-
-#bindsym $mod+Shift+b exec "killall i3bar; i3bar --bar_id=bar-1"
-
-#bar {
-#    font pango:Fira Mono for Powerline, FontAwesome, Unifont
-#    position top
-#    tray_output eDP1
-#    status_command i3status-rs $HOME/dotfiles/i3/status.toml
-#    #status_command exec j4status
-#    colors {
-#        separator           #666666
-#        # background        #222222
-#        statusline          #dddddd
-#        focused_workspace   #0088CC #0088CC #ffffff
-#        active_workspace    #333333 #333333 #ffffff
-#        inactive_workspace  #333333 #333333 #888888
-#        urgent_workspace    #2f343a #900000 #ffffff
-#    }
-#}

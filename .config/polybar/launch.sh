@@ -6,12 +6,6 @@ killall -q polybar
 # Wait until the processes have been shut down
 while pgrep -u $UID -x polybar >/dev/null; do sleep 1; done
 
-# Launch Polybar, using default config location ~/.config/polybar/config
-# polybar top &
-
-# Launch Polybar on each monitor, using default config location ~/.config/polybar/config
-for i in $(polybar -m | awk -F: '{print $1}'); do 
-    MONITOR=$i polybar top &
-done
-
-echo "Polybar launched..."
+if [ "${HOSTNAME}" == "helium" ]; then
+    MONITOR="eDP-1" WIRED="eno1" WIRELESS="wlo1" BATTERY="BAT0" ADAPTER="ADP1" polybar top &
+fi
