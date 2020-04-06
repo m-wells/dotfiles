@@ -20,8 +20,9 @@ background = ${colors.base03}
 foreground-alt = ${colors.base00}
 background-alt = ${colors.base02}
 
+
 [bar/top]
-monitor = ${env:MONITOR:eDP1}
+monitor = ${env:MONITOR}
 width = 100%
 height = 25
 radius = 0
@@ -164,7 +165,7 @@ card = intel_backlight
 
 [module/wired]
 type = internal/network
-interface = ${env:WIRED:eno1}
+interface = ${env:WIRED}
 interval = 3.0
 
 format-connected = <label-connected>
@@ -181,7 +182,7 @@ format-connected-underline = ${self.format-connected-foreground}
 ;   %downspeed% [wireless+wired]
 ;   %linkspeed% [wired]
 
-label-connected = %ifname%   %downspeed%  %upspeed%
+label-connected = %ifname%  %downspeed:09:9%  %upspeed:09:9%
 
 format-disconnected = <label-disconnected>
 format-disconnected-foreground = ${colors.foreground-alt}
@@ -192,25 +193,29 @@ label-disconnected = %ifname%
 
 [module/wireless]
 type = internal/network
-interface = ${env:WIRELESS:wlo1}
+interface = ${env:WIRELESS}
 inherit = module/wired
 
-format-connected = <ramp-signal> <label-connected>
+format-connected = <label-connected><ramp-signal>
 format-connected-foreground = ${colors.blue}
 format-connected-underline = ${self.format-connected-foreground}
 
 
 ;label-disconnected = %{A1:wicd-gtk -n:}%ifname%%{A}
 
-ramp-signal-0 = _
+;ramp-signal-0 = _
+;ramp-signal-1 = ▁
+;ramp-signal-2 = ▂
+;ramp-signal-3 = ▃
+;ramp-signal-4 = ▄
+;ramp-signal-5 = ▅
+;ramp-signal-6 = ▆
+;ramp-signal-7 = ▇
+;ramp-signal-8 = █
+ramp-signal-0 = ▁
 ramp-signal-1 = ▁
-ramp-signal-2 = ▂
-ramp-signal-3 = ▃
-ramp-signal-4 = ▄
-ramp-signal-5 = ▅
-ramp-signal-6 = ▆
-ramp-signal-7 = ▇
-ramp-signal-8 = █
+ramp-signal-2 = ▁
+ramp-signal-3 = ▁▃▅▇
 
 ; All labels support the following tokens:
 ;   %ifname%    [wireless+wired]
@@ -222,7 +227,8 @@ ramp-signal-8 = █
 ;   %downspeed% [wireless+wired]
 ;   %linkspeed% [wired]
 ;label-connected = "%{A1:wicd-gtk -n:}%essid% %downspeed:9% %{T2}Ɓ%{T-}%{A}"
-label-connected = "%essid% %downspeed:9% %{T2}Ɓ%{T-}"
+;label-connected = " %downspeed:9% %{T2}Ɓ%{T-}"
+label-connected = %ifname% %essid:0:9:...%  %downspeed:09:9%  %upspeed:09:9%
 
 [module/date]
 type = internal/date
@@ -300,8 +306,8 @@ label-muted = %{A1:pavucontrol:}ﱝ %percentage%%%{A}
 [module/battery]
 type = internal/battery
 
-battery = ${env:BATTERY:BAT0}
-adapter = ${env:ADAPTER:ADP1}
+battery = ${env:BATTERY}
+adapter = ${env:ADAPTER}
 
 ; see "man date" for details on how to format the time string
 ; NOTE: if you want to use syntax tags here you need to use %%{...}
@@ -319,6 +325,20 @@ ramp-capacity-6 = 
 ramp-capacity-7 = 
 ramp-capacity-8 = 
 ramp-capacity-9 = 
+
+;bar-capacity-format = %fill%%indicator%%empty%
+;bar-capacity-width = 8
+;
+;bar-capacity-gradient = true
+;bar-capacity-foreground-0 = #ff0000
+;bar-capacity-foreground-1 = #ff9900
+;bar-capacity-foreground-2 = #99ff00
+;bar-capacity-foreground-3 = #00ff00
+;
+;; The fill, indicator and empty icon can be configured like any <label>
+;bar-capacity-fill = ■
+;bar-capacity-indicator = □
+;bar-capacity-empty = _
 
 ; Available tags:
 ;   <label-charging> (default)

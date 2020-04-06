@@ -7,5 +7,17 @@ killall -q polybar
 while pgrep -u $UID -x polybar >/dev/null; do sleep 1; done
 
 if [ "${HOSTNAME}" == "helium" ]; then
-    MONITOR="eDP-1" WIRED="eno1" WIRELESS="wlo1" BATTERY="BAT0" ADAPTER="ADP1" polybar top &
+    MONITOR="eDP-1" \
+    WIRED="eno1" \
+    WIRELESS="wlo1" \
+    BATTERY="BAT0" \
+    ADAPTER="ADP1" \
+    polybar top &
+elif [ "${HOSTNAME}" == "lithium" ]; then
+    MONITOR="eDP1" \
+    WIRED="enp3s0f1" \
+    WIRELESS="wlp2s0" \
+    BATTERY="BAT1" \
+    ADAPTER="ACAD" \
+    polybar top &
 fi
