@@ -36,8 +36,4 @@ eval $(ssh-agent)
 
 setxkbmap -option caps:swapescape
 
-if [ -f "$HOME/.fehbg" ]; then
-    $HOME/.fehbg &
-fi
-
 exec i3
