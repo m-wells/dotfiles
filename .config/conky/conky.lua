@@ -1,5 +1,14 @@
 do
     local config = ...
+
+    local temppath = conky_parse(
+        "${exec \"find /sys/devices/platform/coretemp.0/hwmon/hwmon? -maxdepth 0\"}"
+    )
+    --patern for termperature label (%d will be replaced by a number)
+    config.temp_label = "${cat "..temppath.."/temp%d_label}"
+    --patern for termperature query (%d will be replaced by a number)
+    config.temp_query = "exec \"cat "..temppath.."/temp%d_input | rev | cut -c4- | rev\""
+
     ------------------------------------------------------------------------------------------------
     --Initialize
     ------------------------------------------------------------------------------------------------
@@ -60,8 +69,8 @@ do
         templabels = {}
         for i = 1, config.ntemps do
             local s = tostring(i)
-            templabels[s] = conky_parse("${cat "..  string.format(config.temp_label, i).."}")
-            cstrings(config.temp_pattern..i, true)
+            templabels[s] = conky_parse(string.format(config.temp_label, i))
+            cstrings(string.format(config.temp_query, i), true)
         end
         ------------------------------------------------------------------------------------------------
         memmax = conky_parse("${memmax}"):gsub("%s", "")
@@ -139,7 +148,7 @@ do
         end
         for j = 1, config.ntemps do
             local jstr = tostring(j)
-            local x = config.temp_pattern..jstr
+            local x = string.format(config.temp_query, j)
             temps.str[jstr] = strvars[x]
             temps.scl[jstr] = (numvars[x] - config.roomtemp)*tempfactor
         end
