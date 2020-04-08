@@ -32,8 +32,6 @@ fi
 
 eval $(ssh-agent)
 
-# urxvtd -q -o -f
-
 setxkbmap -option caps:swapescape
 
 exec i3
