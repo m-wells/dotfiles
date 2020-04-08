@@ -29,28 +29,36 @@ height = 25
 radius = 0
 fixed-center = false
 
-background = ${colors.background}
 foreground = ${colors.foreground}
+background = ${colors.background}
 
-line-size = 2
+line-size = 0
 
 dim-value = 1
 
-border-size = 2
+border-size = 0
 border-color = ${colors.background}
 
 padding-left = 0
 padding-right = 0
 
-module-margin = 1
+module-margin = 0
 
-font-0 = "FuraCode Nerd Font:size=12;0"
 
-modules-left = i3 xwindow
-modules-right = xbacklight pulseaudio wireless wired battery temperature date
+;separator = %{T2}%{T-}
+
+font-0 = "FuraCode Nerd Font:size=12;2"
+font-1 = "FuraCode Nerd Font:size=16;4"
+font-2 = "siji:style=Regular:size=22;-1"
+; font-3 is for moving  down
+font-3 = "FuraCode Nerd Font:size=12;6"
+
+modules-left = i3 R xwindow
+modules-right = R wireless wired xbacklight battery pulseaudio temperature date tray
 
 tray-position = right
-tray-padding = 2
+tray-padding = 0
+tray-background = #000000
 
 cursor-click = pointer
 cursor-scroll = ns-resize
@@ -58,7 +66,23 @@ cursor-scroll = ns-resize
 ; override-redirect = true
 ; wm-restack = true
 
+;===================================================================================================
+[module/R]
+type = custom/text
+content = %{R}
 
+[module/B]
+type = custom/text
+content = %{B-}
+content-background = ${colors.background}
+
+;===================================================================================================
+[module/tray]
+type = custom/text
+content = %{R}%{T2}%{T-}
+content-background = #000000
+
+;===================================================================================================
 [module/i3]
 type = internal/i3
 
@@ -92,7 +116,6 @@ reverse-scroll = false
 label-focused = %index%
 label-focused-foreground = ${colors.foreground}
 label-focused-background = ${colors.background-alt}
-label-focused-underline = ${self.label-focused-foreground}
 label-focused-padding = 1
 
 ; unfocused = Inactive workspace on any monitor
@@ -100,48 +123,33 @@ label-unfocused = %index%
 label-unfocused-padding = ${self.label-focused-padding}
 label-unfocused-foreground = ${colors.foreground-alt}
 label-unfocused-background = ${colors.background}
-label-unfocused-underline = ${self.label-unfocused-foreground}
 
 ; visible = Active workspace on unfocused monitor
 label-visible = %index%
 label-visible-padding = ${self.label-focused-padding}
 label-visible-foreground = ${self.label-unfocused-foreground}
 label-visible-background = ${self.label-unfocused-background}
-label-visible-underline = ${self.label-focused-underline}
 
 ; urgent = Workspace with urgency hint set
 label-urgent = %index%
 label-urgent-foreground = ${colors.red}
-label-urgent-underline = ${self.label-urgent-foreground}
 label-urgent-padding = ${self.label-focused-padding}
 
 [module/xwindow]
 type = internal/xwindow
-; Available tags:
-;   <label> (default)
+
 format = <label>
-format-foreground = ${colors.foreground}
-format-background = ${colors.background}
+format-background = ${colors.foreground}
+label = %{T2}%{T-}%{O-1}%title:0:18:...%%{R}%{T2}%{B-}
 
-; Available tokens:
-;   %title%
-; Default: %title%
-label = %title%
-label-maxlen = 25
-
-; Used instead of label when there is no window title
-; Available tokens:
-;   None
-label-empty  =-------------------------
-label-empty-foreground = ${colors.foreground-alt}
-
+format-empty = <label-empty>
+label-empty-background = ${colors.foreground-alt}
+label-empty  = %{T2}%{T-}%{O-1}---------------------%{R}%{T2}%{B-}
 
 [module/xbacklight]
 type = internal/xbacklight
-
-format = <ramp> <label>
-format-foreground = ${colors.cyan}
-format-underline = ${self.format-foreground}
+format = %{R}%{T2}%{T-}%{O-1}%{B#000000}%{R}%{T-}<ramp> <label>%{R}
+format-background = ${colors.cyan}
 label = %percentage%%
 ramp-0  = 
 ramp-1  = 
@@ -169,25 +177,13 @@ type = internal/network
 interface = ${env:WIRED}
 interval = 3.0
 
-format-connected = <label-connected>
-format-connected-foreground = ${colors.violet}
-format-connected-underline = ${self.format-connected-foreground}
+format-connected = %{R}%{T2}%{T-}%{O-1}%{B#000000}%{R}%{T-}<label-connected>%{R}
+format-connected-background = ${colors.violet}
 
-; All labels support the following tokens:
-;   %ifname%    [wireless+wired]
-;   %local_ip%  [wireless+wired]
-;   %local_ip6% [wireless+wired]
-;   %essid%     [wireless]
-;   %signal%    [wireless]
-;   %upspeed%   [wireless+wired]
-;   %downspeed% [wireless+wired]
-;   %linkspeed% [wired]
+label-connected =  %upspeed%   %downspeed% 
 
-label-connected = %ifname%  %downspeed:09:9%  %upspeed:09:9%
-
-format-disconnected = <label-disconnected>
-format-disconnected-foreground = ${colors.foreground-alt}
-format-disconnected-underline = ${self.format-disconnected-foreground}
+format-disconnected = %{R}%{T2}%{T-}%{O-1}%{B#000000}%{R}%{T-}<label-disconnected>%{R}
+format-disconnected-background = ${colors.foreground-alt}
 
 label-disconnected = %ifname%
 
@@ -197,125 +193,51 @@ type = internal/network
 interface = ${env:WIRELESS}
 inherit = module/wired
 
-format-connected = <label-connected><ramp-signal>
-format-connected-foreground = ${colors.blue}
-format-connected-underline = ${self.format-connected-foreground}
+format-connected = %{R}%{T2}%{T-}%{O-1}%{B#000000}%{R}%{T-}<label-connected> <ramp-signal>%{R}
+format-connected-background = ${colors.blue}
 
+ramp-signal-0 = %{T3}%{T}
+ramp-signal-1 = %{T3}%{T}
+ramp-signal-2 = %{T3}%{T}
+ramp-signal-3 = %{T3}%{T}
+ramp-signal-4 = %{T3}%{T}
 
-;label-disconnected = %{A1:wicd-gtk -n:}%ifname%%{A}
+label-connected = %essid:0:10:...%  %upspeed%   %downspeed% 
 
-;ramp-signal-0 = _
-;ramp-signal-1 = ▁
-;ramp-signal-2 = ▂
-;ramp-signal-3 = ▃
-;ramp-signal-4 = ▄
-;ramp-signal-5 = ▅
-;ramp-signal-6 = ▆
-;ramp-signal-7 = ▇
-;ramp-signal-8 = █
-ramp-signal-0 = ▁
-ramp-signal-1 = ▁
-ramp-signal-2 = ▁
-ramp-signal-3 = ▁▃▅▇
-
-; All labels support the following tokens:
-;   %ifname%    [wireless+wired]
-;   %local_ip%  [wireless+wired]
-;   %local_ip6% [wireless+wired]
-;   %essid%     [wireless]
-;   %signal%    [wireless]
-;   %upspeed%   [wireless+wired]
-;   %downspeed% [wireless+wired]
-;   %linkspeed% [wired]
-;label-connected = "%{A1:wicd-gtk -n:}%essid% %downspeed:9% %{T2}Ɓ%{T-}%{A}"
-;label-connected = " %downspeed:9% %{T2}Ɓ%{T-}"
-label-connected = %ifname% %essid:0:9:...%  %downspeed:09:9%  %upspeed:09:9%
-
-[module/date]
-type = internal/date
-
-; Seconds to sleep between updates
-; interval = 1.0
-
-; See "http://en.cppreference.com/w/cpp/io/manip/put_time" for details on how to format the date string
-; NOTE: if you want to use syntax tags here you need to use %%{...}
-; date = %Y-%m-%d%
-date = %Y-%m-%d
-
-; Optional time format
-time = %H:%M
-
-; if `date-alt` or `time-alt` is defined, clicking
-; the module will toggle between formats
-; date-alt = %A, %d %B %Y
-; time-alt = %H:%M:%S
-; Additional formatting
-; Available tags:
-;   <label> (default)
-format = <label>
-format-foreground = ${colors.magenta}
-format-underline = ${self.format-foreground}
-
-; ; Available tokens:
-; ;   %date%
-; ;   %time%
-; ; Default: %date%
-label =  %date%  %time%
-
-
+;===================================================================================================
 [module/alsa]
 type = internal/alsa
 
-; Available tags:
-;   <label-volume> (default)
-;   <ramp-volume>
-;   <bar-volume>
-format-volume = <ramp-volume> <label-volume>
-format-volume-foreground = ${colors.foreground}
-format-volume-underline = ${self.format-volume-foreground}
-
-; Available tokens:
-;   %percentage% (default)
-;label-volume = %percentage%%
-label-volume = %percentage%%
-
-; Available tags:
-;   <label-muted> (default)
-;   <ramp-volume>
-;   <bar-volume>
-format-muted = <label-muted>
-format-muted-foreground = ${colors.foreground-alt}
-format-muted-underline = ${self.format-muted-foreground}
-;
-; Available tokens:
-;   %percentage% (default)
-label-muted = ﱝ %percentage%%
-
-; Only applies if <ramp-volume> is used
 ramp-volume-0 = 
 ramp-volume-1 = 
 ramp-volume-2 = 奔
 ramp-volume-3 = 墳
 ramp-volume-4 = 
 
+format-volume = %{R}%{T2}%{T-}%{O-1}%{B#000000}%{R}%{T-}<ramp-volume> <label-volume>%{R}
+format-volume-background = ${colors.foreground}
+label-volume = %percentage%%
+
+format-muted = %{R}%{T2}%{T-}%{O-1}%{B#000000}%{R}%{T-}ﱝ <label-muted>%{R}
+format-muted-background = ${colors.foreground-alt}
+label-muted = %percentage%%
+
+;===================================================================================================
 [module/pulseaudio]
 inherit = module/alsa
 
 label-volume = %{A1:pavucontrol:}%percentage%%%{A}
-label-muted = %{A1:pavucontrol:}ﱝ %percentage%%%{A}
+label-muted = %{A1:pavucontrol:}%percentage%%%{A}
 
+;===================================================================================================
 [module/battery]
 type = internal/battery
 
 battery = ${env:BATTERY}
 adapter = ${env:ADAPTER}
 
-; see "man date" for details on how to format the time string
-; NOTE: if you want to use syntax tags here you need to use %%{...}
-; Default: %H:%M:%S
-time-format = %%{T2}ǒ%%{T-} %H:%M
+time-format =  %H:%M:%S
 
-; Only applies if <ramp-capacity> is used
 ramp-capacity-0 = 
 ramp-capacity-1 = 
 ramp-capacity-2 = 
@@ -327,59 +249,19 @@ ramp-capacity-7 = 
 ramp-capacity-8 = 
 ramp-capacity-9 = 
 
-;bar-capacity-format = %fill%%indicator%%empty%
-;bar-capacity-width = 8
-;
-;bar-capacity-gradient = true
-;bar-capacity-foreground-0 = #ff0000
-;bar-capacity-foreground-1 = #ff9900
-;bar-capacity-foreground-2 = #99ff00
-;bar-capacity-foreground-3 = #00ff00
-;
-;; The fill, indicator and empty icon can be configured like any <label>
-;bar-capacity-fill = ■
-;bar-capacity-indicator = □
-;bar-capacity-empty = _
+format-charging = %{R}%{T2}%{T-}%{O-1}%{B#000000}%{R}%{T-}<ramp-capacity><label-charging>%{R}
+format-charging-background = ${colors.yellow}
+label-charging =  %percentage%%  %time%
 
-; Available tags:
-;   <label-charging> (default)
-;   <bar-capacity>
-;   <ramp-capacity>
-;   <animation-charging>
-format-charging = <label-charging>
-format-charging-foreground = ${colors.yellow}
-format-charging-underline = ${self.format-charging-foreground}
-; Available tokens:
-;   %percentage% (default)
-;   %time%
-;   %consumption% (shows current charge rate in watts)
-label-charging =  %percentage%% %time%
+format-discharging = %{R}%{T2}%{T-}%{O-1}%{B#000000}%{R}%{T-}<ramp-capacity> <label-discharging>%{R}
+format-discharging-background = ${colors.yellow}
+label-discharging = %percentage%%  %time%
 
-; Available tags:
-;   <label-discharging> (default)
-;   <bar-capacity>
-;   <ramp-capacity>
-;   <animation-discharging>
-format-discharging = <ramp-capacity> <label-discharging>
-format-discharging-foreground = ${self.format-charging-foreground}
-format-discharging-underline = ${self.format-discharging-foreground}
-; Available tokens:
-;   %percentage% (default)
-;   %time%
-;   %consumption% (shows current discharge rate in watts)
-label-discharging = %percentage%% %time%
+format-full = %{R}%{T2}%{T-}%{O-1}%{B#000000}%{R}%{T-}<label-full>%{R}
+format-full-background = ${colors.yellow}
+label-full = 
 
-; Available tags:
-;   <label-full> (default)
-;   <bar-capacity>
-;   <ramp-capacity>
-format-full = <label-full>
-format-full-foreground = ${self.format-charging-foreground}
-format-full-underline = ${self.format-full-foreground}
-; Available tokens:
-;   %percentage% (default)
-label-full = 
-
+;===================================================================================================
 [module/temperature]
 type = internal/temperature
 ; Thermal zone to use
@@ -388,44 +270,31 @@ type = internal/temperature
 ; Default: 0
 thermal-zone = 0
 
-; Base temperature for where to start the ramp (in degrees celsius)
-; ; Default: 0
-base-temperature = 30
-
-; Threshold temperature to display warning label (in degrees celsius)
-; Default: 80
-warn-temperature = 70
-
 ramp-0 = 
 ramp-1 = 
 ramp-2 = 
 ramp-3 = 
 ramp-4 = 
 
-; Available tags:
-;   <label> (default)
-;   <ramp>
-format = <ramp> <label>
-format-foreground = ${colors.green}
-format-underline = ${self.format-foreground}
-; Available tokens:
-;   %temperature% (deprecated)
-;   %temperature-c%   (default, temperature in °C)
-;   %temperature-f%   (temperature in °F)
+base-temperature = 20
+format = %{R}%{T2}%{T-}%{O-1}%{B#000000}%{R}%{T-}<ramp> <label>%{R}
+format-background = ${colors.green}
 label = %temperature-c%
 
-; Available tags:
-;   <label-warn> (default)
-;   <ramp>
-format-warn = <ramp> <label-warn>
-format-warn-foreground = ${colors.red}
-format-warn-underline = ${self.format-warn-foreground}
-; Available tokens:
-;   %temperature% (deprecated)
-;   %temperature-c%   (default, temperature in °C)
-;   %temperature-f%   (temperature in °F)
+warn-temperature = 70
+format-warn = %{R}%{T2}%{T-}%{O-1}%{B#000000}%{R}%{T-}<ramp> <label-warn>%{R}
+format-warn-background = ${colors.red}
 label-warn = ${self.label}
 
+;===================================================================================================
+[module/date]
+type = internal/date
+date = %Y-%m-%d
+time = %H:%M
+format = %{R}%{T2}%{T-}%{O-1}%{B#000000}%{R}%{T-}<label>%{R}
+format-background = ${colors.magenta}
+label =  %date%  %time%
+;===================================================================================================
 [module/powermenu]
 type = custom/menu
 
