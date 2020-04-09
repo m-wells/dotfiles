@@ -33,5 +33,6 @@ fi
 eval $(ssh-agent)
 
 setxkbmap -option caps:swapescape
+autorandr --change --force
 
 exec i3

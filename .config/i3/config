@@ -1,8 +1,6 @@
 # vim: set ft=i3config:
 # Please see http://i3wm.org/docs/userguide.html for a complete reference!
 
-#exec_always --no-startup-id "~/.screenlayout/launch.sh && ~/.config/conky/launch.sh && ~/.config/polybar/launch.sh"
-exec_always --no-startup-id autorandr --change --force
 exec_always --no-startup-id ~/.config/conky/launch.sh
 exec_always --no-startup-id ~/.config/polybar/launch.sh
 bindsym $mod+b exec --no-startup-id ~/.config/polybar/toggle.sh
