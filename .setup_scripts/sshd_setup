@@ -1,0 +1,20 @@
+#!/bin/bash
+
+if [ $(id -u) -ne 0 ]; then
+    echo "This script should be run as root!" >&2
+    exit 1
+fi
+
+if systemctl --quiet is-active sshd.service; then
+    systemctl stop sshd.service
+fi
+
+sed -i -E "s/^#?[[:space:]]?PasswordAuthentication[[:space:]](yes|no)/PasswordAuthentication no/" /etc/sshd_config
+
+if systemctl --quiet is-enabled sshd.service; then
+    echo "sshd.service is already enabled"
+else
+    systemctl enable sshd.service
+fi
+
+systemctl start sshd.service
