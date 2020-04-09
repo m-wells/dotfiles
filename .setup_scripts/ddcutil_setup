@@ -1,0 +1,37 @@
+if grep -q i2c: /etc/group; then
+    echo "group i2c already exists"
+else
+    echo "creating i2c group"
+    groupadd i2c
+fi
+
+_USER=$USER
+if [ $SUDO_USER ]; then
+    _USER=$SUDO_USER
+fi
+
+if groups $_USER | grep -q i2c; then
+    echo "$_USER is already in group i2c"
+else
+    echo "adding $_USER to group i2c"
+    usermod $_USER -aG i2c
+fi
+
+I2C_DEV_FILE="/etc/modules-load.d/i2c-dev.conf"
+if [ -e $I2C_DEV_FILE ]; then
+    echo "$I2C_DEV_FILE already exists"
+else
+    echo "Creating $I2C_DEV_FILE"
+    echo "# Load I2C /dev entries driver at boot" > $I2C_DEV_FILE
+    echo "i2c_dev" >> $I2C_DEV_FILE
+fi
+
+I2C_UDEV_RULE="/etc/udev/rules.d/45-ddcutil-i2c.rules"
+if [ -e $I2C_UDEV_RULE ]; then
+    echo "$I2C_UDEV_RULE already exists"
+else
+    echo "Creating $I2C_UDEV_RULE"
+    cp /usr/share/ddcutil/data/45-ddcutil-i2c.rules $I2C_UDEV_RULE
+fi
+
+echo "A restart is required for the udev rule to take effect"
