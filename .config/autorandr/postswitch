@@ -1,0 +1,4 @@
+#!/bin/sh
+
+source ~/.fehbg
+killall -SIGUSR1 conky
