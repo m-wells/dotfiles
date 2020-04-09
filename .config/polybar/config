@@ -54,7 +54,7 @@ font-2 = "siji:style=Regular:size=22;-1"
 font-3 = "FuraCode Nerd Font:size=12;6"
 
 modules-left = i3 R xwindow
-modules-right = R wireless wired xbacklight battery pulseaudio temperature date tray
+modules-right = R wireless wired xbacklight battery pulseaudio temperature date notifications tray
 
 tray-position = right
 tray-padding = 0
@@ -294,6 +294,13 @@ time = %H:%M
 format = %{R}%{T2}%{T-}%{O-1}%{B#000000}%{R}%{T-}<label>%{R}
 format-background = ${colors.magenta}
 label =  %date%  %time%
+
+;===================================================================================================
+[module/notifications]
+type = custom/text
+content = %{R}%{T2}%{T-}%{O-1}%{B#000000}%{R}%{T-}%{R}
+content-background = ${colors.orange}
+click-left = kill -s USR1 $(pidof deadd-notification-center)
 ;===================================================================================================
 [module/powermenu]
 type = custom/menu
