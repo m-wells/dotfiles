@@ -11,3 +11,5 @@ alias julian='julia --startup-file=no'
 
 alias vim='vim --servername VIM'
 alias config='/usr/bin/git --git-dir=/home/mark/.cfg/ --work-tree=/home/mark'
+
+alias lc='colorls'

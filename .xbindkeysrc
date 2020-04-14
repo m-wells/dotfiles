@@ -1,9 +1,9 @@
 # Increase backlight
-"xbacklight -inc 1"
+"light -A 1"
     XF86MonBrightnessUp
 
 # Decrease backlight
-"xbacklight -dec 1"
+"light -U 1"
     XF86MonBrightnessDown
 
 # Increase volume

@@ -9,6 +9,16 @@ set -o vi
 # disable Software Flow Control (XON/XOFF) in interactive shells
 [[ $- == *i* ]] && stty -ixon
 
+# a command name that is the name of a directory is executed as if it were the argument to the cd
+# command, this option is only used by interactive shells
+shopt -s autocd
+
+# minor errors in the spelling of a directory component in a cd command will be corrected, this
+# option is only used by interactive shells
+shopt -s cdspell
+# bash attemps spelling correction on directory names during word completion if the directory name
+# initially supplied does not exist
+shopt -s dirspell
 
 # append to the history file, don't overwrite it
 shopt -s histappend
@@ -64,3 +74,5 @@ if [ -f ~/.bash_aliases ]; then
 fi
 
 export PATH=${HOME}/.local/bin:$PATH
+
+source /usr/share/doc/pkgfile/command-not-found.bash

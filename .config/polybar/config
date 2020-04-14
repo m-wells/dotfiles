@@ -52,9 +52,10 @@ font-1 = "FuraCode Nerd Font:size=16;4"
 font-2 = "siji:style=Regular:size=22;-1"
 ; font-3 is for moving  down
 font-3 = "FuraCode Nerd Font:size=12;6"
+font-4 = "FuraCode Nerd Font:size=16;3"
 
 modules-left = i3 R xwindow
-modules-right = R wireless wired xbacklight battery pulseaudio temperature date notifications tray
+modules-right = R wireless wired backlight battery pulseaudio temperature date notifications tray
 
 tray-position = right
 tray-padding = 0
@@ -94,7 +95,7 @@ format = <label-state> <label-mode>
 ; Sort the workspaces by index instead of the default
 ; sorting that groups the workspaces by output
 ; Default: false
-index-sort = true
+index-sort = false
 ; Create click handler used to focus workspace
 ; Default: true
 enable-click = false
@@ -108,32 +109,43 @@ wrapping-scroll = false
 ; Default: true
 reverse-scroll = false
 
+ws-icon-0 =  1;%{T5}%{T-}
+ws-icon-1 =  2;%{T5}%{T-}
+ws-icon-2 =  3;%{T5}%{T-}
+ws-icon-3 =  4;%{T5}%{T-}
+ws-icon-4 =  5;%{T5}%{T-}
+ws-icon-5 =  6;%{T5}%{T-}
+ws-icon-6 =  7;%{T5}%{T-}
+ws-icon-7 =  8;%{T5}%{T-}
+ws-icon-8 =  9;%{T5}%{T-}
+ws-icon-9 = 10;%{T5}%{T-}
+
 ; Available tokens:
 ;   %name%
 ;   %icon%
 ;   %index%
 ;   %output%
-label-focused = %index%
+label-focused = %output% %icon%
+label-focused-padding = 1
 label-focused-foreground = ${colors.foreground}
 label-focused-background = ${colors.background-alt}
-label-focused-padding = 1
 
 ; unfocused = Inactive workspace on any monitor
-label-unfocused = %index%
+label-unfocused = %icon%
 label-unfocused-padding = ${self.label-focused-padding}
 label-unfocused-foreground = ${colors.foreground-alt}
 label-unfocused-background = ${colors.background}
 
 ; visible = Active workspace on unfocused monitor
-label-visible = %index%
+label-visible = %output% %icon%
 label-visible-padding = ${self.label-focused-padding}
 label-visible-foreground = ${self.label-unfocused-foreground}
 label-visible-background = ${self.label-unfocused-background}
 
 ; urgent = Workspace with urgency hint set
-label-urgent = %index%
-label-urgent-foreground = ${colors.red}
+label-urgent = %icon%
 label-urgent-padding = ${self.label-focused-padding}
+label-urgent-foreground = ${colors.red}
 
 [module/xwindow]
 type = internal/xwindow
@@ -167,10 +179,11 @@ ramp-12 = 
 ramp-13 = 
 ramp-14 = 
 
-[module/backlight-acpi]
-inherit = module/xbacklight
+[module/backlight]
 type = internal/backlight
+inherit = module/xbacklight
 card = intel_backlight
+enable-scroll = true
 
 [module/wired]
 type = internal/network

@@ -34,5 +34,6 @@ eval $(ssh-agent)
 
 setxkbmap -option caps:swapescape
 autorandr --change --force
+xbindkeys
 
 exec i3
