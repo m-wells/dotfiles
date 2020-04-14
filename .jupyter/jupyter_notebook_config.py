@@ -384,8 +384,6 @@ c.NotebookApp.browser = 'vivaldi-stable --new-window --incognito --app=%s'
 ## The app directory to launch JupyterLab from.
 c.LabApp.app_dir = '/home/mark/.local/share/jupyter/lab'
 
-#c.LabApp.browser = 'vivaldi-stable --new-window --incognito --app=%s'
-
 ## Whether to start the app in core mode. In this mode, JupyterLab will run using
 #  the JavaScript assets that are within the installed JupyterLab Python package.
 #  In core mode, third party extensions are disabled. The `--dev-mode` flag is an
