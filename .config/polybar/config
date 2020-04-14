@@ -139,8 +139,8 @@ label-unfocused-background = ${colors.background}
 ; visible = Active workspace on unfocused monitor
 label-visible = %output% %icon%
 label-visible-padding = ${self.label-focused-padding}
-label-visible-foreground = ${self.label-unfocused-foreground}
-label-visible-background = ${self.label-unfocused-background}
+label-visible-foreground = ${colors.foreground-alt}
+label-visible-background = ${colors.background-alt}
 
 ; urgent = Workspace with urgency hint set
 label-urgent = %icon%

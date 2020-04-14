@@ -9,8 +9,6 @@ if systemctl --quiet is-active sshd.service; then
     systemctl stop sshd.service
 fi
 
-sed -i -E "s/^#?[[:space:]]?PasswordAuthentication[[:space:]](yes|no)/PasswordAuthentication no/" /etc/sshd_config
-
 if systemctl --quiet is-enabled sshd.service; then
     echo "sshd.service is already enabled"
 else
@@ -18,3 +16,8 @@ else
 fi
 
 systemctl start sshd.service
+
+echo "It is recommended to disable tunneled clear text passwords (require ssh keys)"
+echo 'Once the ssh-keys are setup set "PasswordAuthentication no" in "/etc/ssh/sshd_config"'
+
+#sed -i -E "s/^#?[[:space:]]?PasswordAuthentication[[:space:]](yes|no)/PasswordAuthentication no/" /etc/ssh/sshd_config
