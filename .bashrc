@@ -70,9 +70,11 @@ export EDITOR=vim
 export BROWSER=vivaldi-stable
 
 if [ -f ~/.bash_aliases ]; then
-    . ~/.bash_aliases
+    source ~/.bash_aliases
+fi
+
+if [ -f /usr/share/doc/pkgfile/command-not-found.bash ]; then
+    source /usr/share/doc/pkgfile/command-not-found.bash
 fi
 
 export PATH=${HOME}/.local/bin:$PATH
-
-source /usr/share/doc/pkgfile/command-not-found.bash
