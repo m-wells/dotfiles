@@ -89,29 +89,29 @@ do
         ------------------------------------------------------------------------------------------------
         --header = "${alignc}${color}"..
         header = "${color}"..
-                 "┌"..string.rep("─",16)..
+                 "┌"..string.rep("─",19)..
                  "┬"..string.rep("─",8)..
                  "┬"..string.rep("─",7)..
                  "┬"..string.rep("─",7)..
                  "┐\n"..
-                 "│"..string.format("%-16.16s","Name")..
+                 "│"..string.format("%-19.19s","Name")..
                  "│"..string.format("%8.8s","PID")..
                  "│"..string.format("%7.7s","CPU")..
                  "│"..string.format("%7.7s","MEM")..
                  "│\n"..
-                 "├"..string.rep("─",16)..
+                 "├"..string.rep("─",19)..
                  "┼"..string.rep("─",8)..
                  "┼"..string.rep("─",7)..
                  "┼"..string.rep("─",7)..
                  "┤"
         column = "${color}"..
-                 "│"..string.rep(" ",16)..
+                 "│"..string.rep(" ",19)..
                  "│"..string.rep(" ",8)..
                  "│"..string.rep(" ",7)..
                  "│"..string.rep(" ",7)..
                  "│"
         footer = "${color}"..
-                 "└"..string.rep("─",16)..
+                 "└"..string.rep("─",19)..
                  "┴"..string.rep("─",8)..
                  "┴"..string.rep("─",7)..
                  "┴"..string.rep("─",7)..
@@ -231,23 +231,28 @@ do
     
     function conky_rootperc () return numvars["fs_used_perc /"] end
     function conky_homeperc () return numvars["fs_used_perc /home"] end
+
+    function conky_rootcolor () return conky_color(conky_rootperc()) end
+    function conky_homecolor () return conky_color(conky_homeperc()) end
     
     function conky_root ()
         return "${color}"..
                "/${alignr}"..
-               conky_color(numvars["fs_used_perc /"])..
+               conky_rootcolor()..
                strvars["fs_used /"]..
                "/"..
-               rootsize
+               rootsize..
+               "${color}"
     end
     
     function conky_home ()
         return "${color}"..
                "/home${alignr}"..
-               conky_color(numvars["fs_used_perc /home"])..
+               conky_homecolor()..
                strvars["fs_used /home"]..
                "/"..
-               homesize
+               homesize..
+               "${color}"
     end
     
     
@@ -258,7 +263,7 @@ do
     function conky_top(i)
         local s = tostring(i)
         return conky_color(numvars["top cpu "..s])..
-               " "..string.format("%-16.16s", strvars["top name "..s])..
+               " "..string.format("%-19.19s", strvars["top name "..s])..
                " "..string.format("%8.8s", strvars["top pid "..s])..
                " "..string.format("%6.6s", strvars["top cpu "..s])..
                "% "..string.format("%6.6s", strvars["top mem "..s])..
@@ -268,7 +273,7 @@ do
     function conky_top_mem(i)
         local s = tostring(i)
         return conky_color(numvars["top_mem mem "..s])..
-               " "..string.format("%-16.16s", strvars["top_mem name "..s])..
+               " "..string.format("%-19.19s", strvars["top_mem name "..s])..
                " "..string.format("%8.8s", strvars["top_mem pid "..s])..
                " "..string.format("%6.6s", strvars["top_mem cpu "..s])..
                "% "..string.format("%6.6s", strvars["top_mem mem "..s])..
