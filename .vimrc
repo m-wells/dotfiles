@@ -19,7 +19,7 @@ if has("autocmd")
         Plug 'ludovicchabant/vim-gutentags'
         Plug 'scrooloose/nerdtree'
         Plug 'ryanoasis/vim-devicons'
-        Plug 'shime/vim-livedown'
+        Plug 'shime/vim-livedown', {'do': 'npm install -g livedown'}
         Plug 'lervag/vimtex'
         Plug 'christoomey/vim-tmux-navigator'
         Plug 'jpalardy/vim-slime'
@@ -28,7 +28,8 @@ if has("autocmd")
         Plug 'JuliaEditorSupport/julia-vim'
         Plug 'neoclide/coc.nvim', {'branch': 'release'}
         Plug 'godlygeek/tabular'
-        Plug 'sheerun/vim-polyglot', { 'tag': '*' }
+        Plug 'sheerun/vim-polyglot', {'tag': '*' }
+        Plug 'RRethy/vim-hexokinase', {'do': 'make hexokinase' }
     call plug#end()
 endif
 
@@ -143,7 +144,7 @@ let g:livedown_open = 1
 " the port on which Livedown server will run
 let g:livedown_port = 1337
 " the browser to use, can also be firefox, chrome or other, depending on your executable
-let g:livedown_browser = "google-chrome-stable --app=http://localhost:" . g:livedown_port
+let g:livedown_browser = "vivaldi-stable --app=http://localhost:" . g:livedown_port
 
 " Plug 'lervag/vimtex'
 let g:vimtex_enabled = 1
@@ -182,6 +183,16 @@ tmap <C-H> <C-W><C-H>
 tmap <C-L> <C-W><C-L>
 tmap <C-N> <C-W>N
 autocmd FileType julia let g:slime_vimterminal_cmd = "julia"
+
+" RRethy/vim-hexokinase
+let g:Hexokinase_optInPatterns = [
+\     'full_hex',
+\     'triple_hex',
+\     'rgb',
+\     'rgba',
+\     'hsl',
+\     'hsla'
+\ ]
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "                               Vim Appearance

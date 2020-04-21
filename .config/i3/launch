@@ -1,0 +1,38 @@
+#!/bin/bash
+
+# Terminate already running instances
+killall -q polybar
+killall -q conky
+
+# Wait until the processes have been shut down
+while pgrep -u $UID -x polybar >/dev/null; do sleep 1; done
+while pgrep -u $UID -x conky >/dev/null; do sleep 1; done
+
+CONKYCONF="${HOME}/.config/conky/${HOSTNAME}/conky.conf"
+
+if [ -x "$(command -v conky)" ] && [ -f ${CONKYCONF} ]; then
+    conky -c ${CONKYCONF} &
+#    i3quake -p right -m conky -- conky -c ${CONKYCONF}
+#    i3quake -p right -m conky -- conky -c ${CONKYCONF}
+fi
+
+MONITOR=$(xrandr | grep primary | cut -d' ' -f1)
+if [ "${HOSTNAME}" == "helium" ]; then
+    MONITOR=${MONITOR} \
+    WIRED="eno1" \
+    WIRELESS="wlo1" \
+    BATTERY="BAT0" \
+    ADAPTER="ADP1" \
+    polybar -r primary &
+elif [ "${HOSTNAME}" == "lithium" ]; then
+    MONITOR=${MONITOR} \
+    WIRED="enp3s0f1" \
+    WIRELESS="wlp2s0" \
+    BATTERY="BAT1" \
+    ADAPTER="ACAD" \
+    polybar -r primary &
+fi
+
+for m in $(polybar --list-monitors | grep -v primary | cut -d":" -f1); do
+    MONITOR=$m polybar -r external &
+done

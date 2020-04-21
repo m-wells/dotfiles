@@ -1,97 +1,98 @@
 [colors]
-yellow  = #b58900
-orange  = #cb4b16
-red     = #dc322f
-magenta = #d33682
-violet  = #6c71c4
 blue    = #268bd2
-cyan    = #2aa198
+red     = #e15554
+orange  = #cb4b16
+magenta = #d33682
+yellow  = #b58900
 green   = #859900
-base03  = #002b36
+cyan    = #2aa198
+violet  = #6c71c4
+black   = #000000
+gray  = #586e75
+lgray  = #586e75
+white   = #ffffff
 base02  = #073642
-base01  = #586e75
-base00  = #657b83
-base0   = #839496
-base1   = #93a1a1
-base2   = #eee8d5
-base3   = #fdf6e3
-foreground = ${colors.base2}
-background = ${colors.base03}
-foreground-alt = ${colors.base00}
-background-alt = ${colors.base02}
+base03  = #002b36
+foreground = ${self.white}
+background = ${self.base03}
 
+[settings]
+prefix = "%{T2}%{T-}%{R} "
+suffix = "%{R} %{R}%{T2}%{T-}"
+format-padding = 0
+format-margin = 0
+format-offset = 0
 
-[bar/top]
-;monitor = ${env:MONITOR}
-monitor = 
+[bar/primary]
+
 width = 100%
 height = 25
-radius = 0
-fixed-center = false
 
-foreground = ${colors.foreground}
 background = ${colors.background}
 
-line-size = 0
-
-dim-value = 1
+tray-background = ${colors.black}
+tray-position = right
 
 border-size = 0
-border-color = ${colors.background}
+fixed-center = true
+separator = "  "
 
-padding-left = 0
-padding-right = 0
-
-module-margin = 0
-
-
-;separator = %{T2}%{T-}
-
-font-0 = "FuraCode Nerd Font:size=12;2"
+font-0 = "FuraCode Nerd Font:Bold:size=12;3"
 font-1 = "FuraCode Nerd Font:size=16;4"
 font-2 = "siji:style=Regular:size=22;-1"
-; font-3 is for moving  down
 font-3 = "FuraCode Nerd Font:size=12;6"
-font-4 = "FuraCode Nerd Font:size=16;3"
+font-4 = "FuraCode Nerd Font:size=16;4"
 
-modules-left = i3 R xwindow
-modules-right = R wireless wired backlight battery pulseaudio temperature date notifications tray
-
-tray-position = right
-tray-padding = 0
-tray-background = #000000
+modules-left = i3 xwindow
+modules-center =  backlight pulseaudio battery
+modules-right = temperature date tray
 
 cursor-click = pointer
 cursor-scroll = ns-resize
 
-; override-redirect = true
-; wm-restack = true
-
-;===================================================================================================
-[module/R]
-type = custom/text
-content = %{R}
-
-[module/B]
-type = custom/text
-content = %{B-}
-content-background = ${colors.background}
+[bar/external]
+inherit = bar/primary
+monitor = ${env:MONITOR}
+modules-left = i3 xwindow
+modules-center = 
+modules-right = 
+tray-position = none
 
 ;===================================================================================================
 [module/tray]
 type = custom/text
-content = %{R}%{T2}%{T-}
-content-background = #000000
+click-left = kill -s USR1 $(pidof deadd-notification-center)
+
+content = 
+content-foreground = ${colors.white}
+content-background = ${bar/primary.tray-background}
+
+content-prefix = ${settings.prefix}
+content-prefix-foreground = ${self.content-background}
+content-prefix-background = ${bar/primary.background}
+
+content-suffix = " "
+content-suffix-foreground = ${self.content-background}
+content-suffix-background = ${bar/primary.tray-background}
 
 ;===================================================================================================
 [module/i3]
 type = internal/i3
 
+format = "<label-state><label-mode>"
+format-foreground = ${colors.background}
+format-background = ${colors.black}
+
+format-prefix = " "
+format-prefix-foreground = ${colors.background}
+format-prefix-background = ${self.format-background}
+
+format-suffix = ${settings.suffix}
+format-suffix-foreground = ${self.format-background}
+format-suffix-background = ${colors.background}
+
 ; Only show workspaces on the same output as the bar
-pin-workspaces = false
-
-format = <label-state> <label-mode>
-
+pin-workspaces = true
 ; Sort the workspaces by index instead of the default
 ; sorting that groups the workspaces by output
 ; Default: false
@@ -109,6 +110,7 @@ wrapping-scroll = false
 ; Default: true
 reverse-scroll = false
 
+;-----------------------------------------------------------
 ws-icon-0 =  1;%{T5}%{T-}
 ws-icon-1 =  2;%{T5}%{T-}
 ws-icon-2 =  3;%{T5}%{T-}
@@ -125,43 +127,73 @@ ws-icon-9 = 10;%{T5}%{T-}
 ;   %icon%
 ;   %index%
 ;   %output%
-label-focused = %output% %icon%
-label-focused-padding = 1
-label-focused-foreground = ${colors.foreground}
-label-focused-background = ${colors.background-alt}
+
+label-focused = %icon%
+label-focused-padding = 0
+label-focused-foreground = ${colors.cyan}
+label-focused-background = ${self.format-background}
 
 ; unfocused = Inactive workspace on any monitor
 label-unfocused = %icon%
-label-unfocused-padding = ${self.label-focused-padding}
-label-unfocused-foreground = ${colors.foreground-alt}
-label-unfocused-background = ${colors.background}
+label-unfocused-padding = 0
+label-unfocused-foreground = ${colors.gray}
+label-unfocused-background = ${self.format-background}
 
 ; visible = Active workspace on unfocused monitor
-label-visible = %output% %icon%
-label-visible-padding = ${self.label-focused-padding}
-label-visible-foreground = ${colors.foreground-alt}
-label-visible-background = ${colors.background-alt}
+label-visible = %icon%
+label-visible-padding = 0
+label-visible-foreground = ${colors.blue}
+label-visible-background = ${self.format-background}
 
 ; urgent = Workspace with urgency hint set
 label-urgent = %icon%
-label-urgent-padding = ${self.label-focused-padding}
-label-urgent-foreground = ${colors.red}
+label-urgent-padding = 0
+label-urgent-foreground = ${colors.magenta}
+label-urgent-background = ${self.format-background}
 
+; Separator in between workspaces
+label-separator = ${self.format-prefix}
+label-separator-background = ${self.format-background}
+
+label-mode = " %mode%"
+label-mode-padding = 0
+label-mode-foreground = ${self.format-foreground}
+label-mode-background = ${self.format-background}
+
+;===================================================================================================
 [module/xwindow]
 type = internal/xwindow
 
 format = <label>
-format-background = ${colors.foreground}
-label = %{T2}%{T-}%{O-1}%title:0:18:...%%{R}%{T2}%{B-}
+format-foreground = ${colors.background}
+format-background = ${colors.cyan}
 
-format-empty = <label-empty>
-label-empty-background = ${colors.foreground-alt}
-label-empty  = %{T2}%{T-}%{O-1}---------------------%{R}%{T2}%{B-}
+format-prefix = ${settings.prefix}
+format-prefix-foreground = ${self.format-background}
+format-prefix-background = ${colors.background}
 
+format-suffix = ${settings.suffix}
+format-suffix-foreground = ${self.format-background}
+format-suffix-background = ${colors.background}
+
+label = %title:0:40:...%
+
+;===================================================================================================
 [module/xbacklight]
 type = internal/xbacklight
-format = %{R}%{T2}%{T-}%{O-1}%{B#000000}%{R}%{T-}<ramp> <label>%{R}
-format-background = ${colors.cyan}
+
+format = <ramp> <label>
+format-foreground = ${colors.background}
+format-background = ${colors.blue}
+
+format-prefix = ${settings.prefix}
+format-prefix-foreground = ${self.format-background}
+format-prefix-background = ${colors.background}
+
+format-suffix = ${settings.suffix}
+format-suffix-foreground = ${self.format-background}
+format-suffix-background = ${colors.background}
+
 label = %percentage%%
 ramp-0  = 
 ramp-1  = 
@@ -179,26 +211,35 @@ ramp-12 = 
 ramp-13 = 
 ramp-14 = 
 
+;===================================================================================================
 [module/backlight]
 type = internal/backlight
 inherit = module/xbacklight
 card = intel_backlight
 enable-scroll = true
 
+;===================================================================================================
 [module/wired]
 type = internal/network
+
+format-connected = <label-connected>
+format-connected-foreground = ${colors.background}
+format-connected-background = ${colors.pink}
+
+format-connected-prefix = ${settings.prefix}
+format-connected-prefix-foreground = ${self.format-connected-background}
+format-connected-prefix-background = ${colors.background}
+
+format-connected-suffix = ${settings.suffix}
+format-connected-suffix-foreground = ${self.format-connected-background}
+format-connected-suffix-background = ${colors.background}
+
 interface = ${env:WIRED}
 interval = 3.0
 
-format-connected = %{R}%{T2}%{T-}%{O-1}%{B#000000}%{R}%{T-}<label-connected>%{R}
-format-connected-background = ${colors.violet}
-
 label-connected =  %upspeed%   %downspeed% 
 
-format-disconnected = %{R}%{T2}%{T-}%{O-1}%{B#000000}%{R}%{T-}<label-disconnected>%{R}
-format-disconnected-background = ${colors.foreground-alt}
-
-label-disconnected = %ifname%
+;label-disconnected = %ifname%
 
 
 [module/wireless]
@@ -206,8 +247,9 @@ type = internal/network
 interface = ${env:WIRELESS}
 inherit = module/wired
 
-format-connected = %{R}%{T2}%{T-}%{O-1}%{B#000000}%{R}%{T-}<label-connected> <ramp-signal>%{R}
-format-connected-background = ${colors.blue}
+format-connected = <label-connected> <ramp-signal>
+
+label-connected = %essid:0:20:...%  %upspeed%   %downspeed% 
 
 ramp-signal-0 = %{T3}%{T}
 ramp-signal-1 = %{T3}%{T}
@@ -215,11 +257,22 @@ ramp-signal-2 = %{T3}%{T}
 ramp-signal-3 = %{T3}%{T}
 ramp-signal-4 = %{T3}%{T}
 
-label-connected = %essid:0:10:...%  %upspeed%   %downspeed% 
 
 ;===================================================================================================
 [module/alsa]
 type = internal/alsa
+
+format-volume = <ramp-volume> <label-volume>
+format-volume-foreground = ${colors.background}
+format-volume-background = ${colors.orange}
+
+format-volume-prefix = ${settings.prefix}
+format-volume-prefix-foreground = ${self.format-volume-background}
+format-volume-prefix-background = ${colors.background}
+
+format-volume-suffix = ${settings.suffix}
+format-volume-suffix-foreground = ${self.format-volume-background}
+format-volume-suffix-background = ${colors.background}
 
 ramp-volume-0 = 
 ramp-volume-1 = 
@@ -227,12 +280,20 @@ ramp-volume-2 = 奔
 ramp-volume-3 = 墳
 ramp-volume-4 = 
 
-format-volume = %{R}%{T2}%{T-}%{O-1}%{B#000000}%{R}%{T-}<ramp-volume> <label-volume>%{R}
-format-volume-background = ${colors.foreground}
 label-volume = %percentage%%
 
-format-muted = %{R}%{T2}%{T-}%{O-1}%{B#000000}%{R}%{T-}ﱝ <label-muted>%{R}
-format-muted-background = ${colors.foreground-alt}
+format-muted = ﱝ <label-muted>
+format-muted-foreground = ${self.format-volume-foreground}
+format-muted-background = ${colors.gray}
+
+format-muted-prefix = ${self.format-volume-prefix}
+format-muted-prefix-foreground = ${self.format-muted-background}
+format-muted-prefix-background = ${colors.background}
+
+format-muted-suffix = ${self.format-volume-suffix}
+format-muted-suffix-foreground = ${self.format-muted-background}
+format-muted-suffix-background = ${colors.background}
+
 label-muted = %percentage%%
 
 ;===================================================================================================
@@ -245,10 +306,8 @@ label-muted = %{A1:pavucontrol:}%percentage%%%{A}
 ;===================================================================================================
 [module/battery]
 type = internal/battery
-
 battery = ${env:BATTERY}
 adapter = ${env:ADAPTER}
-
 time-format =  %H:%M:%S
 
 ramp-capacity-0 = 
@@ -262,26 +321,60 @@ ramp-capacity-7 = 
 ramp-capacity-8 = 
 ramp-capacity-9 = 
 
-format-charging = %{R}%{T2}%{T-}%{O-1}%{B#000000}%{R}%{T-}<ramp-capacity><label-charging>%{R}
+format-charging = <ramp-capacity><label-charging>
+format-charging-prefix = ${settings.prefix}
+format-charging-suffix = ${settings.suffix}
+format-charging-foreground = ${colors.background}
 format-charging-background = ${colors.yellow}
+format-charging-prefix-foreground = ${self.format-charging-background}
+format-charging-prefix-background = ${colors.background}
+format-charging-suffix-foreground = ${self.format-charging-background}
+format-charging-suffix-background = ${colors.background}
+
 label-charging =  %percentage%%  %time%
 
-format-discharging = %{R}%{T2}%{T-}%{O-1}%{B#000000}%{R}%{T-}<ramp-capacity> <label-discharging>%{R}
-format-discharging-background = ${colors.yellow}
+format-discharging = <ramp-capacity> <label-discharging>
+format-discharging-prefix = ${settings.prefix}
+format-discharging-suffix = ${settings.suffix}
+format-discharging-foreground = ${colors.background}
+format-discharging-background = ${colors.orange}
+format-discharging-prefix-foreground = ${self.format-discharging-background}
+format-discharging-prefix-background = ${colors.background}
+format-discharging-suffix-foreground = ${self.format-discharging-background}
+format-discharging-suffix-background = ${colors.background}
+
 label-discharging = %percentage%%  %time%
 
-format-full = %{R}%{T2}%{T-}%{O-1}%{B#000000}%{R}%{T-}<label-full>%{R}
-format-full-background = ${colors.yellow}
+format-full = <label-full>
+format-full-prefix = ${settings.prefix}
+format-full-suffix = ${settings.suffix}
+format-full-foreground = ${colors.background}
+format-full-background = ${colors.green}
+format-full-prefix-foreground = ${self.format-full-background}
+format-full-prefix-background = ${colors.background}
+format-full-suffix-foreground = ${self.format-full-background}
+format-full-suffix-background = ${colors.background}
+
 label-full = 
 
 ;===================================================================================================
 [module/temperature]
 type = internal/temperature
-; Thermal zone to use
-; To list all the zone types, run 
-; $ for i in /sys/class/thermal/thermal_zone*; do echo "$i: $(<$i/type)"; done
-; Default: 0
 thermal-zone = 0
+base-temperature = 20
+warn-temperature = 70
+
+format = <ramp> <label>
+format-foreground = ${colors.background}
+format-background = ${colors.green}
+
+format-prefix = ${settings.prefix}
+format-prefix-foreground = ${self.format-background}
+format-prefix-background = ${colors.background}
+
+format-suffix = ${settings.suffix}
+format-suffix-foreground = ${self.format-background}
+format-suffix-background = ${colors.background}
 
 ramp-0 = 
 ramp-1 = 
@@ -289,14 +382,20 @@ ramp-2 = 
 ramp-3 = 
 ramp-4 = 
 
-base-temperature = 20
-format = %{R}%{T2}%{T-}%{O-1}%{B#000000}%{R}%{T-}<ramp> <label>%{R}
-format-background = ${colors.green}
 label = %temperature-c%
 
-warn-temperature = 70
-format-warn = %{R}%{T2}%{T-}%{O-1}%{B#000000}%{R}%{T-}<ramp> <label-warn>%{R}
+format-warn = <ramp> <label-warn>
+format-warn-foreground = ${colors.background}
 format-warn-background = ${colors.red}
+
+format-warn-prefix = ${settings.prefix}
+format-warn-prefix-foreground = ${self.format-warn-background}
+format-warn-prefix-background = ${colors.background}
+
+format-warn-suffix = ${settings.suffix}
+format-warn-suffix-foreground = ${self.format-warn-background}
+format-warn-suffix-background = ${colors.background}
+
 label-warn = ${self.label}
 
 ;===================================================================================================
@@ -304,16 +403,22 @@ label-warn = ${self.label}
 type = internal/date
 date = %Y-%m-%d
 time = %H:%M
-format = %{R}%{T2}%{T-}%{O-1}%{B#000000}%{R}%{T-}<label>%{R}
+
+format = <label>
+format-foreground = ${colors.background}
 format-background = ${colors.magenta}
+
+format-prefix = ${settings.prefix}
+format-prefix-foreground = ${self.format-background}
+format-prefix-background = ${colors.background}
+
+format-suffix = ${settings.suffix}
+format-suffix-foreground = ${self.format-background}
+format-suffix-background = ${colors.background}
+
 label =  %date%  %time%
 
 ;===================================================================================================
-[module/notifications]
-type = custom/text
-content = %{R}%{T2}%{T-}%{O-1}%{B#000000}%{R}%{T-}%{R}
-content-background = ${colors.orange}
-click-left = kill -s USR1 $(pidof deadd-notification-center)
 ;===================================================================================================
 [module/powermenu]
 type = custom/menu
@@ -353,7 +458,7 @@ screenchange-reload = true
 ;pseudo-transparency = false
 
 [global/wm]
-margin-top = 5
-margin-bottom = 5
+margin-top = 0
+margin-bottom = 0
 
 ; vim:ft=dosini

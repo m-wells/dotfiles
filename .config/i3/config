@@ -4,8 +4,9 @@ set $mod Mod4
 
 focus_on_window_activation urgent
 
-exec_always --no-startup-id ~/.config/conky/launch.sh
-exec_always --no-startup-id ~/.config/polybar/launch.sh
+exec_always --no-startup-id ~/.config/i3/launch
+#exec_always --no-startup-id ~/.config/conky/launch.sh
+#exec_always --no-startup-id ~/.config/polybar/launch.sh
 
 exec --no-startup-id lxpolkit
 exec --no-startup-id picom --daemon
@@ -21,7 +22,7 @@ for_window [title="GKS QtTerm"] floating enable
 gaps inner 10
 gaps outer -9
 
-smart_gaps    on
+# smart_gaps    off
 smart_borders on
 
 font pango:DejaVu Sans Mono 8
@@ -29,8 +30,11 @@ font pango:DejaVu Sans Mono 8
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
 
+bindsym $mod+Shift+g gaps right current toggle 400
+
 # toggle conky
-bindsym $mod+m [con_mark="i3quakeconky"] scratchpad show
+#bindsym $mod+m [con_mark="i3quakeconky"] scratchpad show
+#bindsym $mod+m exec --no-startup-id ~/.config/i3/i3quakeconky
 # toggle polybar
 bindsym $mod+b exec --no-startup-id ~/.config/polybar/toggle.sh
 # start a terminal

@@ -63,12 +63,6 @@ if [ -t 1 ]; then
     fi
 fi
 
-export MANPAGER="/bin/sh -c \"col -b | vim -c 'set ft=man ts=8 nomod nolist nonu noma' -\""
-
-export EDITOR=vim
-
-export BROWSER=vivaldi-stable
-
 if [ -f ~/.bash_aliases ]; then
     source ~/.bash_aliases
 fi
@@ -76,5 +70,3 @@ fi
 if [ -f /usr/share/doc/pkgfile/command-not-found.bash ]; then
     source /usr/share/doc/pkgfile/command-not-found.bash
 fi
-
-export PATH=${HOME}/.local/bin:$PATH

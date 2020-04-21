@@ -1,0 +1,3 @@
+let vimpager_use_gvim = 0
+let vimpager_passthrough = 0
+let vimpager_disable_x11 = 1

@@ -1,6 +1,14 @@
-QT_QPA_PLATFORM=xcb
-QT_QPA_PLATFORMTHEME=gtk2
-QT_WAYLAND_FORCE_DPI=physical
-QT_WAYLAND_DISABLE_WINDOWDECORATION=1
-BEMENU_BACKEND=wayland
-JUPYTERLAB_DIR=.local/share/jupyter/lab
+QT_QPA_PLATFORM                         DEFAULT=xcb
+QT_QPA_PLATFORMTHEME                    DEFAULT=gtk2
+QT_WAYLAND_FORCE_DPI                    DEFAULT=physical
+QT_WAYLAND_DISABLE_WINDOWDECORATION     DEFAULT=1
+BEMENU_BACKEND                          DEFAULT=wayland
+
+JUPYTERLAB_DIR      DEFAULT=@{HOME}/.local/share/jupyter/lab
+
+PAGER               DEFAULT=vimpager
+EDITOR              DEFAULT=vim
+BROWSER             DEFAULT=vivaldi-stable
+
+PATH                DEFAULT=@{HOME}/.local/bin:@{HOME}/.node_modules/bin${PATH:+:$PATH}
+npm_config_prefix   DEFAULT=@{HOME}/.node_modules
