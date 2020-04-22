@@ -1,0 +1,21 @@
+#!/bin/bash
+
+if [ $(id -u) -ne 0 ]; then
+    echo "This script should be run as root!" >&2
+    exit 1
+fi
+
+echo '# Load ddcci at boot' > /etc/modules-load.d/ddcci.conf
+echo 'ddcci' >> /etc/modules-load.d/ddcci.conf
+
+_USER=$USER
+if [ $SUDO_USER ]; then
+    _USER=$SUDO_USER
+fi
+
+if groups $_USER | grep -q video; then
+    echo "$_USER is already in group video"
+else
+    echo "adding $_USER to group video"
+    usermod -aG video $_USER
+fi
