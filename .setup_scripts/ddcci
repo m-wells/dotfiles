@@ -5,9 +5,14 @@ if [ $(id -u) -ne 0 ]; then
     exit 1
 fi
 
-echo 'Writing /etc/modules-load.d/ddcci.conf'
-echo '# Load ddcci at boot' | tee /etc/modules-load.d/ddcci.conf
-echo 'ddcci' | tee --append /etc/modules-load.d/ddcci.conf
+MODLOADCONF="/etc/modules-load.d/ddcci.conf"
+echo "Writing ${MODLOADCONF}"
+echo '# Load ddcci at boot' | tee $MODLOADCONF
+echo 'ddcci' | tee --append $MODLOADCONF
+
+MODPROBECONF="/etc/modprobe.d/ddcci.conf"
+echo "Writing ${MODPROBECONF}"
+echo 'options ddcci delay=1000' | tee $MODPROBECONF
 
 _USER=$USER
 if [ $SUDO_USER ]; then
