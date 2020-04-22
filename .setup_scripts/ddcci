@@ -12,7 +12,7 @@ echo 'ddcci' | tee --append $MODLOADCONF
 
 MODPROBECONF="/etc/modprobe.d/ddcci.conf"
 echo "Writing ${MODPROBECONF}"
-echo 'options ddcci delay=1000' | tee $MODPROBECONF
+echo 'options ddcci delay=120' | tee $MODPROBECONF
 
 _USER=$USER
 if [ $SUDO_USER ]; then
