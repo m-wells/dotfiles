@@ -40,9 +40,9 @@ for m in $(polybar --list-monitors | grep -v primary | cut -d":" -f1); do
         fi
     elif [ "${HOSTNAME}" == "lithium" ]; then
         if [ $m == "HDMI1" ]; then
-            MONITOR=$m BACKLIGHT="ddcci2" polybar -r external &
+            MONITOR=$m BACKLIGHT="ddcci3" polybar -r external &
         elif [ $m == "DP1" ]; then
-            MONITOR=$m BACKLIGHT="ddcci2" polybar -r external &
+            MONITOR=$m BACKLIGHT="ddcci6" polybar -r external &
         fi
     fi
 done
