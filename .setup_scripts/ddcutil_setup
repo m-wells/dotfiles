@@ -21,7 +21,7 @@ if groups $_USER | grep -q i2c; then
     echo "$_USER is already in group i2c"
 else
     echo "adding $_USER to group i2c"
-    usermod $_USER -aG i2c
+    usermod -aG i2c $_USER
 fi
 
 I2C_DEV_FILE="/etc/modules-load.d/i2c-dev.conf"

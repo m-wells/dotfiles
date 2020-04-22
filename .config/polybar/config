@@ -61,7 +61,7 @@ cursor-scroll = ns-resize
 inherit = bar/primary
 monitor = ${env:MONITOR}
 modules-left = i3 xwindow
-modules-center = 
+modules-center = backlight
 modules-right = 
 tray-position = none
 
@@ -222,7 +222,7 @@ ramp-14 = 
 [module/backlight]
 type = internal/backlight
 inherit = module/xbacklight
-card = intel_backlight
+card = ${env:BACKLIGHT:intel_backlight}
 enable-scroll = true
 
 ;===================================================================================================
