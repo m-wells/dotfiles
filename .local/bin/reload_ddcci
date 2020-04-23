@@ -1,0 +1,3 @@
+#! /bin/sh
+
+modprobe -r ddcci_backlight && modprobe -r ddcci && modprobe ddcci
