@@ -26,7 +26,8 @@ if has("autocmd")
         Plug 'altercation/vim-colors-solarized'
         Plug 'lifepillar/vim-solarized8'
         Plug 'JuliaEditorSupport/julia-vim'
-        Plug 'neoclide/coc.nvim', {'branch': 'release'}
+        Plug 'neoclide/coc.nvim', {'branch': 'release', 'do': ':CocInstall coc-snippets'}
+        Plug 'honza/vim-snippets'
         Plug 'godlygeek/tabular'
         Plug 'sheerun/vim-polyglot', {'tag': '*' }
         Plug 'RRethy/vim-hexokinase', {'do': 'make hexokinase' }

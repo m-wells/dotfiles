@@ -30,7 +30,7 @@ font pango:DejaVu Sans Mono 8
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
 
-bindsym $mod+Shift+g gaps right current toggle 400
+bindsym $mod+Shift+g exec --no-startup-id ~/.config/i3/conky_show
 
 # toggle conky
 #bindsym $mod+m [con_mark="i3quakeconky"] scratchpad show
