@@ -1,1 +1,7 @@
-/home/mark/Dotfiles/HOME/.julia/config/startup_ijulia.jl
+isinteractive() && display(Base.banner())
+
+try
+    @eval using Revise
+catch e
+    @warn(e.msg)
+end
