@@ -42,6 +42,8 @@ bindsym $mod+Shift+Return exec --no-startup-id alacritty
 # kill focused window
 bindsym $mod+Shift+c kill
 
+bindsym $mod+F12 exec --no-startup-id exec i3lock -c 000000
+
 # bemenu
 set $tf #268bd2
 set $tb #073642
