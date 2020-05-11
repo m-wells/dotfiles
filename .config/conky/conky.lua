@@ -169,15 +169,15 @@ do
             return conky_color(tonumber(x))
         end
         if x > 75 then
-            return "${color red}"
+            return "${color dc322f}"
         end
         if x > 50 then
-            return "${color orange}"
+            return "${color cb4b16}"
         end
         if x > 25 then
-            return "${color yellow}"
+            return "${color b58900}"
         end
-        return "${color green}"
+        return "${color 859900}"
     end
     ------------------------------------------------------------------------------------------------
     --
