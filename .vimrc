@@ -31,6 +31,7 @@ if has("autocmd")
         Plug 'godlygeek/tabular'
         Plug 'sheerun/vim-polyglot', {'tag': '*' }
         Plug 'RRethy/vim-hexokinase', {'do': 'make hexokinase' }
+        Plug 'honza/vim-snippets'
     call plug#end()
 endif
 
@@ -121,12 +122,12 @@ endfunction
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "                            Plugin Configuration
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" powerline/powerline
+" Plug 'powerline/powerline' -------------------------------------------------------------
 try
     let g:powerline_pycmd = "py3"
 endtry
 
-" scrooloose/nerdtree
+" Plug 'scrooloose/nerdtree' -------------------------------------------------------------
 if has("autocmd")
     augroup nerdtreekill
         au!
@@ -137,7 +138,7 @@ if has("autocmd")
     augroup END
 endif
 
-" Plug 'shime/vim-livedown'
+" Plug 'shime/vim-livedown' --------------------------------------------------------------
 " should markdown preview get shown automatically upon opening markdown buffer
 let g:livedown_autorun = 0
 " should the browser window pop-up upon previewing
@@ -147,32 +148,48 @@ let g:livedown_port = 1337
 " the browser to use, can also be firefox, chrome or other, depending on your executable
 let g:livedown_browser = "vivaldi-stable --app=http://localhost:" . g:livedown_port
 
-" Plug 'lervag/vimtex'
+" Plug 'lervag/vimtex' -------------------------------------------------------------------
 let g:vimtex_enabled = 1
 let g:vimtex_view_method = 'zathura'
 
-" Plug 'JuliaEditorSupport/julia-vim'
-let g:latex_to_unicode_suggestions = 0
+" Plug 'JuliaEditorSupport/julia-vim' ----------------------------------------------------
+set omnifunc=syntaxcomplete#Complete
+let g:latex_to_unicode_suggestions = 1
 let g:latex_to_unicode_tab = 0
 let g:latex_to_unicode_auto = 1
 " let g:latex_to_unicode_keymap = 1
 
-" majutsushi/tagbar
+" Plug 'majutsushi/tagbar' ---------------------------------------------------------------
 let g:tagbar_type_julia = {
     \ 'ctagstype' : 'julia',
     \ 'kinds'     : [
         \ 't:struct', 'f:function', 'm:macro', 'c:const']
     \ }
 
-" sheerun/vim-polyglot
+" Plug 'sheerun/vim-polyglot' ------------------------------------------------------------
 let g:polyglot_disabled = ['julia', 'latex']
 let g:vim_markdown_conceal = 0
 
-" neoclide/coc.nvim
+" Plug 'neoclide/coc.nvim' ---------------------------------------------------------------
 set updatetime=300
 let $NVIM_TUI_ENABLE_CURSOR_SHAPE=0
 
-" jpalardy/vim-slime
+" Make <tab> used for trigger completion, completion confirm, snippet expand and jump like VSCode.
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? coc#_select_confirm() :
+      \ coc#expandableOrJumpable() ? "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+let g:coc_snippet_next = '<tab>'
+let g:coc_snippet_prev = '<s-tab>'
+
+" Plug 'jpalardy/vim-slime' --------------------------------------------------------------
 set splitbelow
 set splitright
 let g:slime_target = "vimterminal"
@@ -185,7 +202,7 @@ tmap <C-L> <C-W><C-L>
 tmap <C-N> <C-W>N
 autocmd FileType julia let g:slime_vimterminal_cmd = "julia"
 
-" RRethy/vim-hexokinase
+" Plug 'RRethy/vim-hexokinase' -----------------------------------------------------------
 let g:Hexokinase_optInPatterns = [
 \     'full_hex',
 \     'triple_hex',
