@@ -70,3 +70,5 @@ fi
 if [ -f /usr/share/doc/pkgfile/command-not-found.bash ]; then
     source /usr/share/doc/pkgfile/command-not-found.bash
 fi
+
+export JULIA_NUM_THREADS=$(nproc)
