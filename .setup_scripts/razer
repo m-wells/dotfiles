@@ -1,0 +1,2 @@
+sudo gpasswd -a mark plugdev
+systemctl --user enable --now openrazer-daemon.service

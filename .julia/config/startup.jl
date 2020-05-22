@@ -16,7 +16,7 @@ atreplinit() do repl
             mktemp() do path, io
                 input = chomp(String(take!(copy(LineEdit.buffer(s)))))
                 if isempty(input)
-                    run(`vim $(path)`)
+                    run(`vim -c "set filetype=julia" $(path)`)
                     sleep(0.1)
                     input = read(io, String)
                     write(LineEdit.buffer(s), chomp(input))

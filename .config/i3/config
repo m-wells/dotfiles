@@ -8,11 +8,12 @@ exec_always --no-startup-id ~/.config/i3/launch
 #exec_always --no-startup-id ~/.config/conky/launch.sh
 #exec_always --no-startup-id ~/.config/polybar/launch.sh
 
-exec --no-startup-id lxpolkit
+#exec --no-startup-id lxpolkit
 exec --no-startup-id picom --daemon
 exec --no-startup-id blueman-applet
 exec --no-startup-id nm-applet
 exec --no-startup-id deadd-notification-center
+exec --no-startup-id polychromatic-tray-applet
 
 for_window [class="^.*"] border pixel 1
 for_window [class="matplotlib"] floating enable
