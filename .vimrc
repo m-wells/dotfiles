@@ -32,6 +32,7 @@ if has("autocmd")
         Plug 'sheerun/vim-polyglot', {'tag': '*' }
         Plug 'RRethy/vim-hexokinase', {'do': 'make hexokinase' }
         Plug 'honza/vim-snippets'
+        Plug 'kdheepak/JuliaFormatter.vim'
     call plug#end()
 endif
 
@@ -86,6 +87,7 @@ if has("autocmd")
 
         autocmd FileType julia setlocal indentkeys-=),],}
         autocmd FileType tex setlocal spell spelllang=en_us
+
     augroup END
 endif
 
