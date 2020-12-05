@@ -104,16 +104,16 @@ bindsym $mod+space focus mode_toggle
 bindsym $mod+y fullscreen disable; floating enable;
 
 # Switch to workspace like xmonad
-bindsym $mod+1 exec i3-wk-switch 1
-bindsym $mod+2 exec i3-wk-switch 2
-bindsym $mod+3 exec i3-wk-switch 3
-bindsym $mod+4 exec i3-wk-switch 4
-bindsym $mod+5 exec i3-wk-switch 5
-bindsym $mod+6 exec i3-wk-switch 6
-bindsym $mod+7 exec i3-wk-switch 7
-bindsym $mod+8 exec i3-wk-switch 8
-bindsym $mod+9 exec i3-wk-switch 9
-bindsym $mod+0 exec i3-wk-switch 10
+bindsym $mod+1 exec --no-startup-id i3-wk-switch 1
+bindsym $mod+2 exec --no-startup-id i3-wk-switch 2
+bindsym $mod+3 exec --no-startup-id i3-wk-switch 3
+bindsym $mod+4 exec --no-startup-id i3-wk-switch 4
+bindsym $mod+5 exec --no-startup-id i3-wk-switch 5
+bindsym $mod+6 exec --no-startup-id i3-wk-switch 6
+bindsym $mod+7 exec --no-startup-id i3-wk-switch 7
+bindsym $mod+8 exec --no-startup-id i3-wk-switch 8
+bindsym $mod+9 exec --no-startup-id i3-wk-switch 9
+bindsym $mod+0 exec --no-startup-id i3-wk-switch 10
 
 # Switch to workspace like xmonad
 bindsym Control+$mod+1 workspace 1

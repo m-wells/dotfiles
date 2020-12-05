@@ -1,2 +1,2 @@
 #!/bin/sh
-feh --no-fehbg --bg-fill '/usr/share/backgrounds/archlinux/archlinux-simplyblack.png' 
+feh --no-fehbg --bg-fill '/usr/share/backgrounds/archlinux/wave.png' 
