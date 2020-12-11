@@ -1,3 +1,7 @@
+" Plug 'sheerun/vim-polyglot' ------------------------------------------------------------
+let g:polyglot_disabled = ['julia', 'latex']
+let g:vim_markdown_conceal = 0
+
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "                          Plugins (using vim-plug)
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -22,17 +26,18 @@ if has("autocmd")
         Plug 'shime/vim-livedown', {'do': 'npm install -g livedown'}
         Plug 'lervag/vimtex'
         Plug 'christoomey/vim-tmux-navigator'
-        Plug 'jpalardy/vim-slime'
-        Plug 'altercation/vim-colors-solarized'
+        " Plug 'jpalardy/vim-slime'
+        " Plug 'altercation/vim-colors-solarized'
         Plug 'lifepillar/vim-solarized8'
         Plug 'JuliaEditorSupport/julia-vim'
-        Plug 'neoclide/coc.nvim', {'branch': 'release', 'do': ':CocInstall coc-snippets'}
-        Plug 'honza/vim-snippets'
+        " Plug 'autozimu/LanguageClient-neovim', {'branch': 'next', 'do': 'bash install.sh'}
+        " Plug 'neoclide/coc.nvim', {'branch': 'release', 'do': ':CocInstall coc-snippets'}
+        " Plug 'honza/vim-snippets'
         Plug 'godlygeek/tabular'
         Plug 'sheerun/vim-polyglot', {'tag': '*' }
-        Plug 'RRethy/vim-hexokinase', {'do': 'make hexokinase' }
-        Plug 'honza/vim-snippets'
-        Plug 'kdheepak/JuliaFormatter.vim'
+        " Plug 'RRethy/vim-hexokinase', {'do': 'make hexokinase' }
+        " Plug 'honza/vim-snippets'
+        " Plug 'kdheepak/JuliaFormatter.vim'
     call plug#end()
 endif
 
@@ -155,11 +160,33 @@ let g:vimtex_enabled = 1
 let g:vimtex_view_method = 'zathura'
 
 " Plug 'JuliaEditorSupport/julia-vim' ----------------------------------------------------
-set omnifunc=syntaxcomplete#Complete
+" set omnifunc=syntaxcomplete#Complete
+let g:default_julia_version = '1.0'
 let g:latex_to_unicode_suggestions = 1
-let g:latex_to_unicode_tab = 0
-let g:latex_to_unicode_auto = 1
+let g:latex_to_unicode_tab = 1
+let g:latex_to_unicode_auto = 0
 " let g:latex_to_unicode_keymap = 1
+
+" Plug 'autozimu/LanguageClient-neovim' ----------------------------------------------------
+" language server
+" let g:LanguageClient_autoStart = 1
+" let g:LanguageClient_serverCommands = {
+" \   'julia': ['julia', '--startup-file=no', '--history-file=no', '-e', '
+" \       using LanguageServer;
+" \       using Pkg;
+" \       import StaticLint;
+" \       import SymbolServer;
+" \       env_path = dirname(Pkg.Types.Context().env.project_file);
+" \       
+" \       server = LanguageServer.LanguageServerInstance(stdin, stdout, env_path, "");
+" \       server.runlinter = true;
+" \       run(server);
+" \   ']
+" \ }
+
+" nnoremap <silent> K :call LanguageClient_textDocument_hover()<CR>
+" nnoremap <silent> gd :call LanguageClient_textDocument_definition()<CR>
+" nnoremap <silent> <F2> :call LanguageClient_textDocument_rename()<CR> 
 
 " Plug 'majutsushi/tagbar' ---------------------------------------------------------------
 let g:tagbar_type_julia = {
@@ -168,28 +195,24 @@ let g:tagbar_type_julia = {
         \ 't:struct', 'f:function', 'm:macro', 'c:const']
     \ }
 
-" Plug 'sheerun/vim-polyglot' ------------------------------------------------------------
-let g:polyglot_disabled = ['julia', 'latex']
-let g:vim_markdown_conceal = 0
-
 " Plug 'neoclide/coc.nvim' ---------------------------------------------------------------
-set updatetime=300
-let $NVIM_TUI_ENABLE_CURSOR_SHAPE=0
+" set updatetime=300
+" let $NVIM_TUI_ENABLE_CURSOR_SHAPE=0
 
 " Make <tab> used for trigger completion, completion confirm, snippet expand and jump like VSCode.
-inoremap <silent><expr> <TAB>
-      \ pumvisible() ? coc#_select_confirm() :
-      \ coc#expandableOrJumpable() ? "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
-      \ coc#refresh()
-
-function! s:check_back_space() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~# '\s'
-endfunction
-
-let g:coc_snippet_next = '<tab>'
-let g:coc_snippet_prev = '<s-tab>'
+" inoremap <silent><expr> <TAB>
+"       \ pumvisible() ? coc#_select_confirm() :
+"       \ coc#expandableOrJumpable() ? "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>" :
+"       \ <SID>check_back_space() ? "\<TAB>" :
+"       \ coc#refresh()
+" 
+" function! s:check_back_space() abort
+"   let col = col('.') - 1
+"   return !col || getline('.')[col - 1]  =~# '\s'
+" endfunction
+" 
+" let g:coc_snippet_next = '<tab>'
+" let g:coc_snippet_prev = '<s-tab>'
 
 " Plug 'jpalardy/vim-slime' --------------------------------------------------------------
 set splitbelow
@@ -202,17 +225,17 @@ tmap <C-K> <C-W><C-K>
 tmap <C-H> <C-W><C-H>
 tmap <C-L> <C-W><C-L>
 tmap <C-N> <C-W>N
-autocmd FileType julia let g:slime_vimterminal_cmd = "julia"
+" autocmd FileType julia let g:slime_vimterminal_cmd = "julia"
 
 " Plug 'RRethy/vim-hexokinase' -----------------------------------------------------------
-let g:Hexokinase_optInPatterns = [
-\     'full_hex',
-\     'triple_hex',
-\     'rgb',
-\     'rgba',
-\     'hsl',
-\     'hsla'
-\ ]
+" let g:Hexokinase_optInPatterns = [
+" \     'full_hex',
+" \     'triple_hex',
+" \     'rgb',
+" \     'rgba',
+" \     'hsl',
+" \     'hsla'
+" \ ]
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "                               Vim Appearance
@@ -260,6 +283,8 @@ set novisualbell
 
 set encoding=UTF-8                  " The encoding displayed.
 set fileencoding=UTF-8              " The encoding written to file.
+
+set clipboard^=unnamed,unnamedplus
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "                                Vim Mappings
