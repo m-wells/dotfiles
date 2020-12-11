@@ -1,0 +1,2 @@
+/usr/bin/vivaldi-stable %U
+    ^https?://

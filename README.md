@@ -8,3 +8,5 @@ Section "Device"
     Option "TearFree" "true"
 EndSection
 ```
+
+To update file associations use `mimeo` (or edit `~/.config/mimeo/associations.txt`) and then do `sudo mimeo --update`
