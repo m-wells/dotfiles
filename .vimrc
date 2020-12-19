@@ -340,6 +340,8 @@ nnoremap <silent> k :<C-U>execute 'normal!' (v:count > 1 ? "m'" . v:count :'g') 
 " j acts as gj in normal mode, but #j still jumps down # gutter lines
 nnoremap <silent> j :<C-U>execute 'normal!' (v:count > 1 ? "m'" . v:count :'g') . 'j'<CR>
 
+nnoremap <C-[> :pop<CR>
+
 " navigate pop up menu with TAB(to go down) and SHIFT-TAB (to go up)
 " inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
 " inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"

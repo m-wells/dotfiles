@@ -1,0 +1,13 @@
+{
+  "id": "youtube",
+  "name": "YouTube",
+  "version": "1.0.0",
+  "description": "YouTube",
+  "main": "index.js",
+  "author": "altescy",
+  "license": "MIT",
+  "repository": "https://github.com/altescy/franz-youtube",
+  "config": {
+    "serviceURL": "https://www.youtube.com"
+  }
+}
