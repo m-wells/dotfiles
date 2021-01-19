@@ -5,11 +5,18 @@ $ cat /etc/X11/xorg.conf.d/20-intel.conf
 Section "Device"
     Identifier "Intel Graphics"
     Driver "intel"
-    Option "TearFree" "true"
+    Option "TearFree" "True"
+    Option "NoAccel" "True"
+    Option "DRI" "False"
 EndSection
 ```
 
 To update file associations use `mimeo` (or edit `~/.config/mimeo/associations.txt`) and then do `sudo mimeo --update`
+
+## CPUPOWER
+```
+$ cat /etc/default/cpupower
+----------------------------------------
 # Define CPUs governor
 # valid governors: ondemand, performance, powersave, conservative, userspace.
 governor='performance'
@@ -39,5 +46,6 @@ governor='performance'
 #perf_bias=
 
 # vim:set ts=2 sw=2 ft=sh et:
+```
 systemctl enable cpupower.service
 sudo pacman -S cpupower
