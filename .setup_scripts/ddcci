@@ -12,7 +12,8 @@ echo 'ddcci' | tee --append $MODLOADCONF
 
 MODPROBECONF="/etc/modprobe.d/ddcci.conf"
 echo "Writing ${MODPROBECONF}"
-echo 'options ddcci dyndbg delay=120' | tee $MODPROBECONF
+# echo 'options ddcci dyndbg delay=120' | tee $MODPROBECONF
+echo 'options ddcci dyndbg delay=500' | tee $MODPROBECONF
 echo 'options ddcci-backlight dyndbg' | tee --append $MODPROBECONF
 
 _USER=$USER
