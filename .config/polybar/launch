@@ -1,0 +1,32 @@
+#!/bin/bash
+
+CONFIG="${HOME}/.config/polybar/config"
+if [ -x "$(command -v polybar)" ] && [ -f ${CONFIG} ]; then
+    # Terminate already running instances
+    killall -q polybar
+
+    # Wait until the processes have been shut down
+    while pgrep -u $UID -x polybar >/dev/null; do sleep 1; done
+
+    MONITOR=$(xrandr | grep primary | cut -d' ' -f1)
+    WIRED=$(ip link | sed -n 's/^[[:digit:]]: \(e[[:alnum:]]\+\):.*$/\1/p')
+    WIRELESS=$(ip link | sed -n 's/^[[:digit:]]: \(w[[:alnum:]]\+\):.*$/\1/p')
+    BATTERY=$( \
+        find /sys/class/power_supply/ -mindepth 1 -maxdepth 1 -type l | \
+        sed -n 's/^.*\/\(B[[:alnum:]]\+$\)/\1/p' \
+    )
+    ADAPTER=$( \
+        find /sys/class/power_supply/ -mindepth 1 -maxdepth 1 -type l | \
+        sed -n 's/^.*\/\(A[[:alnum:]]\+$\)/\1/p' \
+    )
+    PRIMARY=$(polybar --list-monitors | grep primary | cut -d':' -f1)
+    MONITORS=( $(polybar --list-monitors | grep -v primary | cut -d":" -f1) )
+    if [ -z "$PRIMARY" ]; then
+        PRIMARY=${MONITORS[0]}
+        MONITORS=("${MONITORS[@]:1}")
+    fi
+    BATTERY=$BATTERY ADAPTER=$ADAPTER MONITOR=$PRIMARY polybar -r primary &
+    for m in "${MONITORS[@]}"; do
+        MONITOR=$m polybar -r external &
+    done
+fi

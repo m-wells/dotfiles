@@ -4,7 +4,7 @@ set $mod Mod4
 
 focus_on_window_activation urgent
 
-exec_always --no-startup-id ~/.config/i3/launch
+exec_always --no-startup-id ~/.config/polybar/launch
 
 exec --no-startup-id "feh --no-fehbg --bg-fill /usr/share/backgrounds/archlinux/wave.png"
 exec --no-startup-id picom --daemon

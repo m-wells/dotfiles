@@ -51,7 +51,8 @@ font-3 = "FuraCode Nerd Font:size=12;6"
 font-4 = "FuraCode Nerd Font:size=16;4"
 
 modules-left = i3 xwindow
-modules-center =  backlight pulseaudio battery
+#modules-center =  backlight pulseaudio battery
+modules-center =  pulseaudio battery
 modules-right = temperature date tray
 
 cursor-click = pointer
@@ -61,7 +62,8 @@ cursor-scroll = ns-resize
 inherit = bar/primary
 monitor = ${env:MONITOR}
 modules-left = i3 xwindow
-modules-center = backlight
+#modules-center = backlight
+modules-center = 
 modules-right = 
 tray-position = none
 

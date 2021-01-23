@@ -1,40 +1,46 @@
 #!/bin/bash
 
 # Terminate already running instances
-killall -q polybar
+#killall -q polybar
 killall -q conky
 
 # Wait until the processes have been shut down
-while pgrep -u $UID -x polybar >/dev/null; do sleep 1; done
+#while pgrep -u $UID -x polybar >/dev/null; do sleep 1; done
 while pgrep -u $UID -x conky >/dev/null; do sleep 1; done
 
 CONKYCONF="${HOME}/.config/conky/${HOSTNAME}/conky.conf"
 
 if [ -x "$(command -v conky)" ] && [ -f ${CONKYCONF} ]; then
     conky -c ${CONKYCONF} &
-#    i3quake -p right -m conky -- conky -c ${CONKYCONF}
-#    i3quake -p right -m conky -- conky -c ${CONKYCONF}
 fi
 
-MONITOR=$(xrandr | grep primary | cut -d' ' -f1)
-WIRED=$(ip link | sed -n 's/^[[:digit:]]: \(e[[:alnum:]]\+\):.*$/\1/p')
-WIRELESS=$(ip link | sed -n 's/^[[:digit:]]: \(w[[:alnum:]]\+\):.*$/\1/p')
-BATTERY=$(find /sys/class/power_supply/ -mindepth 1 -maxdepth 1 -type l | sed -n 's/^.*\/\(B[[:alnum:]]\+$\)/\1/p')
-ADAPTER=$(find /sys/class/power_supply/ -mindepth 1 -maxdepth 1 -type l | sed -n 's/^.*\/\(A[[:alnum:]]\+$\)/\1/p')
-polybar -r primary &
+#MONITOR=$(xrandr | grep primary | cut -d' ' -f1)
+#WIRED=$(ip link | sed -n 's/^[[:digit:]]: \(e[[:alnum:]]\+\):.*$/\1/p')
+#WIRELESS=$(ip link | sed -n 's/^[[:digit:]]: \(w[[:alnum:]]\+\):.*$/\1/p')
+#BATTERY=$(find /sys/class/power_supply/ -mindepth 1 -maxdepth 1 -type l | sed -n 's/^.*\/\(B[[:alnum:]]\+$\)/\1/p')
+#ADAPTER=$(find /sys/class/power_supply/ -mindepth 1 -maxdepth 1 -type l | sed -n 's/^.*\/\(A[[:alnum:]]\+$\)/\1/p')
 
-for m in $(polybar --list-monitors | grep -v primary | cut -d":" -f1); do
-    MONITOR=$m BACKLIGHT="i2c-2" polybar -r external &
-    #if [ "${HOSTNAME}" == "helium" ]; then
-    #    if [ $m == "HDMI1" ]; then
-    #        MONITOR=$m BACKLIGHT="ddcci2" polybar -r external &
-    #        #MONITOR=$m polybar -r external &
-    #    fi
-    #elif [ "${HOSTNAME}" == "lithium" ]; then
-    #    if [ $m == "HDMI1" ]; then
-    #        MONITOR=$m BACKLIGHT="ddcci3" polybar -r external &
-    #    elif [ $m == "DP1" ]; then
-    #        MONITOR=$m BACKLIGHT="ddcci6" polybar -r external &
-    #    fi
-    #fi
-done
+#MONITOR=DP-4 BACKLIGHT="nvidia_0" polybar -r primary
+#MONITOR=DP6 BACKLIGHT="ddcci6" polybar -r external &
+#MONITORS=( $(polybar --list-monitors | cut -d":" -f1) )
+#BATTERY=$BATTERY ADAPTER=$ADAPTER MONITOR=${MONITORS[1]} polybar -r primary &
+#unset MONITORS[0] # removes the first element
+#for m in "${MONITORS[@]}"; do
+#    MONITOR=$m polybar -r external &
+#done
+
+#for m in $(polybar --list-monitors | cut -d":" -f1); do
+#    MONITOR=$m BACKLIGHT="i2c-2" polybar -r external &
+#    #if [ "${HOSTNAME}" == "helium" ]; then
+#    #    if [ $m == "HDMI1" ]; then
+#    #        MONITOR=$m BACKLIGHT="ddcci2" polybar -r external &
+#    #        #MONITOR=$m polybar -r external &
+#    #    fi
+#    #elif [ "${HOSTNAME}" == "lithium" ]; then
+#    #    if [ $m == "HDMI1" ]; then
+#    #        MONITOR=$m BACKLIGHT="ddcci3" polybar -r external &
+#    #    elif [ $m == "DP1" ]; then
+#    #        MONITOR=$m BACKLIGHT="ddcci6" polybar -r external &
+#    #    fi
+#    #fi
+#done
