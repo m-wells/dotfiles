@@ -1,290 +1,282 @@
-do
-    local config = ...
+------------------------------------------------------------------------------------------------
+-- GLOBALS
+------------------------------------------------------------------------------------------------
+-- table to hold static system information and the conky query string
+static_info = {}
+static_info.roomtemp = 25   --ambient (room) temperature in degrees C
+static_info.hightemp = 100  --maximum temperature for temp graph
+static_info.ntopcpu = 10    --show top n number of process info desending cpu load
+static_info.ntopmem = 10    --show top n number of process info desending mem load
+static_info.cquery = ''     --initialize to suppress initial conky_update 'expecting a string' warning
 
-    --patern for termperature label (%d will be replaced by a number)
-    config.temp_label = "${cat " .. config.temppath .. "/temp%d_label}"
-    --patern for termperature query (%d will be replaced by a number)
-    config.temp_query = "exec \"cat " .. config.temppath .. "/temp%d_input | rev | cut -c4- | rev\""
+-- dynamic system information
+dynamic_info = {}
+-- query_array will be used to populate dynamic_info table and to make the query to conky
+-- query conky only once per update to avoid syncing issues
+query_array = {}
 
-    ------------------------------------------------------------------------------------------------
-    --Initialize
-    ------------------------------------------------------------------------------------------------
-    local tempfactor = 100/(config.hightemp - config.roomtemp)
-    local temps = {}
-    temps.str = {}
-    temps.scl = {}
-    local memmax        --maximum size of ram
-    local swapmax       --maximum size of swap
-    local rootsize      --maximum size of /
-    local homesize      --maximum size of /home
-    local header        --table header
-    local column        --table separators
-    local footer        --table footer
-    local cquery        --table that holds the string to send to conky and the hashes to obtain the
-                        --    returned values
-    local strvars = {}
-    local numvars = {}
-    if conkystring == nil then
-        cquery = {}
-        cquery.hashes = {}
-        cquery.numhashes = {}
-    
-        --str: the conky variable call (without "${" and "}")
-        --getnumber: boolean indicating if this variable will be used numerically (for graphs or
-        --  to get colors)
-        local function cstrings (str, getnumber)
-            table.insert(cquery.hashes, str)
-            if getnumber then
-                table.insert(cquery.numhashes, str)
-            end
-        end
-        --strvars = {}
-        --local chashes = {}  --hashes to use for strvars
-        --local nhashes = {}  --hashes to use for numvars
-    
-        --nvar: a boolean indicating that the numerical value will also be needed in addition to the
-        --  raw string returned from conky)
-        --min and max: if nvar is true, the value will be mapped from [min,max] to [0,100]
-        --local function cstrings (str, nvar, min, max)
-        --    table.insert(cstrs, "${")
-        --    table.insert(cstrs, str)
-        --    table.insert(cstrs, "}\n")
-        --    table.insert(chashes, str)
-        --    if nvar == true then
-        --        if min == nil then min = 0 end
-        --        if max == nil then max = 100 end
-        --        nhashes[str] = {min, max}
-        --    end
-        --end
-        ------------------------------------------------------------------------------------------------
-        for i = 1, config.ncpus do
-            local s = tostring(i)
-            cstrings("freq_g "..s)
-            cstrings("cpu cpu"..s, true)
-        end
-        ------------------------------------------------------------------------------------------------
-        templabels = {}
-        for i = 1, config.ntemps do
-            local s = tostring(i)
-            templabels[s] = conky_parse(string.format(config.temp_label, i))
-            cstrings(string.format(config.temp_query, i), true)
-        end
-        ------------------------------------------------------------------------------------------------
-        memmax = conky_parse("${memmax}"):gsub("%s", "")
-        cstrings("memperc", true)
-        cstrings("mem")
-        swapmax = conky_parse("${swapmax}"):gsub("%s", "")
-        cstrings("swapperc", true)
-        cstrings("swap")
-        ------------------------------------------------------------------------------------------------
-        rootsize = conky_parse("${fs_size /}"):gsub("%s", "")
-        cstrings("fs_used_perc /", true)
-        cstrings("fs_used /")
-        homesize = conky_parse("${fs_size /home}"):gsub("%s", "")
-        cstrings("fs_used_perc /home", true)
-        cstrings("fs_used /home")
-        ------------------------------------------------------------------------------------------------
-        --header = "${alignc}${color}"..
-        header = "${color}"..
-                 "┌"..string.rep("─",19)..
-                 "┬"..string.rep("─",8)..
-                 "┬"..string.rep("─",7)..
-                 "┬"..string.rep("─",7)..
-                 "┐\n"..
-                 "│"..string.format("%-19.19s","Name")..
-                 "│"..string.format("%8.8s","PID")..
-                 "│"..string.format("%7.7s","CPU")..
-                 "│"..string.format("%7.7s","MEM")..
-                 "│\n"..
-                 "├"..string.rep("─",19)..
-                 "┼"..string.rep("─",8)..
-                 "┼"..string.rep("─",7)..
-                 "┼"..string.rep("─",7)..
-                 "┤"
-        column = "${color}"..
-                 "│"..string.rep(" ",19)..
-                 "│"..string.rep(" ",8)..
-                 "│"..string.rep(" ",7)..
-                 "│"..string.rep(" ",7)..
-                 "│"
-        footer = "${color}"..
-                 "└"..string.rep("─",19)..
-                 "┴"..string.rep("─",8)..
-                 "┴"..string.rep("─",7)..
-                 "┴"..string.rep("─",7)..
-                 "┘"
-        for i = 1, config.ntopcpu do
-            local s = tostring(i)
-            cstrings("top name "..s)
-            cstrings("top pid "..s)
-            cstrings("top cpu "..s, true)
-            cstrings("top mem "..s)
-        end
-        for i = 1, config.ntopmem do
-            local s = tostring(i)
-            cstrings("top_mem name "..s)
-            cstrings("top_mem pid "..s)
-            cstrings("top_mem cpu "..s)
-            cstrings("top_mem mem "..s, true)
-        end
-        --------------------------------------------------------------------------------------------
-        cquery.qstr = "${"..table.concat(cquery.hashes, "}\n${").."}\n"
-    end
-    ------------------------------------------------------------------------------------------------
-    --
-    ------------------------------------------------------------------------------------------------
-    function conky_update ()
-        local info = conky_parse(cquery.qstr)
-        local i = 0
-        for var in string.gmatch(info, "[^\n]+") do
-            i = i + 1
-            strvars[cquery.hashes[i]] = var:gsub("%s", "")
-        end
-        for _,hash in ipairs(cquery.numhashes) do
-            numvars[hash] = tonumber(strvars[hash])
-        end
-        for j = 1, config.ntemps do
-            local jstr = tostring(j)
-            local x = string.format(config.temp_query, j)
-            temps.str[jstr] = strvars[x]
-            temps.scl[jstr] = (numvars[x] - config.roomtemp)*tempfactor
-        end
-        return ""
-    end
-    ------------------------------------------------------------------------------------------------
-    --
-    ------------------------------------------------------------------------------------------------
-    function conky_strvars (...) return strvars[table.concat(table.pack(...), " ")] end
-    function conky_numvars (...) return numvars[table.concat(table.pack(...), " ")] end
-    function conky_tempscl (i) return temps.scl[i] end
-    function conky_zero () return 0 end
-    ------------------------------------------------------------------------------------------------
-    --
-    ------------------------------------------------------------------------------------------------
-    function conky_color(x)
-        if type(x) == "string" then
-            return conky_color(tonumber(x))
-        end
-        if x > 75 then
-            return "${color dc322f}"
-        end
-        if x > 50 then
-            return "${color cb4b16}"
-        end
-        if x > 25 then
-            return "${color b58900}"
-        end
-        return "${color 859900}"
-    end
-    ------------------------------------------------------------------------------------------------
-    --
-    ------------------------------------------------------------------------------------------------
-    function conky_cpu (i)
-        local x = numvars["cpu cpu"..i]
-        return "${color}"..
-               "CPU"..
-               i..
-               ":${alignr}"..
-               conky_color(x)..
-               strvars["freq_g "..i]..
-               "GHz  "..
-               string.format("%3.1d%%", x)..
-               "${color}"
-    end
-    ------------------------------------------------------------------------------------------------
-    --
-    ------------------------------------------------------------------------------------------------
-    function conky_temp(s)
-        return "${color}"..
-               templabels[s]..
-               ":${alignr}"..
-               conky_color(temps.scl[s])..
-               temps.str[s]..
-               "°C${color}"
-    end
-    
-    --function conky_ramperc () return memory.memperc_str end
-    --function conky_swpperc () return memory.swpperc_str end
-    
-    function conky_mem ()
-        return "${color}"..
-               "RAM:${alignr}"..
-               conky_color(numvars["memperc"])..
-               strvars["mem"]..
-               "/"..
-               memmax..
-               "${color}"
-    end
-    
-    function conky_swap ()
-        return "${color}"..
-               "Swap:${alignr}"..
-               conky_color(numvars["swapperc"])..
-               strvars["swap"]..
-               "/"..
-               swapmax..
-               "${color}"
-    end
-    
-    function conky_rootperc () return numvars["fs_used_perc /"] end
-    function conky_homeperc () return numvars["fs_used_perc /home"] end
+------------------------------------------------------------------------------------------------
+-- DEFINE HELPER FUNCTIONS
+------------------------------------------------------------------------------------------------
 
-    function conky_rootcolor () return conky_color(conky_rootperc()) end
-    function conky_homecolor () return conky_color(conky_homeperc()) end
-    
-    function conky_root ()
-        return "${color}"..
-               "/${alignr}"..
-               conky_rootcolor()..
-               strvars["fs_used /"]..
-               "/"..
-               rootsize..
-               " ${lua_bar rootperc}${color}"
+function add_query (query, init)
+    dynamic_info[query] = init
+    query_array[#query_array + 1] = query
+    return nil
+end
+
+string.rpad = function(str, len, char)
+    if char == nil then char = ' ' end
+    return str .. string.rep(char, len - #str)
+end
+
+function concat (...)
+    return table.concat({...}, '')
+end
+
+function map(func, array)
+    local new_array = {}
+    for i,v in ipairs(array) do
+        new_array[i] = func(v)
     end
+    return new_array
+end
+
+function get_rgb_tuple (rgb)
+    local arr = {rgb:sub(1,2), rgb:sub(3,4), rgb:sub(5,6)}
+    local func = function(x) return tonumber(x, 16) end
+    return map(func, arr)
+end
+
+function round(x) return math.floor(x + 0.5) end
+
+------------------------------------------------------------------------------------------------
+-- LUA_STARTUP_HOOK FUNCTION
+------------------------------------------------------------------------------------------------
+
+function conky_startup ()
+    static_info.ncpus = 8     --TODO: make this more general
     
-    function conky_home ()
-        return "${color}"..
-               "/home${alignr}"..
-               conky_homecolor()..
-               strvars["fs_used /home"]..
-               "/"..
-               homesize..
-               "${color}"
+    static_info.rantemp = static_info.hightemp - static_info.roomtemp
+
+    -- get CPU info
+    local f = assert(io.popen('lscpu'))
+    local x = assert(f:read('*a'))
+    static_info.cpuminfreq = tonumber(string.match(x, "CPU min MHz:%s+(%d+%.%d+)"))/1000
+    f:close()
+
+    --get path containing temperature sensor info
+    local temp_prefix = '/sys/devices/platform/'
+    local f = assert(io.popen(concat('find ', temp_prefix, 'coretemp.0/hwmon/hwmon? -maxdepth 0')))
+    static_info.temppath = assert(f:read('*a')):sub(23,-2) -- cut off the '/sys/devices/platform/' part
+    f:close()
+
+    --get number of temperature sensors
+    local f = assert(io.popen(concat('find ', temp_prefix, static_info.temppath, '/temp?_label -maxdepth 0 | wc -l')))
+    static_info.ntemps = tonumber(assert(f:read('*a')):sub(1,-2))
+    f:close()
+
+    --determine NV-CONTROL X extension is present
+    if (conky_parse("${nvidia gpufreqmin}") == '') then
+        static_info.nvidia = false
+    else
+        -- if it returns anything then assume it is present
+        static_info.nvidia = true
     end
-    
-    
-    function conky_header () return header end
-    function conky_column () return column end
-    function conky_footer () return footer end
-    
-    function conky_top(i)
-        local s = tostring(i)
-        return conky_color(numvars["top cpu "..s])..
-               " "..string.format("%-19.19s", strvars["top name "..s])..
-               " "..string.format("%8.8s", strvars["top pid "..s])..
-               " "..string.format("%6.6s", strvars["top cpu "..s])..
-               "% "..string.format("%6.6s", strvars["top mem "..s])..
-               "% "
+
+    if static_info.nvidia then
+        static_info.nvidia_gpufreqmin = conky_parse("${nvidia gpufreqmin}")
+        static_info.nvidia_memfreqmin = conky_parse("${nvidia memfreqmin}")
+
+        add_query('nvidia gpuutil', 0)
+        add_query('nvidia memutil', 0)
+        add_query('nvidia gputemp', static_info.roomtemp)
+        add_query('nvidia gpufreqcur', static_info.nvidia_gpufreqmin)
+        add_query('nvidia memfreqcur', static_info.nvidia_memfreqmin)
     end
-    
-    function conky_top_mem(i)
-        local s = tostring(i)
-        return conky_color(numvars["top_mem mem "..s])..
-               " "..string.format("%-19.19s", strvars["top_mem name "..s])..
-               " "..string.format("%8.8s", strvars["top_mem pid "..s])..
-               " "..string.format("%6.6s", strvars["top_mem cpu "..s])..
-               "% "..string.format("%6.6s", strvars["top_mem mem "..s])..
-               "% "
+
+    for i = 0,static_info.ncpus do
+        add_query('cpu cpu' .. i, 0)
+        add_query('freq_g ' .. i, static_info.cpuminfreq)
     end
-    
-    
-    --function conky_mem_proc(n)
-    --    local i = tonumber(n)
-    --    return conky_color(proc.mem[i])..
-    --           " "..proc.mem_name[i]..
-    --           " "..proc.mem_pid[i]..
-    --           " "..proc.mem_cpu[i]..
-    --           "% "..proc.mem_mem[i]..
-    --           "%"
-    --end
+
+    local temp_label_len = 0
+    for i = 1,static_info.ntemps do
+        local k = 'temp ' .. i
+        add_query(table.concat({'platform', static_info.temppath, k}, ' '), static_info.roomtemp)
+    end
+
+    for i = 1,static_info.ntopcpu do
+        add_query('top name ' .. i, '')
+        add_query('top pid ' .. i, '')
+        add_query('top cpu ' .. i, 0)
+        add_query('top mem ' .. i, 0)
+    end
+
+    for i = 1,static_info.ntopmem do
+        add_query('top_mem name ' .. i, '')
+        add_query('top_mem pid ' .. i, '')
+        add_query('top_mem cpu ' .. i, 0)
+        add_query('top_mem mem ' .. i, 0)
+    end
+
+    add_query('mem', '        ')
+    add_query('memperc', 0)
+
+    add_query('swap', '')
+    add_query('swapperc', 0)
+
+    add_query('fs_used /', '        ')
+    add_query('fs_used_perc /', 0)
+
+    static_info.cquery = '${' .. table.concat(query_array, '}\n${') .. '}'
+
+    static_info.memmax = conky_parse('${memmax}')
+    static_info.swapmax = conky_parse('${swapmax}')
+    static_info.rootsize = conky_parse('${fs_size /}')
+
+    return ''
+end
+
+------------------------------------------------------------------------------------------------
+-- LUA_DRAW_HOOK_PRE FUNCTION
+------------------------------------------------------------------------------------------------
+
+function conky_update ()
+    local info = conky_parse(static_info.cquery)
+    local i = 0
+    for val in string.gmatch(info, '[^\n]+') do
+        i = i + 1
+        dynamic_info[query_array[i]] = val
+    end
+    return ''
+end
+
+------------------------------------------------------------------------------------------------
+-- CONKY FUNCTIONS
+------------------------------------------------------------------------------------------------
+
+function conky_cpu_name ()
+    local f = assert(io.popen('lscpu | sed -nr \'/Model name/ s/.*:\\s*(.*) @ .*/\\1/p\''))
+    local name = assert(f:read('*a')):sub(1, -2) -- remove newline
+    f:close()
+    return name
+end
+
+function conky_var (s)
+    return dynamic_info[s]
+end
+
+-- unable to escape spaces in calls like ${lua_graph 'numvar cpu 1'} and conky interprets it as 
+-- two arguments
+function conky_numvar (...)
+    return tonumber(dynamic_info[table.concat({...}, ' ')]) or 0
+end
+
+function conky_zero() return 0 end
+
+function conky_numvar_color (...) return conky_color(conky_numvar(...)) end
+
+function conky_cpu (i)
+    return concat(
+        'CPU',
+        i,
+        '  ',
+        string.format('%4.2f', dynamic_info['freq_g ' .. i]),
+        ' GHz  ',
+        string.format('%3i', dynamic_info['cpu cpu' .. i]),
+        '%'
+    )
+end
+
+function conky_tempval (i)
+    local x = dynamic_info[table.concat({'platform', static_info.temppath, 'temp', i}, ' ')]
+    return (x  - static_info.roomtemp)*100/static_info.rantemp
+end
+
+function conky_temp (i)
+    return dynamic_info[concat('platform ', static_info.temppath, ' temp ', i)]
+end
+
+function conky_nvidia ()
+    if static_info.nvidia then
+        return '"true"'
+    else
+        return '"false"'
+    end
+end
+
+
+function conky_nvidia_temp ()
+    return concat(
+        'GPU @ ',
+        dynamic_info['nvidia gputemp'],
+        '°C'
+    )
+end
+
+function conky_nvidia_gpu ()
+    return concat(
+        'GPU @ ',
+        dynamic_info['nvidia gpufreqcur'],
+        ' MHz ',
+        dynamic_info['nvidia gpuutil'],
+        '%'
+    )
+end
+
+function conky_nvidia_mem ()
+    return concat(
+        'MEM @ ',
+        dynamic_info['nvidia memfreqcur'],
+        ' MHz ',
+        dynamic_info['nvidia memutil'],
+        '%'
+    )
+end
+
+function conky_top_cpu (i)
+    return concat(
+        dynamic_info['top name ' .. i],
+        dynamic_info['top pid ' .. i],
+        string.format('%7.2f', dynamic_info['top cpu ' .. i]),
+        string.format('%7.2f', dynamic_info['top mem ' .. i])
+    )
+end
+
+function conky_top_mem (i)
+    return concat(
+        dynamic_info['top_mem name ' .. i],
+        dynamic_info['top_mem pid ' .. i],
+        string.format('%7.2f', dynamic_info['top_mem cpu ' .. i]),
+        string.format('%7.2f', dynamic_info['top_mem mem ' .. i])
+    )
+end
+
+function conky_mem ()
+    return concat(
+        string.format('%-8s', 'RAM'),
+        string.format('%8s', dynamic_info['mem']),
+        ' / ',
+        static_info.memmax
+    )
+end
+
+function conky_swap ()
+    local perc = dynamic_info['swapperc']
+    return concat(
+        string.format('%-8s', 'SWAP'),
+        string.format('%8s', dynamic_info['swap']),
+        ' / ',
+        static_info.swapmax
+    )
+end
+
+function conky_root ()
+    return concat(
+        string.format('%-8s', '/'),
+        dynamic_info['fs_used /'],
+        ' / ',
+        static_info.rootsize
+    )
 end

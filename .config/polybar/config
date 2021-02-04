@@ -39,6 +39,7 @@ background = ${colors.background}
 
 tray-background = ${colors.black}
 tray-position = right
+tray-detached = false
 
 border-size = 0
 fixed-center = true

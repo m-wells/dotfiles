@@ -4,17 +4,17 @@ set $mod Mod4
 
 focus_on_window_activation urgent
 
-exec_always --no-startup-id ~/.screenlayout/launch
-exec_always --no-startup-id ~/.config/polybar/launch
-exec_always --no-startup-id ~/.config/conky/launch
+#exec_always --no-startup-id ~/.screenlayout/launch
+exec_always --no-startup-id "sleep 2; ~/.screenlayout/launch; sleep 2; ~/.config/polybar/launch; ~/.config/conky/launch"
 
+exec --no-startup-id "dex -a"
 exec --no-startup-id "feh --no-fehbg --bg-fill /usr/share/backgrounds/archlinux/wave.png"
-exec --no-startup-id picom --daemon
-exec --no-startup-id blueman-applet
-exec --no-startup-id nm-applet
-exec --no-startup-id deadd-notification-center
-exec --no-startup-id polychromatic-tray-applet
-# exec --no-startup-id "python3 ~/.config/i3/reactive.py"
+# exec --no-startup-id "python3 ~/.config/polychromatic/reactive.py"
+# exec --no-startup-id picom --daemon
+# exec --no-startup-id blueman-applet
+# exec --no-startup-id nm-applet
+# exec --no-startup-id deadd-notification-center
+# exec --no-startup-id polychromatic-tray-applet
 
 for_window [class="^.*"] border pixel 1
 for_window [class="matplotlib"] floating enable
@@ -33,7 +33,8 @@ font pango:DejaVu Sans Mono 8
 floating_modifier $mod
 
 bindsym $mod+Shift+g exec --no-startup-id ~/.config/i3/conky_show
-
+bindsym XF86MonBrightnessDown exec --no-startup-id brightnessctl set 5%-
+bindsym XF86MonBrightnessUp exec --no-startup-id brightnessctl set +5%
 # toggle conky
 #bindsym $mod+m [con_mark="i3quakeconky"] scratchpad show
 #bindsym $mod+m exec --no-startup-id ~/.config/i3/i3quakeconky
