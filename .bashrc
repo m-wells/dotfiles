@@ -37,9 +37,9 @@ if [ -t 1 ]; then
     if [ -x "$(command -v neofetch)" ]; then
         if [ "${TERM}" == "linux" ]; then
             # turning bold off fixes tty issues
-            neofetch  --bold off --ascii_bold off --color_blocks on
+            neofetch  --bold off --ascii_bold off --color_blocks on | sed '/^[[:space:]]*$/d'
         else
-            neofetch -color_blocks on
+            neofetch -color_blocks on | sed '/^[[:space:]]*$/d'
         fi
     fi
 

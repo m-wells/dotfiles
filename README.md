@@ -2,8 +2,11 @@
 
 For razer firefly mouse pad using [reactive.py](https://gist.github.com/lezed1/aa4918d6b5e6bd638e7c325c0ed44e7a#file-reactive-py) saved to `~/.config/polychromatic/reactive.py` and requires `python-pynput` to be installed
 
-## SDDM
+## Theming
+`gtk-theme-material-black` from AUR
+lxappearance is useful
 
+## SDDM
 ### Theme
 Install `archlinux-themes-sddm` from AUR
 
