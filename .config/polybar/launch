@@ -26,7 +26,6 @@ if [ -x "$(command -v polybar)" ] && [ -f ${CONFIG} ]; then
         MONITORS=("${MONITORS[@]:1}")
     fi
     BATTERY=$BATTERY ADAPTER=$ADAPTER MONITOR=$PRIMARY polybar -r primary &
-    for m in "${MONITORS[@]}"; do
-        MONITOR=$m polybar -r external &
-    done
+
+    source "${HOME}/.config/polybar/${HOSTNAME}/launch"
 fi

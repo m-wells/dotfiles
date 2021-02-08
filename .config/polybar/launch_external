@@ -1,0 +1,42 @@
+#!/bin/bash
+# THIS IS INTENDED TO BE SOURCED BY OTHER SCRIPTS
+
+echo $DDCCI_BUS
+echo $MONITOR
+DDCCI_HOOK_0="PERC=\$(ddcutil getvcp 10 -b ${DDCCI_BUS} -t | cut -d' ' -f4)
+if [ \$PERC -le 4 ]; then
+    echo \" \${PERC}%\"
+elif [ \$PERC -le 11 ]; then
+    echo \" \${PERC}\"
+elif [ \$PERC -le 18 ]; then
+    echo \" \${PERC}\"
+elif [ \$PERC -le 25 ]; then
+    echo \" \${PERC}\"
+elif [ \$PERC -le 32 ]; then
+    echo \" \${PERC}\"
+elif [ \$PERC -le 39 ]; then
+    echo \" \${PERC}\"
+elif [ \$PERC -le 46 ]; then
+    echo \" \${PERC}\"
+elif [ \$PERC -le 54 ]; then
+    echo \" \${PERC}\"
+elif [ \$PERC -le 61 ]; then
+    echo \" \${PERC}\"
+elif [ \$PERC -le 68 ]; then
+    echo \" \${PERC}\"
+elif [ \$PERC -le 75 ]; then
+    echo \" \${PERC}\"
+elif [ \$PERC -le 82 ]; then
+    echo \" \${PERC}\"
+elif [ \$PERC -le 89 ]; then
+    echo \" \${PERC}\"
+elif [ \$PERC -le 96 ]; then
+    echo \" \${PERC}\"
+else
+    echo \" \${PERC}\"
+fi"
+DDCCI_HOOK_1="ddcutil setvcp 10 + 5 -b ${DDCCI_BUS} && ${DDCCI_HOOK_0}"
+DDCCI_HOOK_2="ddcutil setvcp 10 - 5 -b ${DDCCI_BUS} && ${DDCCI_HOOK_0}"
+
+DDCCI_HOOK_0=$DDCCI_HOOK_0 DDCCI_HOOK_1=$DDCCI_HOOK_1 DDCCI_HOOK_2=$DDCCI_HOOK_2 MONITOR=$MONITOR \
+    polybar -r external &

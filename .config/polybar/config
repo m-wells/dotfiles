@@ -63,10 +63,10 @@ cursor-scroll = ns-resize
 inherit = bar/primary
 monitor = ${env:MONITOR}
 modules-left = i3 xwindow
-#modules-center = backlight
-modules-center = 
+modules-center = ddcutil
 modules-right = 
 tray-position = none
+enable-ipc = true
 
 ;===================================================================================================
 [module/tray]
@@ -227,6 +227,29 @@ type = internal/backlight
 inherit = module/xbacklight
 card = ${env:BACKLIGHT:intel_backlight}
 enable-scroll = true
+
+[module/ddcutil]
+type = custom/ipc
+
+format = <output>%
+format-foreground = ${colors.background}
+format-background = ${colors.blue}
+
+format-prefix = ${settings.prefix}
+format-prefix-foreground = ${self.format-background}
+format-prefix-background = ${colors.background}
+
+format-suffix = ${settings.suffix}
+format-suffix-foreground = ${self.format-background}
+format-suffix-background = ${colors.background}
+
+hook-0 = ${env:DDCCI_HOOK_0}
+hook-1 = ${env:DDCCI_HOOK_1}
+hook-2 = ${env:DDCCI_HOOK_2}
+
+initial = 1
+scroll-up = polybar-msg -p %pid% hook ddcutil 2
+scroll-down = polybar-msg -p %pid% hook ddcutil 3
 
 ;===================================================================================================
 [module/wired]

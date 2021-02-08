@@ -1,0 +1,18 @@
+#!/bin/bash
+DDCCI_BUS=10
+MONITOR="$(xrandr --listmonitors | grep DP-2 | rev | cut -d' ' -f1 | rev)"
+if [ -n "${MONITOR}" ] && [ -n "$(ddcutil getvcp 10 -b ${DDCCI_BUS})" ]; then
+    source ${HOME}/.config/polybar/launch_external
+fi
+
+DDCCI_BUS=11
+MONITOR="$(xrandr --listmonitors | grep HDMI | rev | cut -d' ' -f1 | rev)"
+if [ -n "${MONITOR}" ] && [ -n "$(ddcutil getvcp 10 -b ${DDCCI_BUS})" ]; then
+    source ${HOME}/.config/polybar/launch_external
+fi
+
+DDCCI_BUS=13
+MONITOR="$(xrandr --listmonitors | grep DP-6 | rev | cut -d' ' -f1 | rev)"
+if [ -n "${MONITOR}" ] && [ -n "$(ddcutil getvcp 10 -b ${DDCCI_BUS})" ]; then
+    source ${HOME}/.config/polybar/launch_external
+fi
