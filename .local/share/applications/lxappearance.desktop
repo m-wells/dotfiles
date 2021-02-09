@@ -1,0 +1,4 @@
+[Desktop Entry]
+Name=LxAppearance
+Type=Application
+Exec=/usr/bin/lxappearance

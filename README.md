@@ -1,10 +1,21 @@
+# Packages
+
+* for `i3`
+  * `i3-gaps`
+  * `i3-lock`
+  * `bemenu`
+  * `bemenu-x11`
+  * `j4-dmenu-desktop` (AUR)
+* `polybar` (herecura/AUR)
+
 # General Settings
 
 For razer firefly mouse pad using [reactive.py](https://gist.github.com/lezed1/aa4918d6b5e6bd638e7c325c0ed44e7a#file-reactive-py) saved to `~/.config/polychromatic/reactive.py` and requires `python-pynput` to be installed
 
 ## Theming
-`gtk-theme-material-black` from AUR
-lxappearance is useful
+* `gtk-theme-material-black` (AUR)
+* `lxappearance` (useful but not required)
+
 
 ## SDDM
 ### Theme
