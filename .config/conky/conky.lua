@@ -195,7 +195,7 @@ function conky_tempval (i)
 end
 
 function conky_temp (i)
-    return dynamic_info[concat('platform ', static_info.temppath, ' temp ', i)]
+    return concat(dynamic_info[concat('platform ', static_info.temppath, ' temp ', i)], '°C')
 end
 
 function conky_nvidia ()

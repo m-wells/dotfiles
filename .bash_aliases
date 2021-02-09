@@ -1,5 +1,19 @@
+confirm() {
+    # call with a prompt string or use a default
+    read -r -p "${1:-Continue? [y/N]} " response
+    case "$response" in
+        [yY][eE][sS]|[yY]) 
+            true
+            ;;
+        *)
+            false
+            ;;
+    esac
+}
+
 # make rm less dangerous
-alias rm='rm --interactive=once'
+alias rm='confirm "Consider using 'trash-put' instead
+    Continue? [y/N]:" && rm --interactive=once'
 
 # colorize output
 alias ls='ls --color=auto'

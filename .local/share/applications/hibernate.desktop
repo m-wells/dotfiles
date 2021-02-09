@@ -1,0 +1,5 @@
+[Desktop Entry]
+Name=Hibernate
+Type=Application
+Exec=systemctl hibernate
+Icon=document-save-as

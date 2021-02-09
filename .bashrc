@@ -37,14 +37,14 @@ if [ -t 1 ]; then
     if [ -x "$(command -v neofetch)" ]; then
         if [ "${TERM}" == "linux" ]; then
             # turning bold off fixes tty issues
-            neofetch  --bold off --ascii_bold off --color_blocks on | sed '/^[[:space:]]*$/d'
+            neofetch  --bold off --ascii_bold off --color_blocks on # | sed '/^[[:space:]]*$/d' # to remove blank lines
         else
-            neofetch -color_blocks on | sed '/^[[:space:]]*$/d'
+            neofetch -color_blocks on # | sed '/^[[:space:]]*$/d'
         fi
     fi
 
     # POWERLINE
-    if [ -x "$(command -v powerline-daemon)" ] && [ "${TERM}" != "linux" ]; then
+    if [ -x "$(command -v powerline-daemon)" ] && [ "${TERM}" != "linux" ]; then # to remove blank lines
         powerline-daemon -q
         POWERLINE_BASH_CONTINUATION=1
         POWERLINE_BASH_SELECT=1

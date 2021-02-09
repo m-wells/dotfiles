@@ -3,6 +3,8 @@
 exec --no-startup-id "dex -a"
 set $mod Mod4
 
+workspace_auto_back_and_forth no
+
 focus_on_window_activation urgent
 
 exec_always --no-startup-id "~/.screenlayout/launch; ~/.config/polybar/launch; ~/.config/conky/launch"
@@ -93,29 +95,17 @@ bindsym $mod+space focus mode_toggle
 # allows fullscreened windows to be in a container
 bindsym $mod+y fullscreen disable; floating enable;
 
-# Switch to workspace like xmonad
-bindsym $mod+1 exec --no-startup-id i3-wk-switch 1
-bindsym $mod+2 exec --no-startup-id i3-wk-switch 2
-bindsym $mod+3 exec --no-startup-id i3-wk-switch 3
-bindsym $mod+4 exec --no-startup-id i3-wk-switch 4
-bindsym $mod+5 exec --no-startup-id i3-wk-switch 5
-bindsym $mod+6 exec --no-startup-id i3-wk-switch 6
-bindsym $mod+7 exec --no-startup-id i3-wk-switch 7
-bindsym $mod+8 exec --no-startup-id i3-wk-switch 8
-bindsym $mod+9 exec --no-startup-id i3-wk-switch 9
-bindsym $mod+0 exec --no-startup-id i3-wk-switch 10
-
-# Switch to workspace like xmonad
-bindsym Control+$mod+1 workspace 1
-bindsym Control+$mod+2 workspace 2
-bindsym Control+$mod+3 workspace 3
-bindsym Control+$mod+4 workspace 4
-bindsym Control+$mod+5 workspace 5
-bindsym Control+$mod+6 workspace 6
-bindsym Control+$mod+7 workspace 7
-bindsym Control+$mod+8 workspace 8
-bindsym Control+$mod+9 workspace 9
-bindsym Control+$mod+0 workspace 10
+# Switch to workspace like xmonad (falling back on default behavior if i3-wk-switch is not installed)
+bindsym $mod+1 exec --no-startup-id "i3-wk-switch 1 || i3-msg 'workspace 1'"
+bindsym $mod+2 exec --no-startup-id "i3-wk-switch 2 || i3-msg 'workspace 2'"
+bindsym $mod+3 exec --no-startup-id "i3-wk-switch 3 || i3-msg 'workspace 3'"
+bindsym $mod+4 exec --no-startup-id "i3-wk-switch 4 || i3-msg 'workspace 4'"
+bindsym $mod+5 exec --no-startup-id "i3-wk-switch 5 || i3-msg 'workspace 5'"
+bindsym $mod+6 exec --no-startup-id "i3-wk-switch 6 || i3-msg 'workspace 6'"
+bindsym $mod+7 exec --no-startup-id "i3-wk-switch 7 || i3-msg 'workspace 7'"
+bindsym $mod+8 exec --no-startup-id "i3-wk-switch 8 || i3-msg 'workspace 8'"
+bindsym $mod+9 exec --no-startup-id "i3-wk-switch 9 || i3-msg 'workspace 9'"
+bindsym $mod+0 exec --no-startup-id "i3-wk-switch 10 || i3-msg 'workspace 10'"
 
 # move focused container to workspace
 bindsym $mod+Shift+1 move container to workspace 1
