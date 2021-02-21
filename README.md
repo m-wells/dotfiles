@@ -1,8 +1,17 @@
 # General Configuration Notes
 
+To enable [AppArmor](https://wiki.archlinux.org/index.php/AppArmor) set the following kernel parameters `apparmor=1 lsm=lockdown,yama,apparmor,bpf`.
+
 ## Utils
 * `brightnessctl`
+* `gnome-calculator`
+* `libreoffice-fresh`
+* `rclone`
+* `systemd-ui`
+    * provides the `systemadm` GUI
 * `trash-cli`
+* `xclip`
+* `xkill`
 
 ## `i3`
   * `i3-gaps`
@@ -14,11 +23,15 @@
 * `polybar` (herecura/AUR)
 * `conky`
 
+## Networking
+* `openssh`
+* `sshfs`
+
 ## Autostarting
 Using `dex` to autostart `.desktop` files in `~/.config/autostart`.
 Place `exec --no-startup-id "dex -a"` in `~/.config/i3/config`.
 
-For razer firefly mouse pad using [reactive.py](https://gist.github.com/lezed1/aa4918d6b5e6bd638e7c325c0ed44e7a#file-reactive-py) saved to `~/.config/polychromatic/reactive.py` and requires `python-pynput` to be installed
+For razer firefly mouse pad using [reactive.py](https://gist.github.com/lezed1/aa4918d6b5e6bd638e7c325c0ed44e7a#file-reactive-py) saved to `~/.config/polychromatic/reactive.py` and requires `python-pynput` to be installed.
 
 ## Theming
 * `gtk-theme-material-black` (AUR)
@@ -45,3 +58,4 @@ Install `archlinux-themes-sddm` from AUR
     CPU: Intel i7-10875H
     GPU: NVIDIA GeForce RTX 2070 SUPER Mobile / Max-Q
     Memory: 
+

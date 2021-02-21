@@ -45,11 +45,11 @@ border-size = 0
 fixed-center = true
 separator = "  "
 
-font-0 = "FuraCode Nerd Font:Bold:size=12;3"
-font-1 = "FuraCode Nerd Font:size=16;4"
+font-0 = "MesloLGS Nerd Font:Bold:size=12;3"
+font-1 = "MesloLGS Nerd Font:size=16;4"
 font-2 = "siji:style=Regular:size=22;-1"
-font-3 = "FuraCode Nerd Font:size=12;6"
-font-4 = "FuraCode Nerd Font:size=16;4"
+font-3 = "MesloLGS Nerd Font:size=12;6"
+font-4 = "MesloLGS Nerd Font:size=16;4"
 
 modules-left = i3 xwindow
 #modules-center =  backlight pulseaudio battery
