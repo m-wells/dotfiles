@@ -12,6 +12,7 @@ To enable [AppArmor](https://wiki.archlinux.org/index.php/AppArmor) set the foll
 * `trash-cli`
 * `xclip`
 * `xkill`
+* `evhz-git` (AUR)
 
 ## `i3`
   * `i3-gaps`
@@ -37,6 +38,34 @@ For razer firefly mouse pad using [reactive.py](https://gist.github.com/lezed1/a
 * `gtk-theme-material-black` (AUR)
 * `lxappearance` (useful but not required)
 
+## Silent Boot
+
+    $ cat /etc/default/grub
+    ...
+    GRUB_CMDLINE_LINUX_DEFAULT="quiet loglevel=3 vga-current ..."
+    ...
+    $ cat /etc/mkinitcpio.conf
+    ...
+    # replace udev with systemd
+    HOOKS = ( base systemd fsck ...)
+    ...
+
+Now edit `systemd-fsck-root.service` and `systemd-fsck@.service`:
+
+    $ systemctl edit --full systemd-fsck-root.service
+    $ systemctl edit --full systemd-fsck@.service
+
+Configuring StandardOutput and StandardError like this:
+    
+    (...)
+    
+    [Service]
+    Type=oneshot
+    RemainAfterExit=yes
+    ExecStart=/usr/lib/systemd/systemd-fsck
+    StandardOutput=null
+    StandardError=journal+console
+    TimeoutSec=0
 
 ## SDDM
 ### Theme
@@ -58,4 +87,5 @@ Install `archlinux-themes-sddm` from AUR
     CPU: Intel i7-10875H
     GPU: NVIDIA GeForce RTX 2070 SUPER Mobile / Max-Q
     Memory: 
+
 
