@@ -24,6 +24,9 @@ To enable [AppArmor](https://wiki.archlinux.org/index.php/AppArmor) set the foll
 * `polybar` (herecura/AUR)
 * `conky`
 
+## Useful Commands
+To remove orphan packages (packages not required or optionally required) use `sudo pacman -R $(pacman -Qtdq)`
+
 ## Networking
 * `openssh`
 * `sshfs`
@@ -83,9 +86,34 @@ Install `archlinux-themes-sddm` from AUR
 
 # Machine Specific Setups
 ## [helium](.config/README/helium.md)
-## [beryllium](.config/README/helium.md)
+## [lithium](.config/README/lithium.md)
+## [beryllium](.config/README/beryllium.md)
     CPU: Intel i7-10875H
     GPU: NVIDIA GeForce RTX 2070 SUPER Mobile / Max-Q
     Memory: 
 
 
+# New installations
+If ethernet was plugged in after starting environment may need to issue `systemctl restart dhcpcd@<interface.service>` (for one machine I had to do `systemctl restart dhcpcd@enp3s0f1`).
+
+## SSDs
+Completely reset an SSD's cells to restore factory default write performance see [Solid state drive/Memory cell clearing](https://wiki.archlinux.org/index.php/Solid_state_drive/Memory_cell_clearing).
+
+## Makepkg
+[Improve build and compile times](https://wiki.archlinux.org/index.php/Makepkg#Improving_compile_times)
+
+    $ cat /etc/makepkg.conf
+    CFLAGS="-march=native -O2 -pipe -fstack-protector-strong -fno-plt"
+    CXXFLAGS="${CFLAGS}"
+    MAKEFLAGS="-j$(nproc)"
+    BUILDDIR=/tmp/makepkg
+    BUILDENV=(!distcc color ccache check !sign)
+
+[Using_a_compilation_cache](https://wiki.archlinux.org/index.php/Makepkg#Using_a_compilation_cache)
+
+    $ cat /etc/profile
+    export PATH="/usr/lib/ccache/bin/:$PATH"
+
+## Mirrorlist
+[Reflector](https://wiki.archlinux.org/index.php/Reflector)
+`reflector --country 'United States' --latest 200 --age 24 --sort rate --save /etc/pacman.d/mirrorlist`
