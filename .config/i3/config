@@ -18,7 +18,7 @@ for_window [title="GKS QtTerm"] floating enable
 # for_window [title="Zoom"] floating enable
 
 # float Gnome Calculator
-bindsym XF86Calculator exec --no-startup-id gnome-calculator
+bindsym XF86Calculator exec --no-startup-id "~/.config/i3/scripts/gnome-calculator-toggle"
 for_window [title="^Calculator$"] floating enable
 
 gaps inner 10

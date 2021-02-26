@@ -1,0 +1,8 @@
+#!/bin/bash
+
+PID="$(pidof gnome-calculator)"
+if [ -n "$PID" ]; then
+    kill $PID
+else
+    gnome-calculator &
+fi
