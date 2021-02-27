@@ -117,3 +117,8 @@ Completely reset an SSD's cells to restore factory default write performance see
 ## Mirrorlist
 [Reflector](https://wiki.archlinux.org/index.php/Reflector)
 `reflector --country 'United States' --latest 200 --age 24 --sort rate --save /etc/pacman.d/mirrorlist`
+
+## File systems
+### [Advanced Format](https://wiki.archlinux.org/index.php/Advanced_Format)
+Check if drive uses 4k sectors `fdisk -l /dev/sdX`
+If drive supports 4096 then use `mkfs.ext4 -F -b 4096 /dev/device`
