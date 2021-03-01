@@ -3,10 +3,13 @@
 To enable [AppArmor](https://wiki.archlinux.org/index.php/AppArmor) set the following kernel parameters `apparmor=1 lsm=lockdown,yama,apparmor,bpf`.
 
 ## Utils
+* `asp`
+    * for use with the [Arch Build System](https://wiki.archlinux.org/index.php/Arch_Build_System)
 * `brightnessctl`
 * `gnome-calculator`
 * `libreoffice-fresh`
 * `rclone`
+* `rsync`
 * `systemd-ui`
     * provides the `systemadm` GUI
 * `trash-cli`
@@ -92,6 +95,8 @@ Install `archlinux-themes-sddm` from AUR
     GPU: NVIDIA GeForce RTX 2070 SUPER Mobile / Max-Q
     Memory: 
 
+## CUDA
+If you run into trouble with CUDA not being available, run `nvidia-modprobe` first.
 
 # New installations
 If ethernet was plugged in after starting environment may need to issue `systemctl restart dhcpcd@<interface.service>` (for one machine I had to do `systemctl restart dhcpcd@enp3s0f1`).

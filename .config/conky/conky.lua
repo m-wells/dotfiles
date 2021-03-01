@@ -50,6 +50,27 @@ end
 
 function round(x) return math.floor(x + 0.5) end
 
+-- heavily inspired by https://stackoverflow.com/a/40195356--
+-- Check if a file or directory exists in this path
+function exists(file)
+   local ok, err, code = os.rename(file, file)
+   if not ok then
+      if code == 13 then
+         -- Permission denied, but it exists
+         return true
+      end
+      ok = false
+   end
+   return ok
+end
+
+--- Check if a directory exists in this path
+function isdir(path)
+   -- "/" works on both Unix and Windows
+   return exists(path.."/")
+end
+-------------------------------------------------------------
+
 ------------------------------------------------------------------------------------------------
 -- LUA_STARTUP_HOOK FUNCTION
 ------------------------------------------------------------------------------------------------
@@ -122,18 +143,23 @@ function conky_startup ()
 
     add_query('mem', '        ')
     add_query('memperc', 0)
+    static_info.memmax = conky_parse('${memmax}')
 
     add_query('swap', '')
     add_query('swapperc', 0)
+    static_info.swapmax = conky_parse('${swapmax}')
 
     add_query('fs_used /', '        ')
     add_query('fs_used_perc /', 0)
+    static_info.rootsize = conky_parse('${fs_size /}')
+
+    if isdir("/data") then
+        add_query('fs_used /data', '    ')
+        add_query('fs_used_perc /data', 0)
+        static_info.datasize = conky_parse('${fs_size /data}')
+    end
 
     static_info.cquery = '${' .. table.concat(query_array, '}\n${') .. '}'
-
-    static_info.memmax = conky_parse('${memmax}')
-    static_info.swapmax = conky_parse('${swapmax}')
-    static_info.rootsize = conky_parse('${fs_size /}')
 
     return ''
 end
@@ -278,5 +304,14 @@ function conky_root ()
         dynamic_info['fs_used /'],
         ' / ',
         static_info.rootsize
+    )
+end
+
+function conky_data ()
+    return concat(
+        string.format('%-8s', '/data'),
+        dynamic_info['fs_used /data'],
+        ' / ',
+        static_info.datasize
     )
 end
