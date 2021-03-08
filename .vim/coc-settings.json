@@ -3,17 +3,4 @@
 
     "diagnostic.signOffset": 9999999,
 	
-	"languageserver": {
-		"julia": {
-			"command": "/home/mark/.local/bin/julia",
-			"args" : [
-                "--startup-file=no",
-                "--history-file=no",
-                "-e",
-                "include(joinpath(ENV[\"HOME\"], \".julia\", \"config\", \"lserver.jl\"))"
-            ],
-			"filetypes": ["julia"],
-            "rootPatterns": ["Project.toml", "Manifest.toml"]
-		}
-	}
 }

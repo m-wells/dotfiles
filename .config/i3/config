@@ -1,15 +1,20 @@
 # vim: set ft=i3config:
 
+exec --no-startup-id "feh --no-fehbg --bg-fill /usr/share/backgrounds/archlinux/wave.png"
 exec --no-startup-id "dex -a"
-set $mod Mod4
+exec --no-startup-id "~/.screenlayout/launch; ~/.config/polybar/launch; ~/.config/conky/launch"
 
 workspace_auto_back_and_forth no
-
 focus_on_window_activation urgent
+# Use Mouse+$mod to drag floating windows to their wanted position
+floating_modifier $mod
 
+set $mod Mod4
 
-exec --no-startup-id "~/.screenlayout/launch; ~/.config/polybar/launch; ~/.config/conky/launch"
-exec --no-startup-id "feh --no-fehbg --bg-fill /usr/share/backgrounds/archlinux/wave.png"
+# reload the configuration file
+bindsym $mod+Shift+q reload
+# restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
+bindsym $mod+Shift+r restart
 
 for_window [class="^.*"] border pixel 1
 for_window [class="matplotlib"] floating enable
@@ -18,24 +23,27 @@ for_window [title="GKS QtTerm"] floating enable
 # for_window [title="Zoom"] floating enable
 
 # float Gnome Calculator
-bindsym XF86Calculator exec --no-startup-id "~/.config/i3/scripts/gnome-calculator-toggle"
+bindsym XF86Calculator exec --no-startup-id ~/.config/i3/scripts/gnome-calculator-toggle
 for_window [title="^Calculator$"] floating enable
+
+# start a terminal
+bindsym $mod+Shift+Return exec --no-startup-id alacritty
+# start my barebones version of vim-anywhere
+# bindsym $mod+Return exec "alacritty --class vim_anywhere,vim_anywhere -e ~/.config/i3/scripts/vim-anywhere"
+bindsym $mod+Return exec --no-startup-id ~/.config/i3/scripts/vim-anywhere
+# make vim-anywhere float
+for_window [title="^vim-anywhere.[a-zA-Z0-9]{3}.*"] floating enable
 
 gaps inner 10
 gaps outer -9
-
-# smart_gaps    off
+smart_gaps on
 smart_borders on
 
 font pango:MesloLGS Nerd Font 8
 
-# Use Mouse+$mod to drag floating windows to their wanted position
-floating_modifier $mod
 
 bindsym XF86MonBrightnessDown exec --no-startup-id brightnessctl set 5%-
 bindsym XF86MonBrightnessUp exec --no-startup-id brightnessctl set +5%
-# start a terminal
-bindsym $mod+Shift+Return exec --no-startup-id alacritty
 # kill focused window
 bindsym $mod+Shift+c kill
 
@@ -52,10 +60,6 @@ set $nb #002b36
 set $hf #859900
 set $hb #073642
 set $fn "MesloLGS Nerd Font 12"
-# bindsym $mod+p exec --no-startup-id BEMENU_BACKEND=x11 bemenu-run -i -n \
-#     --prompt="launcher: " --tf=$tf --tb=$tb --ff=$ff --fb=$fb --nf=$nf --nb=$nb --hf=$hf --hb=$hb --fn $fn
-
-# bindsym $mod+Shift+p exec --no-startup-id BEMENU_BACKEND=x11 j4-dmenu-desktop --dmenu='bemenu -i -n \
 
 bindsym $mod+p exec --no-startup-id BEMENU_BACKEND=x11 j4-dmenu-desktop --dmenu='bemenu -i -n \
     --prompt="Desktop: " --tf=$tf --tb=$tb --ff=$ff --fb=$fb --nf=$nf --nb=$nb --hf=$hf --hb=$hb --fn $fn'
@@ -125,10 +129,6 @@ bindsym $mod+Shift+8 move container to workspace 8
 bindsym $mod+Shift+9 move container to workspace 9
 bindsym $mod+Shift+0 move container to workspace 10
 
-# reload the configuration file
-bindsym $mod+Shift+q reload
-# restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
-bindsym $mod+Shift+r restart
 # exit i3 (logs you out of your X session)
 # bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
 

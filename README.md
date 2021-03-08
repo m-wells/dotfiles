@@ -27,6 +27,17 @@ To enable [AppArmor](https://wiki.archlinux.org/index.php/AppArmor) set the foll
 * `polybar` (herecura/AUR)
 * `conky`
 
+## Julia
+Ideally I would use [julia-mkl](https://aur.archlinux.org/packages/julia-mkl/) but currently there is an issue with [intel-common-libs](https://aur.archlinux.org/packages/intel-common-libs).
+* `julia`
+* `gcc-fortran` (asdeps)
+
+Packages to install
+* Revise
+* LanguageServer
+* SymbolServer
+* StaticLint
+
 ## Useful Commands
 To remove orphan packages (packages not required or optionally required) use `sudo pacman -R $(pacman -Qtdq)`
 

@@ -12,6 +12,6 @@ else
     try
         using Revise
     catch e
-        @warn(e)
+        @warn(e.msg)
     end
 end

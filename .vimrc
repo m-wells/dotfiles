@@ -1,6 +1,6 @@
 " Plug 'sheerun/vim-polyglot' ------------------------------------------------------------
-let g:polyglot_disabled = ['julia', 'latex']
-let g:vim_markdown_conceal = 0
+" let g:polyglot_disabled = ['julia', 'latex']
+" let g:vim_markdown_conceal = 0
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "                          Plugins (using vim-plug)
@@ -16,11 +16,11 @@ if has("autocmd")
     augroup END
 
     call plug#begin('~/.vim/plugged')
-        Plug 'tpope/vim-commentary'
+        " Plug 'tpope/vim-commentary'
         Plug 'powerline/powerline', {'rtp': 'powerline/bindings/vim/'}
         Plug 'airblade/vim-gitgutter'
-        Plug 'majutsushi/tagbar'
-        Plug 'ludovicchabant/vim-gutentags'
+        " Plug 'majutsushi/tagbar'
+        " Plug 'ludovicchabant/vim-gutentags'
         Plug 'scrooloose/nerdtree'
         Plug 'ryanoasis/vim-devicons'
         Plug 'shime/vim-livedown', {'do': 'npm install -g livedown'}
@@ -29,12 +29,12 @@ if has("autocmd")
         " Plug 'jpalardy/vim-slime'
         " Plug 'altercation/vim-colors-solarized'
         Plug 'lifepillar/vim-solarized8'
-        Plug 'JuliaEditorSupport/julia-vim'
+        " Plug 'JuliaEditorSupport/julia-vim'
         " Plug 'autozimu/LanguageClient-neovim', {'branch': 'next', 'do': 'bash install.sh'}
-        " Plug 'neoclide/coc.nvim', {'branch': 'release', 'do': ':CocInstall coc-snippets'}
+        Plug 'neoclide/coc.nvim', {'branch': 'release', 'do': ':CocInstall coc-julia'}
         " Plug 'honza/vim-snippets'
         Plug 'godlygeek/tabular'
-        Plug 'sheerun/vim-polyglot', {'tag': '*' }
+        Plug 'sheerun/vim-polyglot'
         " Plug 'RRethy/vim-hexokinase', {'do': 'make hexokinase' }
         " Plug 'honza/vim-snippets'
         " Plug 'kdheepak/JuliaFormatter.vim'
@@ -161,11 +161,11 @@ let g:vimtex_view_method = 'zathura'
 
 " Plug 'JuliaEditorSupport/julia-vim' ----------------------------------------------------
 " set omnifunc=syntaxcomplete#Complete
-let g:default_julia_version = '1.0'
-let g:latex_to_unicode_suggestions = 1
-let g:latex_to_unicode_tab = 1
+" let g:default_julia_version = '1.0'
+let g:latex_to_unicode_suggestions = 0
+let g:latex_to_unicode_tab = 0
 let g:latex_to_unicode_auto = 0
-" let g:latex_to_unicode_keymap = 1
+let g:latex_to_unicode_keymap = 0
 
 " Plug 'autozimu/LanguageClient-neovim' ----------------------------------------------------
 " language server
@@ -196,8 +196,8 @@ let g:tagbar_type_julia = {
     \ }
 
 " Plug 'neoclide/coc.nvim' ---------------------------------------------------------------
-" set updatetime=300
-" let $NVIM_TUI_ENABLE_CURSOR_SHAPE=0
+set updatetime=300
+let $NVIM_TUI_ENABLE_CURSOR_SHAPE=0
 
 " Make <tab> used for trigger completion, completion confirm, snippet expand and jump like VSCode.
 " inoremap <silent><expr> <TAB>
@@ -205,12 +205,18 @@ let g:tagbar_type_julia = {
 "       \ coc#expandableOrJumpable() ? "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>" :
 "       \ <SID>check_back_space() ? "\<TAB>" :
 "       \ coc#refresh()
-" 
-" function! s:check_back_space() abort
-"   let col = col('.') - 1
-"   return !col || getline('.')[col - 1]  =~# '\s'
-" endfunction
-" 
+
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
 " let g:coc_snippet_next = '<tab>'
 " let g:coc_snippet_prev = '<s-tab>'
 
@@ -240,17 +246,17 @@ tmap <C-N> <C-W>N
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "                               Vim Appearance
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-if $COLORTERM == 'truecolor'
+if $COLORTERM == 'truecolor' || has('gui_running')
     let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
     let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
     set termguicolors
+    set go=d
 
     set hlsearch            " Highlight the last used search pattern
     set noruler             " show the cursor position all the time
     set cursorline          " highlight the current row
     set cursorcolumn        " highlight the current column
     set background=dark     " tell vim the bg is dark
-
 endif
 
 if $TERM == 'linux'
@@ -260,6 +266,7 @@ else
         colorscheme solarized8
     endtry
 endif
+
 
 if &term =~ "rxvt-unicode"
     " pretty cursor setting for urxvt

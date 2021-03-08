@@ -1,0 +1,12 @@
+#!/bin/sh
+# Author: Mark Wells
+# barebones version of vim-anywhere - use Vim whenever, wherever
+# Original Author: Chris Knadler
+# Homepage: https://www.github.com/cknadler/vim-anywhere
+#
+# Open a temporary file with Vim. Once Vim is closed, copy the contents of that
+# file to the system clipboard. The temporary file is automatically removed.
+
+TEMPFILE=$(mktemp vim-anywhere.XXX)
+trap "cat $TEMPFILE | xclip -selection clipboard; rm -f $TEMPFILE" EXIT
+gvim -n --nofork +startinsert $TEMPFILE
