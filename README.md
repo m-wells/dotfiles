@@ -6,6 +6,7 @@ To enable [AppArmor](https://wiki.archlinux.org/index.php/AppArmor) set the foll
 * `asp`
     * for use with the [Arch Build System](https://wiki.archlinux.org/index.php/Arch_Build_System)
 * `brightnessctl`
+* `ctags`
 * `gnome-calculator`
 * `libreoffice-fresh`
 * `rclone`

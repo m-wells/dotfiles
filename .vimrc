@@ -1,7 +1,3 @@
-" Plug 'sheerun/vim-polyglot' ------------------------------------------------------------
-" let g:polyglot_disabled = ['julia', 'latex']
-" let g:vim_markdown_conceal = 0
-
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "                          Plugins (using vim-plug)
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -16,28 +12,22 @@ if has("autocmd")
     augroup END
 
     call plug#begin('~/.vim/plugged')
-        " Plug 'tpope/vim-commentary'
         Plug 'powerline/powerline', {'rtp': 'powerline/bindings/vim/'}
         Plug 'airblade/vim-gitgutter'
-        " Plug 'majutsushi/tagbar'
-        " Plug 'ludovicchabant/vim-gutentags'
+        Plug 'majutsushi/tagbar'
+        Plug 'ludovicchabant/vim-gutentags'
         Plug 'scrooloose/nerdtree'
         Plug 'ryanoasis/vim-devicons'
         Plug 'shime/vim-livedown', {'do': 'npm install -g livedown'}
         Plug 'lervag/vimtex'
         Plug 'christoomey/vim-tmux-navigator'
         " Plug 'jpalardy/vim-slime'
-        " Plug 'altercation/vim-colors-solarized'
+        Plug 'altercation/vim-colors-solarized'
         Plug 'lifepillar/vim-solarized8'
-        " Plug 'JuliaEditorSupport/julia-vim'
-        " Plug 'autozimu/LanguageClient-neovim', {'branch': 'next', 'do': 'bash install.sh'}
         Plug 'neoclide/coc.nvim', {'branch': 'release', 'do': ':CocInstall coc-julia'}
-        " Plug 'honza/vim-snippets'
+        " use :CocCommand julia.CompileLanguageServerSysimg to improve LS load time
         Plug 'godlygeek/tabular'
         Plug 'sheerun/vim-polyglot'
-        " Plug 'RRethy/vim-hexokinase', {'do': 'make hexokinase' }
-        " Plug 'honza/vim-snippets'
-        " Plug 'kdheepak/JuliaFormatter.vim'
     call plug#end()
 endif
 
@@ -51,7 +41,7 @@ if has('mouse')
 endif
 
 if !has('nvim')
-    set ttymouse=xterm2
+    set ttymouse=sgr
     set ttyfast
 endif
 
@@ -97,7 +87,7 @@ if has("autocmd")
 endif
 
 set modeline                    " allow files to specify vim settings
-set so=999                      " keep cursor in the middle of the screen
+set scrolloff=999               " keep cursor in the middle of the screen
 set backspace=indent,eol,start  " allow backspacing over everything in insert mode
 set whichwrap+=<,>,h,l,[,]      " allow cursor and h,l to go to next line
 
@@ -147,7 +137,7 @@ endif
 
 " Plug 'shime/vim-livedown' --------------------------------------------------------------
 " should markdown preview get shown automatically upon opening markdown buffer
-let g:livedown_autorun = 0
+let g:livedown_autorun = 1
 " should the browser window pop-up upon previewing
 let g:livedown_open = 1
 " the port on which Livedown server will run
@@ -162,37 +152,15 @@ let g:vimtex_view_method = 'zathura'
 " Plug 'JuliaEditorSupport/julia-vim' ----------------------------------------------------
 " set omnifunc=syntaxcomplete#Complete
 " let g:default_julia_version = '1.0'
-let g:latex_to_unicode_suggestions = 0
-let g:latex_to_unicode_tab = 0
-let g:latex_to_unicode_auto = 0
-let g:latex_to_unicode_keymap = 0
-
-" Plug 'autozimu/LanguageClient-neovim' ----------------------------------------------------
-" language server
-" let g:LanguageClient_autoStart = 1
-" let g:LanguageClient_serverCommands = {
-" \   'julia': ['julia', '--startup-file=no', '--history-file=no', '-e', '
-" \       using LanguageServer;
-" \       using Pkg;
-" \       import StaticLint;
-" \       import SymbolServer;
-" \       env_path = dirname(Pkg.Types.Context().env.project_file);
-" \       
-" \       server = LanguageServer.LanguageServerInstance(stdin, stdout, env_path, "");
-" \       server.runlinter = true;
-" \       run(server);
-" \   ']
-" \ }
-
-" nnoremap <silent> K :call LanguageClient_textDocument_hover()<CR>
-" nnoremap <silent> gd :call LanguageClient_textDocument_definition()<CR>
-" nnoremap <silent> <F2> :call LanguageClient_textDocument_rename()<CR> 
+" let g:latex_to_unicode_suggestions = 0
+" let g:latex_to_unicode_tab = 0
+" let g:latex_to_unicode_auto = 0
+" let g:latex_to_unicode_keymap = 0
 
 " Plug 'majutsushi/tagbar' ---------------------------------------------------------------
 let g:tagbar_type_julia = {
     \ 'ctagstype' : 'julia',
-    \ 'kinds'     : [
-        \ 't:struct', 'f:function', 'm:macro', 'c:const']
+    \ 'kinds'     : ['t:struct', 'f:function', 'm:macro', 'c:const']
     \ }
 
 " Plug 'neoclide/coc.nvim' ---------------------------------------------------------------
@@ -224,7 +192,6 @@ endfunction
 set splitbelow
 set splitright
 let g:slime_target = "vimterminal"
-let g:slime_vimterminal_config = {"term_finish": "close"}
 
 tmap <C-J> <C-W><C-J>
 tmap <C-K> <C-W><C-K>
@@ -246,29 +213,29 @@ tmap <C-N> <C-W>N
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "                               Vim Appearance
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" fallback colorscheme
+try
+    colorscheme desert
+endtry
+
 if $COLORTERM == 'truecolor' || has('gui_running')
     let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
     let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
     set termguicolors
-    set go=d
+    set guioptions=d
 
     set hlsearch            " Highlight the last used search pattern
     set noruler             " show the cursor position all the time
     set cursorline          " highlight the current row
     set cursorcolumn        " highlight the current column
     set background=dark     " tell vim the bg is dark
-endif
 
-if $TERM == 'linux'
-    colorscheme solarized
+    try | colorscheme solarized8 | catch | endtry
 else
-    try
-        colorscheme solarized8
-    endtry
+    try | colorscheme solarized | catch | endtry
 endif
 
-
-if &term =~ "rxvt-unicode"
+if &term =~ "rxvt-unicode" || &term =~ "alacritty"
     " pretty cursor setting for urxvt
     let &t_SI = "\<Esc>[6 q"
     let &t_SR = "\<Esc>[4 q"
@@ -291,6 +258,7 @@ set novisualbell
 set encoding=UTF-8                  " The encoding displayed.
 set fileencoding=UTF-8              " The encoding written to file.
 
+" share system clipboard
 set clipboard^=unnamed,unnamedplus
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -307,28 +275,21 @@ nmap <F3> mz:execute TabToggle()<CR>'z
 
 " let F4 toggle linewrap
 map <F4> :setlocal wrap!<CR>
-
-try
-    nmap <F5> :TagbarToggle<CR>
-endtry
-
-try
-    map <C-n> :NERDTreeToggle<CR>
-endtry
-
+nmap <F5> :TagbarToggle<CR>
+map <C-n> :NERDTreeToggle<CR>
 
 let g:BASH_Ctrl_j = 'off'
 
 " to use the <Alt> key we have to map things to <ESC>
 " DO NOT USE <ESC> WITHOUT ANOTHER MODIFIER or commands may issue unexpectedly
 " these behave like <Alt-Shift-H> and <Alt-Shift-J>
-nnoremap <ESC><S-H> :tabprevious<CR>
-nnoremap <ESC><S-L> :tabnext<CR>
+" nnoremap <ESC><S-H> :tabprevious<CR>
+" nnoremap <ESC><S-L> :tabnext<CR>
 " move a split to a new tab/page
-nnoremap <ESC><S-T> <C-W>T
+" nnoremap <ESC><S-T> <C-W>T
 " don't let <ESC> (<Alt>) mappings hang when returning to NORMAL mode from
 " INSERT/VISUAL
-set noesckeys
+" set noesckeys
 
 " mimic NERDTree mappings
 nnoremap <C-I> :split<CR>
@@ -347,8 +308,20 @@ nnoremap <silent> k :<C-U>execute 'normal!' (v:count > 1 ? "m'" . v:count :'g') 
 " j acts as gj in normal mode, but #j still jumps down # gutter lines
 nnoremap <silent> j :<C-U>execute 'normal!' (v:count > 1 ? "m'" . v:count :'g') . 'j'<CR>
 
-nnoremap <C-[> :pop<CR>
+" nnoremap <C-[> :pop<CR>
+
+" Alacritty uses Shift to bypass mouse capturing by applications like Vim (to click on links for example)
+nnoremap <ScrollWheelUp> k
+nnoremap <ScrollWheelDown> j
+" move forward 1/2 a screen
+nnoremap <A-ScrollWheelUp> <C-U>
+" move back 1/2 a screen
+nnoremap <A-ScrollWheelDown> <C-D>
+" move forward one full screen
+nnoremap <C-ScrollWheelUp> <C-B>
+" move back one full screen
+nnoremap <C-ScrollWheelDown> <C-F>
 
 " navigate pop up menu with TAB(to go down) and SHIFT-TAB (to go up)
-" inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-" inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"

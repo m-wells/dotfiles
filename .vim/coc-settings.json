@@ -1,6 +1,5 @@
 {
 	"suggest.autoTrigger": "always",
 
-    "diagnostic.signOffset": 9999999,
-	
+    "diagnostic.signOffset": 9999999
 }
