@@ -1,0 +1,12 @@
+#! /bin/sh
+#
+# optimus-manager.sh
+# Copyright (C) 2021 Mark Wells <mwellsa@gmail.com>
+#
+# Distributed under terms of the MIT license.
+#
+
+sed -i \
+    -e 's/^DPI=[0-9]\+$/DPI=/' \
+    -e 's/^dynamic_power_management=.*$/dynamic_power_management=fine/' \
+    /usr/share/optimus-manager.conf

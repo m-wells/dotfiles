@@ -1,0 +1,10 @@
+#! /bin/sh
+#
+# intel_backlight.sh
+# Copyright (C) 2021 Mark Wells <mwellsa@gmail.com>
+#
+# Distributed under terms of the MIT license.
+#
+
+
+cp -tvf /etc/udev/rules.d 45-intel-backlight.rules

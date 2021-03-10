@@ -1,6 +1,6 @@
 # General Configuration Notes
 
-To enable [AppArmor](https://wiki.archlinux.org/index.php/AppArmor) set the following kernel parameters `apparmor=1 lsm=lockdown,yama,apparmor,bpf`.
+[Managing **dotfiles** with `git`](https://medium.com/@antelolive/how-to-manage-your-dotfiles-with-git-f7aeed8adf8b)
 
 ## Utils
 * `asp`
@@ -11,6 +11,7 @@ To enable [AppArmor](https://wiki.archlinux.org/index.php/AppArmor) set the foll
 * `libreoffice-fresh`
 * `rclone`
 * `rsync`
+* `ruby`
 * `systemd-ui`
     * provides the `systemadm` GUI
 * `trash-cli`
@@ -139,3 +140,7 @@ Completely reset an SSD's cells to restore factory default write performance see
 ### [Advanced Format](https://wiki.archlinux.org/index.php/Advanced_Format)
 Check if drive uses 4k sectors `fdisk -l /dev/sdX`
 If drive supports 4096 then use `mkfs.ext4 -F -b 4096 /dev/device`
+
+## AppArmor
+To enable [AppArmor](https://wiki.archlinux.org/index.php/AppArmor) set the following kernel parameters `apparmor=1 lsm=lockdown,yama,apparmor,bpf`.
+

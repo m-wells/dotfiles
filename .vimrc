@@ -21,11 +21,17 @@ if has("autocmd")
         Plug 'shime/vim-livedown', {'do': 'npm install -g livedown'}
         Plug 'lervag/vimtex'
         Plug 'christoomey/vim-tmux-navigator'
+        Plug 'aperezdc/vim-template', {'do': 'gem install licensee'}
         " Plug 'jpalardy/vim-slime'
         Plug 'altercation/vim-colors-solarized'
         Plug 'lifepillar/vim-solarized8'
-        Plug 'neoclide/coc.nvim', {'branch': 'release', 'do': ':CocInstall coc-julia'}
-        " use :CocCommand julia.CompileLanguageServerSysimg to improve LS load time
+        function! DoCoc(info)
+            if a:info.status == 'installed' || a:info.force
+                :CocInstall coc-julia
+                :CocCommand julia.CompileLanguageServerSysimg | " to improve LS load time
+            endif
+        endfunction
+        Plug 'neoclide/coc.nvim', {'branch': 'release', 'do': function('DoCoc')}
         Plug 'godlygeek/tabular'
         Plug 'sheerun/vim-polyglot'
     call plug#end()
@@ -119,6 +125,14 @@ endfunction
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "                            Plugin Configuration
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Plug 'aperezdc/vim-template'
+if $NAME != ''
+    let g:username = $NAME
+endif
+if $EMAIL != ''
+    let g:email = $EMAIL
+endif
+
 " Plug 'powerline/powerline' -------------------------------------------------------------
 try
     let g:powerline_pycmd = "py3"

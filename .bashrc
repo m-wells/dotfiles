@@ -71,4 +71,13 @@ if [ -f /usr/share/doc/pkgfile/command-not-found.bash ]; then
     source /usr/share/doc/pkgfile/command-not-found.bash
 fi
 
+# a place to put things that I don't want to share
+if [ -f ~/.personal ] && [ "$(stat -c %a ~/.personal)" == "600" ] ; then
+    source ~/.personal
+fi
+
+if which ruby >/dev/null && which gem >/dev/null; then
+    PATH="$(ruby -r rubygems -e 'puts Gem.user_dir')/bin:$PATH"
+fi
+
 export JULIA_NUM_THREADS=$(nproc)

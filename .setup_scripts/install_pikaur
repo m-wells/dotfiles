@@ -1,0 +1,15 @@
+#! /bin/sh
+#
+# install_pikaur1.sh
+# Copyright (C) 2021 Mark Wells <mwellsa@gmail.com>
+#
+# Distributed under terms of the MIT license.
+#
+
+[[ $EUID -ne 0 ]] && echo "This script must be run as root." && exit 1
+pacman -S --needed base-devel git
+DIR=$(pwd)
+trap "rm -rf $DIR/pikaur" EXIT
+git clone https://aur.archlinux.org/pikaur.git
+cd pikaur
+makepkg -fsri

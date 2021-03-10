@@ -52,8 +52,7 @@ font-3 = "MesloLGS Nerd Font:size=12;6"
 font-4 = "MesloLGS Nerd Font:size=16;4"
 
 modules-left = i3 xwindow
-#modules-center =  backlight pulseaudio battery
-modules-center =  pulseaudio battery
+modules-center =  backlight pulseaudio battery
 modules-right = temperature date tray
 
 cursor-click = pointer

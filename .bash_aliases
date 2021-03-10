@@ -12,8 +12,8 @@ confirm() {
 }
 
 # make rm less dangerous
-alias rm='confirm "Consider using 'trash-put' instead
-    Continue? [y/N]:" && rm --interactive=once'
+alias rm='rm -I --preserve-root=all'
+alias tp='trash-put'
 
 # colorize output
 alias ls='ls --color=auto'
@@ -24,6 +24,6 @@ alias egrep='egrep --color=auto'
 alias julian='julia --startup-file=no'
 
 alias vim='vim --servername VIM'
-alias config='/usr/bin/git --git-dir=/home/mark/.cfg/ --work-tree=/home/mark'
+alias config="/usr/bin/git --git-dir=/home/mark/.cfg/ --work-tree=$HOME"
 
 alias lc='colorls'
