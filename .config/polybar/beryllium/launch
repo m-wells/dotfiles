@@ -1,18 +1,23 @@
-#!/bin/bash
-DDCCI_BUS=10
-MONITOR="$(xrandr --listmonitors | grep DP-2 | rev | cut -d' ' -f1 | rev)"
-if [ -n "${MONITOR}" ] && [ -n "$(ddcutil getvcp 10 -b ${DDCCI_BUS})" ]; then
-    source ${HOME}/.config/polybar/launch_external
-fi
+#! /bin/sh
+#
+# launch
+# Copyright (C) 2021 Mark Wells <mwellsa@gmail.com>
+#
+# Distributed under terms of the MIT license.
+#
 
-DDCCI_BUS=11
-MONITOR="$(xrandr --listmonitors | grep HDMI | rev | cut -d' ' -f1 | rev)"
-if [ -n "${MONITOR}" ] && [ -n "$(ddcutil getvcp 10 -b ${DDCCI_BUS})" ]; then
-    source ${HOME}/.config/polybar/launch_external
-fi
+MONITORS=( $(xrandr --listmonitors | rev | cut -d' ' -f1 | rev ) )
+MONITORS="${MONITORS[@]}"
 
-DDCCI_BUS=13
-MONITOR="$(xrandr --listmonitors | grep DP-6 | rev | cut -d' ' -f1 | rev)"
-if [ -n "${MONITOR}" ] && [ -n "$(ddcutil getvcp 10 -b ${DDCCI_BUS})" ]; then
-    source ${HOME}/.config/polybar/launch_external
-fi
+external_monitor () {
+    local MONITOR=$1
+    local DDCCI_BUS=$2
+    if [[ $MONITORS == *"$MONITOR"* ]] && [ -n "$(ddcutil getvcp 10 -b $DDCCI_BUS)" ]; then
+        source ${HOME}/.config/polybar/launch_external
+    fi
+}
+
+# launch polybars async
+external_monitor DP-2 10 &
+external_monitor HDMI-0 11 &
+external_monitor DP-6 13 &

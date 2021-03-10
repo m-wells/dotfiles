@@ -1,8 +1,7 @@
 #!/bin/bash
 # THIS IS INTENDED TO BE SOURCED BY OTHER SCRIPTS
 
-echo $DDCCI_BUS
-echo $MONITOR
+echo "launching MONITOR=$MONITOR and DDCCI_BUS=$DDCCI_BUS"
 DDCCI_HOOK_0="PERC=\$(ddcutil getvcp 10 -b ${DDCCI_BUS} -t | cut -d' ' -f4)
 if [ \$PERC -le 4 ]; then
     echo \" \${PERC}%\"
