@@ -7,4 +7,4 @@
 #
 
 
-cp -tvf /etc/udev/rules.d 45-intel-backlight.rules
+cp -vf -t /etc/udev/rules.d 45-intel-backlight.rules

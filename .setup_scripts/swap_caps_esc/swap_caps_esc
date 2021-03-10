@@ -1,0 +1,18 @@
+#! /bin/sh
+#
+# swap_caps_esc.sh
+# Copyright (C) 2021 Mark Wells <mwellsa@gmail.com>
+#
+# Distributed under terms of the MIT license.
+#
+
+
+
+KEYMAPSDIR=/usr/local/share/kbd/keymaps
+mkdir -vp $KEYMAPSDIR
+cp -vf -t $KEYMAPSDIR personal.map
+cp -vf -t /etc vconsole.conf
+
+XORGCONFD=/etc/X11/xorg.conf.d
+mkdir -vp $XORGCONFD
+cp -vf -t $XORGCONFD 99-caps-swapesc.conf

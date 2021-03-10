@@ -1,13 +1,9 @@
 #! /bin/sh
 #
-# xorg_setup.sh
+# optimus-manager.sh
 # Copyright (C) 2021 Mark Wells <mwellsa@gmail.com>
 #
 # Distributed under terms of the MIT license.
 #
 
-XORGCONFD=/etc/X11/xorg.conf.d
-
-mkdir -vp $XORGCONFD
-
-cp -tvf $XORGCONFD 99-caps-swapesc.conf
+cp -vf -t /usr/share optimus-manager.conf 
