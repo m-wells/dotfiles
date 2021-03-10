@@ -1,0 +1,12 @@
+#! /bin/sh
+#
+# launch.sh
+# Copyright (C) 2021 Mark Wells <mwellsa@gmail.com>
+#
+# Distributed under terms of the MIT license.
+#
+
+LAUNCH="${HOME}/.screenlayout/${HOSTNAME}/launch"
+if [ -f ${LAUNCH} ]; then
+    source ${LAUNCH}
+fi
