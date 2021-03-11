@@ -1,6 +1,7 @@
 # General Configuration Notes
 
 [Managing **dotfiles** with `git`](https://medium.com/@antelolive/how-to-manage-your-dotfiles-with-git-f7aeed8adf8b)
+https://www.atlassian.com/git/tutorials/dotfiles
 
 ## Utils
 * `asp`
