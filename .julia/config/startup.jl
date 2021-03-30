@@ -1,7 +1,7 @@
 if Base.VERSION < v"1.5"
     atreplinit() do repl
         try
-            sleep(0.1)
+            sleep(eps())
             @eval using Revise
             @async Revise.wait_steal_repl_backend()
         catch e

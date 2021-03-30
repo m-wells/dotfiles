@@ -8,6 +8,7 @@ https://www.atlassian.com/git/tutorials/dotfiles
     * for use with the [Arch Build System](https://wiki.archlinux.org/index.php/Arch_Build_System)
 * `brightnessctl`
 * `ctags`
+* `debtap` (AUR, for devel AUR packages from `.deb` files)
 * `gnome-calculator`
 * `libreoffice-fresh`
 * `rclone`
@@ -15,6 +16,8 @@ https://www.atlassian.com/git/tutorials/dotfiles
 * `ruby`
 * `systemd-ui`
     * provides the `systemadm` GUI
+* `tlp`
+    * `tlp-rdw` with `--asdeps`
 * `trash-cli`
 * `xclip`
 * `xkill`
@@ -87,6 +90,12 @@ Configuring StandardOutput and StandardError like this:
     StandardError=journal+console
     TimeoutSec=0
 
+`plymouth` (AUR)
+
+/etc/mkinitcpio.conf
+
+HOOKS=(base systemd sd-plymouth ... sd-encrypt ...)
+
 ## SDDM
 ### Theme
 Install `archlinux-themes-sddm` from AUR
@@ -144,4 +153,8 @@ If drive supports 4096 then use `mkfs.ext4 -F -b 4096 /dev/device`
 
 ## AppArmor
 To enable [AppArmor](https://wiki.archlinux.org/index.php/AppArmor) set the following kernel parameters `apparmor=1 lsm=lockdown,yama,apparmor,bpf`.
+
+    systemctl enable apparmor.service --now
+    systemctl enable snapd.apparmor.service --now
+
 

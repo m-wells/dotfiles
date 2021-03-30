@@ -25,10 +25,11 @@ if has("autocmd")
         " Plug 'jpalardy/vim-slime'
         Plug 'altercation/vim-colors-solarized'
         Plug 'lifepillar/vim-solarized8'
+        Plug 'honza/vim-snippets'
         function! DoCoc(info)
             if a:info.status == 'installed' || a:info.force
                 :CocInstall coc-julia
-                :CocCommand julia.CompileLanguageServerSysimg | " to improve LS load time
+                :CocInstall coc-snippets
             endif
         endfunction
         Plug 'neoclide/coc.nvim', {'branch': 'release', 'do': function('DoCoc')}
@@ -70,6 +71,7 @@ filetype plugin indent on
 "set autoindent                  " Uses indent from previous line
 "set smartindent                 " Like cindent except lil' more clever
 "set copyindent                  " Copy the structure of existing line's indent when autoindetinng a new line.
+syntax enable
 
 if has("autocmd")
     augroup buffer_io
@@ -86,10 +88,12 @@ if has("autocmd")
             \   exe "normal! g`\"" |
             \ endif
 
-        autocmd FileType julia setlocal indentkeys-=),],}
+        " autocmd FileType julia setlocal indentkeys-=),],}
         autocmd FileType tex setlocal spell spelllang=en_us
 
     augroup END
+
+    autocmd BufEnter * :syntax sync fromstart
 endif
 
 set modeline                    " allow files to specify vim settings
@@ -98,7 +102,7 @@ set backspace=indent,eol,start  " allow backspacing over everything in insert mo
 set whichwrap+=<,>,h,l,[,]      " allow cursor and h,l to go to next line
 
 set wildmenu                    " vim command completion
-set ignorecase                  " ignore case when searching.
+" set ignorecase                  " ignore case when searching.
 set smartcase                   " ignore case unless it's uppercase.
 set incsearch                   " use incremental search
 
@@ -122,6 +126,9 @@ function TabToggle()
     endif
 endfunction
 
+nmap <F3> mz:execute TabToggle()<CR>'z
+
+
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "                            Plugin Configuration
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -140,13 +147,10 @@ endtry
 
 " Plug 'scrooloose/nerdtree' -------------------------------------------------------------
 if has("autocmd")
-    augroup nerdtreekill
-        au!
-        autocmd BufEnter *
-            \ if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) |
-            \   q |
-            \ endif
-    augroup END
+    autocmd BufEnter *
+        \ if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) |
+        \   q |
+        \ endif
 endif
 
 " Plug 'shime/vim-livedown' --------------------------------------------------------------
@@ -182,25 +186,25 @@ set updatetime=300
 let $NVIM_TUI_ENABLE_CURSOR_SHAPE=0
 
 " Make <tab> used for trigger completion, completion confirm, snippet expand and jump like VSCode.
-" inoremap <silent><expr> <TAB>
-"       \ pumvisible() ? coc#_select_confirm() :
-"       \ coc#expandableOrJumpable() ? "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>" :
-"       \ <SID>check_back_space() ? "\<TAB>" :
-"       \ coc#refresh()
-
-inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
-      \ coc#refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-
 function! s:check_back_space() abort
   let col = col('.') - 1
   return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
 
-" let g:coc_snippet_next = '<tab>'
-" let g:coc_snippet_prev = '<s-tab>'
+inoremap <silent><expr> <TAB>
+    \ pumvisible() ? coc#_select_confirm() :
+    \ coc#expandableOrJumpable() ? "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>" :
+    \ <SID>check_back_space() ? "\<TAB>" :
+    \ coc#refresh()
+
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+" navigate pop up menu with TAB(to go down) and SHIFT-TAB (to go up)
+" inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+" inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+
+let g:coc_snippet_next = '<tab>'
+let g:coc_snippet_prev = '<s-tab>'
 
 " Plug 'jpalardy/vim-slime' --------------------------------------------------------------
 set splitbelow
@@ -250,13 +254,11 @@ else
 endif
 
 if &term =~ "rxvt-unicode" || &term =~ "alacritty"
-    " pretty cursor setting for urxvt
+    " pretty cursor setting
     let &t_SI = "\<Esc>[6 q"
     let &t_SR = "\<Esc>[4 q"
     let &t_EI = "\<Esc>[2 q"
 endif
-
-syntax enable
 
 set laststatus=2            " Always display the statusline
 set showtabline=1           " Only display the tabline when there are multiple tabs
@@ -278,14 +280,11 @@ set clipboard^=unnamed,unnamedplus
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "                                Vim Mappings
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-" Allow saving of files as sudo when I forgot to start vim using sudo.
+" Allow saving of files as sudo
 ca w!! execute 'write !sudo /usr/bin/tee % >/dev/null' <bar> edit!
 
 " set F2 to toggle the paste mode
 set pastetoggle=<F2>
-
-nmap <F3> mz:execute TabToggle()<CR>'z
 
 " let F4 toggle linewrap
 map <F4> :setlocal wrap!<CR>
@@ -336,6 +335,3 @@ nnoremap <C-ScrollWheelUp> <C-B>
 " move back one full screen
 nnoremap <C-ScrollWheelDown> <C-F>
 
-" navigate pop up menu with TAB(to go down) and SHIFT-TAB (to go up)
-inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"

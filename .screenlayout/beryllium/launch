@@ -20,13 +20,18 @@ MONITORS="${MONITORS[@]}"
 if [ "$MONITORS" == "4 DP-2 DP-6 eDP-1-1 HDMI-0" ]; then
     METAMODE=$(nvidia-settings --query CurrentMetaMode)
     if [ -n "$METAMODE" ]; then
-        # 's/.*\s::\s//'        to get rid of the 'Attribute .... :: ' name
+        # to get rid of the 'Attribute .... :: ' name
+        #       -e 's/.*\s::\s//'
+        # remove any composition pipeline stuff
+        #       -e 's/, Force\(Full\)\?CompositionPipeline=\w\+//g' \
+        # append desired setting
+        #       -e 's/}/, ForceCompositionPipeline=On}/g' \
         METAMODE=$(echo $METAMODE | sed \
             -e 's/.*\s::\s//' \
             -e 's/, Force\(Full\)\?CompositionPipeline=\w\+//g' \
-            -e 's/}/, ForceCompositionPipeline=On}/g' \ # To fix screen tearing
+            -e 's/}/, ForceCompositionPipeline=On}/g' \
         ) 
-        nvidia-settings -a "CurrentMetaMode=${METAMODE}" &
+        nvidia-settings -a "CurrentMetaMode=${METAMODE}"
     fi
     # 4 monitor setup
     #       eDP-1-1: laptop display
@@ -37,14 +42,13 @@ if [ "$MONITORS" == "4 DP-2 DP-6 eDP-1-1 HDMI-0" ]; then
     xrandr \
         --output DP-0 --off \
         --output DP-1 --off \
-        --output DP-2 --mode 1920x1080 --pos 3840x0 --rotate normal \
+        --output DP-2 --mode 1920x1080 --pos 3840x0 --rotate normal --dpi 102 \
         --output DP-3 --off \
-        --output HDMI-0 --mode 1920x1080 --pos 0x0 --rotate normal \
+        --output HDMI-0 --mode 1920x1080 --pos 0x0 --rotate normal --dpi 102 \
         --output DP-4 --off \
         --output DP-5 --off \
-        --output DP-6 --mode 1920x1080 --pos 1920x0 --rotate normal \
-        --output eDP-1-1 --primary --mode 1920x1080 --pos 5760x0 --rotate normal &
-
+        --output DP-6 --mode 1920x1080 --pos 1920x0 --rotate normal --dpi 102 \
+        --output eDP-1-1 --primary --mode 1920x1080 --pos 5760x0 --rotate normal --dpi 141
 else
     echo "No recognized configuration."
 fi

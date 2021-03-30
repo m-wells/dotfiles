@@ -42,8 +42,8 @@ smart_borders on
 font pango:MesloLGS Nerd Font 8
 
 
-bindsym XF86MonBrightnessDown exec --no-startup-id brightnessctl set 5%-
-bindsym XF86MonBrightnessUp exec --no-startup-id brightnessctl set +5%
+bindsym XF86MonBrightnessDown exec --no-startup-id brightnessctl set 1%-
+bindsym XF86MonBrightnessUp exec --no-startup-id brightnessctl set +1%
 # kill focused window
 bindsym $mod+Shift+c kill
 
