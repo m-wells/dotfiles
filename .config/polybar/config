@@ -50,7 +50,6 @@ font-1 = "MesloLGS Nerd Font:size=16;4"
 font-2 = "siji:style=Regular:size=22;-1"
 font-3 = "MesloLGS Nerd Font:size=12;6"
 font-4 = "MesloLGS Nerd Font:size=18;4"
-font-5 = "MesloLGS Nerd Font:size=12;2"
 
 modules-left = i3 xwindow
 modules-center =  backlight pulseaudio battery
@@ -306,15 +305,18 @@ format-volume-suffix = ${settings.suffix}
 format-volume-suffix-foreground = ${self.format-volume-background}
 format-volume-suffix-background = ${colors.background}
 
-ramp-volume-0 = %{T5}%{T6} %{T-}
-ramp-volume-1 = %{T5}%{T6}▁%{T-}
-ramp-volume-2 = %{T5}%{T6}▂%{T-}
-ramp-volume-3 = %{T5}%{T6}▃%{T-}
-ramp-volume-4 = %{T5}%{T6}▄%{T-}
-ramp-volume-5 = %{T5}%{T6}▅%{T-}
-ramp-volume-6 = %{T5}%{T6}▆%{T-}
-ramp-volume-7 = %{T5}%{T6}▇%{T-}
-ramp-volume-8 = %{T5}%{T6}█%{T-}
+; ramp-volume-0 = %{T5}%{T6} %{T-}
+; ramp-volume-1 = %{T5}%{T6}▁%{T-}
+; ramp-volume-2 = %{T5}%{T6}▂%{T-}
+; ramp-volume-3 = %{T5}%{T6}▃%{T-}
+; ramp-volume-4 = %{T5}%{T6}▄%{T-}
+; ramp-volume-5 = %{T5}%{T6}▅%{T-}
+; ramp-volume-6 = %{T5}%{T6}▆%{T-}
+; ramp-volume-7 = %{T5}%{T6}▇%{T-}
+; ramp-volume-8 = %{T5}%{T6}█%{T-}
+ramp-volume-0 = %{T5}奄 %{T-}%{O-16}
+ramp-volume-1 = %{T5}奔 %{T-}%{O-11}
+ramp-volume-2 = %{T5}墳 %{T-}%{O-10}
 
 label-volume = %percentage%%
 
@@ -337,7 +339,13 @@ label-muted = %percentage%%
 [module/pulseaudio]
 type = internal/pulseaudio
 inherit = module/alsa
-interval = 2
+
+; Use PA_VOLUME_UI_MAX (~153%) if true, or PA_VOLUME_NORM (100%) if false
+; Default: true
+use-ui-max = false
+
+; Interval for volume increase/decrease (in percent points)
+interval = 1
 
 label-volume = %{A1:pavucontrol:}%percentage%%%{A}
 label-muted = %{A1:pavucontrol:}%percentage%%%{A}
