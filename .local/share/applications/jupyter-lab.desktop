@@ -3,7 +3,7 @@ Name=JupyterLab
 Type=Application
 GenericName=JupyterLab
 Comment=JupyterLab is the next-generation web-based user interface for Project Jupyter
-Exec=/usr/bin/jupyter lab
+Exec=BROWSER="vivaldi-stable --app=%s" /usr/bin/jupyter lab
 Icon=jupyter-lab
 Terminal=false
 StartupNotify=true
