@@ -6,18 +6,17 @@
 # Distributed under terms of the MIT license.
 #
 
-MONITORS=( $(xrandr --listmonitors | rev | cut -d' ' -f1 | rev | sort) )
+MONITORS=( $(xrandr | grep [[:space:]]connected | cut -d' ' -f1 | sort) )
 # Take output that looks like
-# Monitors: 4
-#  0: +*eDP-1-1 1920/344x1080/194+5760+0  eDP-1-1
-#  1: +HDMI-0 1920/476x1080/268+0+0  HDMI-0
-#  2: +DP-2 1920/476x1080/268+3840+0  DP-2
-#  3: +DP-6 1920/476x1080/268+1920+0  DP-6
-# and convert it to
-# "4 DP-2 DP-6 eDP-1-1 HDMI-0"
+#     $ xrandr | grep [[:space:]]connected
+#     DP-2 connected (normal left inverted right x axis y axis)
+#     HDMI-0 connected 1920x1080+0+0 (normal left inverted right x axis y axis) 476mm x 268mm
+#     DP-6 connected 1920x1080+1920+0 (normal left inverted right x axis y axis) 476mm x 268mm
+#     eDP-1-1 connected primary 1920x1080+5760+0 (normal left inverted right x axis y axis) 344mm x 194mm
+# "DP-2 DP-6 eDP-1-1 HDMI-0"
 MONITORS="${MONITORS[@]}"
 
-if [ "$MONITORS" == "4 DP-2 DP-6 eDP-1-1 HDMI-0" ]; then
+if [ "$MONITORS" == "DP-2 DP-6 eDP-1-1 HDMI-0" ]; then
     METAMODE=$(nvidia-settings --query CurrentMetaMode)
     if [ -n "$METAMODE" ]; then
         # to get rid of the 'Attribute .... :: ' name

@@ -1,8 +1,7 @@
 # vim: set ft=i3config:
 
-exec --no-startup-id "feh --no-fehbg --bg-fill /usr/share/backgrounds/archlinux/wave.png"
 exec --no-startup-id "dex -a"
-exec --no-startup-id "~/.screenlayout/launch; ~/.config/polybar/launch; ~/.config/conky/launch"
+exec_always --no-startup-id "~/.config/i3/launch"
 
 workspace_auto_back_and_forth no
 focus_on_window_activation urgent
