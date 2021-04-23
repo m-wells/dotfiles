@@ -19,6 +19,7 @@ if has("autocmd")
         Plug 'scrooloose/nerdtree'
         Plug 'ryanoasis/vim-devicons'
         Plug 'shime/vim-livedown', {'do': 'npm install -g livedown'}
+        " install texlive-most and zathura w/ pdf support
         Plug 'lervag/vimtex'
         Plug 'christoomey/vim-tmux-navigator'
         Plug 'aperezdc/vim-template', {'do': 'gem install licensee'}

@@ -1,27 +1,30 @@
 #!/bin/bash
 
+function launch () {
+    LAUNCHFILE="$1"
+    if [ -f ${LAUNCHFILE} ]; then
+        source ${LAUNCHFILE}
+    fi
+}
+
+function wallpaper () {
+    if command -v feh &> /dev/null; then
+        WALLPAPER="/usr/share/backgrounds/archlinux/wave.png"
+        if [ -f ${WALLPAPER} ]; then
+            feh --no-fehbg --bg-fill $WALLPAPER
+        fi
+    fi
+}
+
 # Terminate already running instances
-killall -q polybar
-killall -q conky
+killall -q polybar & killall -q conky
 
 # Wait until the processes have been shut down
 while pgrep -u $UID -x polybar >/dev/null; do sleep 0.1; done
 while pgrep -u $UID -x conky >/dev/null; do sleep 0.1; done
 
-declare -a LAUNCHERS=(
-    "${HOME}/.screenlayout/launch"
-    "${HOME}/.config/conky/launch"
-    "${HOME}/.config/polybar/launch"
-)
+launch "${HOME}/.screenlayout/launch"
+wallpaper
 
-for LAUNCH in "${LAUNCHERS[@]}" ;
-    do
-        if [ -f ${LAUNCH} ]; then
-            source ${LAUNCH}
-        fi
-    done
-
-WALLPAPER="/usr/share/backgrounds/archlinux/wave.png"
-if [ -f ${WALLPAPER} ]; then
-    feh --no-fehbg --bg-fill $WALLPAPER
-fi
+launch "${HOME}/.config/conky/launch" &
+launch "${HOME}/.config/polybar/launch" &
