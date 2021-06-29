@@ -23,10 +23,9 @@ if has("autocmd")
         Plug 'lervag/vimtex'
         Plug 'christoomey/vim-tmux-navigator'
         Plug 'aperezdc/vim-template', {'do': 'gem install licensee'}
-        " Plug 'jpalardy/vim-slime'
         Plug 'altercation/vim-colors-solarized'
         Plug 'lifepillar/vim-solarized8'
-        Plug 'honza/vim-snippets'
+        " Plug 'honza/vim-snippets'
         function! DoCoc(info)
             if a:info.status == 'installed' || a:info.force
                 :CocInstall coc-julia
@@ -66,9 +65,9 @@ set directory=$HOME/.vim/swp//
 if !isdirectory($HOME.'/.vim/undo')
     silent call mkdir ($HOME.'/.vim/undo', 'p')
 endif
-set undodir=$HOME/.vim/swp//
+set undodir=$HOME/.vim/undo//
 
-filetype plugin indent on
+filetype plugin on
 "set autoindent                  " Uses indent from previous line
 "set smartindent                 " Like cindent except lil' more clever
 "set copyindent                  " Copy the structure of existing line's indent when autoindetinng a new line.
@@ -193,51 +192,26 @@ set shortmess+=c
 " diagnostics appear/become resolved.
 set signcolumn=yes
 
-" Make <tab> used for trigger completion, completion confirm, snippet expand and jump like VSCode.
-function! s:check_back_space() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~# '\s'
-endfunction
-
-" Use tab for trigger completion with characters ahead and navigate.
-" NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
-" other plugin before putting this into your config.
-inoremap <silent><expr> <TAB>
-      \ pumvisible() ? coc#_select_confirm() :
-      \ coc#expandableOrJumpable() ? "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
-      \ coc#refresh()
+inoremap <silent><expr> <CR> pumvisible() ? coc#_select_confirm()
+      \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 " inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 
 " navigate pop up menu with TAB(to go down) and SHIFT-TAB (to go up)
 inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 
-let g:coc_snippet_next = '<tab>'
-let g:coc_snippet_prev = '<s-tab>'
-
-" Plug 'jpalardy/vim-slime' --------------------------------------------------------------
-set splitbelow
-set splitright
-let g:slime_target = "vimterminal"
-
-tmap <C-J> <C-W><C-J>
-tmap <C-K> <C-W><C-K>
-tmap <C-H> <C-W><C-H>
-tmap <C-L> <C-W><C-L>
-tmap <C-N> <C-W>N
-" autocmd FileType julia let g:slime_vimterminal_cmd = "julia"
-
-" Plug 'RRethy/vim-hexokinase' -----------------------------------------------------------
-" let g:Hexokinase_optInPatterns = [
-" \     'full_hex',
-" \     'triple_hex',
-" \     'rgb',
-" \     'rgba',
-" \     'hsl',
-" \     'hsla'
-" \ ]
-
+"" Plug 'jpalardy/vim-slime' --------------------------------------------------------------
+"set splitbelow
+"set splitright
+"let g:slime_target = "vimterminal"
+"
+"tmap <C-J> <C-W><C-J>
+"tmap <C-K> <C-W><C-K>
+"tmap <C-H> <C-W><C-H>
+"tmap <C-L> <C-W><C-L>
+"tmap <C-N> <C-W>N
+"" autocmd FileType julia let g:slime_vimterminal_cmd = "julia"
+"
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "                               Vim Appearance
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -319,7 +293,7 @@ nnoremap <C-I> :split<CR>
 nnoremap <C-S> :vsplit<CR>
 nnoremap <C-Q> :quit<CR>
 
-" make Y to be consistent with the C and D operators (yank to EOL)
+" make Y be consistent with the C and D operators (yank to EOL)
 nnoremap Y y$
 
 " allow ; to act like :
@@ -345,3 +319,5 @@ nnoremap <C-ScrollWheelUp> <C-B>
 " move back one full screen
 nnoremap <C-ScrollWheelDown> <C-F>
 
+" Disable autoindenting
+nnoremap <F8> :setl noai nocin nosi inde=<CR>

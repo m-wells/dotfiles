@@ -22,16 +22,24 @@ ACTION=="bind", SUBSYSTEM=="pci", ATTR{vendor}=="0x10de", ATTR{class}=="0x030200
 ACTION=="unbind", SUBSYSTEM=="pci", ATTR{vendor}=="0x10de", ATTR{class}=="0x030000", TEST=="power/control", ATTR{power/control}="on"
 ACTION=="unbind", SUBSYSTEM=="pci", ATTR{vendor}=="0x10de", ATTR{class}=="0x030200", TEST=="power/control", ATTR{power/control}="on"
 ```
+
+### DDCCI
+[ddcutil](https://www.ddcutil.com/nvidia/)
 ```
-$ cat /etc/modprobe.d/nvidia.conf
+cat /etc/modprobe.d/ddcutil.conf
 --------------------------------------------------------------------------------
+# https://www.ddcutil.com/nvidia/
 options nvidia "NVreg_DynamicPowerManagement=0x02"
+options nvidia "NVreg_RegistryDwords=RMUseSwI2c=0x01;RMI2cSpeed=100"
 ```
+
+### Backlight
 ```
 $ cat /etc/udev/rules.d/backlight.rules
 --------------------------------------------------------------------------------
 ACTION=="add", SUBSYSTEM=="backlight", KERNEL=="intel_backlight", GROUP="video", MODE="0664"
 ```
+
 
 ## Keyboard Backlight
 Install [`tuxedo-keyboard`](https://aur.archlinux.org/packages/tuxedo-keyboard/) and [`tuxedo-keyboard-ite`](https://aur.archlinux.org/packages/tuxedo-keyboard-ite/).
