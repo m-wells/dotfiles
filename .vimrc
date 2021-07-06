@@ -11,30 +11,41 @@ if has("autocmd")
         endif
     augroup END
 
-    call plug#begin('~/.vim/plugged')
-        Plug 'powerline/powerline', {'rtp': 'powerline/bindings/vim/'}
+    let g:plugdir = has('nvim') ? stdpath('data') . '/plugged' : '~/.vim/plugged'
+    call plug#begin(g:plugdir)
+        " Plug 'powerline/powerline', {'rtp': 'powerline/bindings/vim/'}
+        Plug 'vim-airline/vim-airline' | Plug 'vim-airline/vim-airline-themes'
         Plug 'airblade/vim-gitgutter'
         Plug 'majutsushi/tagbar'
         Plug 'ludovicchabant/vim-gutentags'
-        Plug 'scrooloose/nerdtree'
+        Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
         Plug 'ryanoasis/vim-devicons'
-        Plug 'shime/vim-livedown', {'do': 'npm install -g livedown'}
+        Plug 'shime/vim-livedown', { 'do': 'npm install -g livedown' }
         " install texlive-most and zathura w/ pdf support
-        Plug 'lervag/vimtex'
+        Plug 'lervag/vimtex', { 'for': 'tex' }
         Plug 'christoomey/vim-tmux-navigator'
-        Plug 'aperezdc/vim-template', {'do': 'gem install licensee'}
+        Plug 'aperezdc/vim-template', { 'do': 'gem install licensee' }
         Plug 'altercation/vim-colors-solarized'
         Plug 'lifepillar/vim-solarized8'
         " Plug 'honza/vim-snippets'
         function! DoCoc(info)
             if a:info.status == 'installed' || a:info.force
                 :CocInstall coc-julia
-                :CocInstall coc-snippets
+                " :CocInstall coc-snippets
             endif
         endfunction
-        Plug 'neoclide/coc.nvim', {'branch': 'release', 'do': function('DoCoc')}
-        Plug 'godlygeek/tabular'
-        Plug 'sheerun/vim-polyglot'
+        Plug 'neoclide/coc.nvim', { 'branch': 'release' }
+
+        if has('nvim')
+            function! DoTS(info)
+                :TSInstall julia
+                :TSUpdate
+            endfunction
+            Plug 'nvim-treesitter/nvim-treesitter', { 'do': function('DoTS') }
+        endif
+
+        Plug 'godlygeek/tabular', { 'on': 'Tabularize' }
+        " Plug 'sheerun/vim-polyglot'
     call plug#end()
 endif
 
@@ -88,12 +99,13 @@ if has("autocmd")
             \   exe "normal! g`\"" |
             \ endif
 
-        " autocmd FileType julia setlocal indentkeys-=),],}
+
+
+        autocmd BufEnter * :syntax sync fromstart
+
+        autocmd BufRead,BufNewFile *.jl             setfiletype julia
         autocmd FileType tex setlocal spell spelllang=en_us
-
     augroup END
-
-    autocmd BufEnter * :syntax sync fromstart
 endif
 
 set modeline                    " allow files to specify vim settings
@@ -141,9 +153,14 @@ if $EMAIL != ''
 endif
 
 " Plug 'powerline/powerline' -------------------------------------------------------------
-try
-    let g:powerline_pycmd = "py3"
-endtry
+" try
+"     let g:powerline_pycmd = "py3"
+" endtry
+
+" Plug 'vim-airline/vim-airline' ---------------------------------------------------------
+" let g:airline_theme='solarized'
+let g:airline_theme='powerlineish'
+let g:airline_powerline_fonts = 1
 
 " Plug 'scrooloose/nerdtree' -------------------------------------------------------------
 if has("autocmd")
@@ -287,11 +304,6 @@ let g:BASH_Ctrl_j = 'off'
 " don't let <ESC> (<Alt>) mappings hang when returning to NORMAL mode from
 " INSERT/VISUAL
 " set noesckeys
-
-" mimic NERDTree mappings
-nnoremap <C-I> :split<CR>
-nnoremap <C-S> :vsplit<CR>
-nnoremap <C-Q> :quit<CR>
 
 " make Y be consistent with the C and D operators (yank to EOL)
 nnoremap Y y$
