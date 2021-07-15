@@ -24,7 +24,6 @@ alias egrep='egrep --color=auto'
 alias julia='/usr/bin/julia --project'
 alias julian='/usr/bin/julia --startup-file=no'
 
-alias vim='vim --servername VIM'
 alias config="/usr/bin/git --git-dir=/home/mark/.cfg/ --work-tree=$HOME"
 
 alias lc='colorls'

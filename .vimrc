@@ -1,3 +1,6 @@
+if empty(v:servername) && exists('*remote_startserver')
+    call remote_startserver('VIM')
+endif
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "                          Plugins (using vim-plug)
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -13,28 +16,113 @@ if has("autocmd")
 
     let g:plugdir = has('nvim') ? stdpath('data') . '/plugged' : '~/.vim/plugged'
     call plug#begin(g:plugdir)
+        " to make the headers use an ascii-text-generator like
+        "   https://www.coolgenerator.com/ascii-text-generator with Slant Font
+        "   and fitted layouts
+        "   and insert 4 spaces between comment and first character
         " Plug 'powerline/powerline', {'rtp': 'powerline/bindings/vim/'}
+        "
+        "
+        "=======================================================================
+        "             _                           _        __ _
+        "     _   __ (_)____ ___          ____ _ (_)_____ / /(_)____   ___
+        "    | | / // // __ `__ \ ______ / __ `// // ___// // // __ \ / _ \
+        "    | |/ // // / / / / //_____// /_/ // // /   / // // / / //  __/
+        "    |___//_//_/ /_/ /_/        \__,_//_//_/   /_//_//_/ /_/ \___/
+        "-----------------------------------------------------------------------
         Plug 'vim-airline/vim-airline' | Plug 'vim-airline/vim-airline-themes'
+        let g:airline_theme='powerlineish'
+        let g:airline_powerline_fonts = 1
+        "=======================================================================
+
         Plug 'airblade/vim-gitgutter'
         Plug 'majutsushi/tagbar'
         Plug 'ludovicchabant/vim-gutentags'
-        Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
+
+        "=======================================================================
+        "         _   __ ______ ____   ____  ______
+        "        / | / // ____// __ \ / __ \/_  __/_____ ___   ___
+        "       /  |/ // __/  / /_/ // / / / / /  / ___// _ \ / _ \
+        "      / /|  // /___ / _, _// /_/ / / /  / /   /  __//  __/
+        "     /_/ |_//_____//_/ |_|/_____/ /_/  /_/    \___/ \___/
+        "-----------------------------------------------------------------------
+        Plug 'preservim/nerdtree', { 'on':  'NERDTreeToggle' }
+        "=======================================================================
+        " Exit Vim if NERDTree is the only window left.
+            autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') &&
+                \ b:NERDTree.isTabTree() | quit | endif
+        " Have nerdtree ignore certain files and directories.
+        let NERDTreeIgnore=['\.git$', '\.jpg$', '\.mp4$', '\.ogg$', '\.iso$',
+                    \ '\.pdf$', '\.pyc$', '\.odt$', '\.png$', '\.gif$', '\.db$']
+        map <C-n> :NERDTreeToggle<CR>
+
         Plug 'ryanoasis/vim-devicons'
+
+        "===========================================================================================
+        "        __ _                   __                                _
+        "       / /(_)_   __ ___   ____/ /____  _      __ ____    _   __ (_)____ ___
+        "      / // /| | / // _ \ / __  // __ \| | /| / // __ \  | | / // // __ `__ \
+        "     / // / | |/ //  __// /_/ // /_/ /| |/ |/ // / / /_ | |/ // // / / / / /
+        "    /_//_/  |___/ \___/ \__,_/ \____/ |__/|__//_/ /_/(_)|___//_//_/ /_/ /_/
+        "-------------------------------------------------------------------------------------------
         Plug 'shime/vim-livedown', { 'do': 'npm install -g livedown' }
-        " install texlive-most and zathura w/ pdf support
+        "===========================================================================================
+        " should markdown preview get shown automatically upon opening markdown buffer
+        let g:livedown_autorun = 1
+        " should the browser window pop-up upon previewing
+        let g:livedown_open = 1
+        " the port on which Livedown server will run
+        let g:livedown_port = 1337
+        " the browser to use, can also be firefox, chrome or other, depending on your executable
+        let g:livedown_browser = "vivaldi-stable --app=http://localhost:" . g:livedown_port
+
+        "===========================================================================================
+        "     _    __ _           ______      _  __
+        "    | |  / /(_)____ ___ /_  __/___  | |/ /
+        "    | | / // // __ `__ \ / /  / _ \ |   /
+        "    | |/ // // / / / / // /  /  __//   |
+        "    |___//_//_/ /_/ /_//_/   \___//_/|_|
+        "-------------------------------------------------------------------------------------------
+        " make sure to install texlive-most and zathura w/ pdf support
+        " for neovim need neovim-remote installed
         Plug 'lervag/vimtex', { 'for': 'tex' }
+        "===========================================================================================
+        let g:vimtex_enabled = 1
+        let g:vimtex_view_method = 'zathura'
+
         Plug 'christoomey/vim-tmux-navigator'
         Plug 'aperezdc/vim-template', { 'do': 'gem install licensee' }
         Plug 'altercation/vim-colors-solarized'
         Plug 'lifepillar/vim-solarized8'
-        " Plug 'honza/vim-snippets'
+        "===========================================================================================
+        "                                          _
+        "      _____ ____   _____    ____  _   __ (_)____ ___
+        "     / ___// __ \ / ___/   / __ \| | / // // __ `__ \
+        "    / /__ / /_/ // /__ _  / / / /| |/ // // / / / / /
+        "    \___/ \____/ \___/(_)/_/ /_/ |___//_//_/ /_/ /_/
+        "-------------------------------------------------------------------------------------------
         function! DoCoc(info)
             if a:info.status == 'installed' || a:info.force
                 :CocInstall coc-julia
                 " :CocInstall coc-snippets
             endif
         endfunction
-        Plug 'neoclide/coc.nvim', { 'branch': 'release' }
+        Plug 'neoclide/coc.nvim', { 'branch': 'release', 'do': function('DoCoc') }
+        "===========================================================================================
+        set updatetime=300
+        let $NVIM_TUI_ENABLE_CURSOR_SHAPE=0
+        " Don't pass messages to |ins-completion-menu|.
+        set shortmess+=c
+        " Always show the signcolumn, otherwise it would shift the text each time
+        " diagnostics appear/become resolved.
+        set signcolumn=yes
+        inoremap <silent><expr> <CR> pumvisible() ? coc#_select_confirm()
+              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+        " inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+        " navigate pop up menu with TAB(to go down) and SHIFT-TAB (to go up)
+        inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+        inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+
 
         if has('nvim')
             function! DoTS(info)
@@ -42,10 +130,11 @@ if has("autocmd")
                 :TSUpdate
             endfunction
             Plug 'nvim-treesitter/nvim-treesitter', { 'do': function('DoTS') }
+        else
+            Plug 'sheerun/vim-polyglot'
         endif
 
         Plug 'godlygeek/tabular', { 'on': 'Tabularize' }
-        " Plug 'sheerun/vim-polyglot'
     call plug#end()
 endif
 
@@ -99,11 +188,9 @@ if has("autocmd")
             \   exe "normal! g`\"" |
             \ endif
 
-
-
         autocmd BufEnter * :syntax sync fromstart
 
-        autocmd BufRead,BufNewFile *.jl             setfiletype julia
+        autocmd BufRead,BufNewFile *.jl setfiletype julia
         autocmd FileType tex setlocal spell spelllang=en_us
     augroup END
 endif
@@ -119,7 +206,11 @@ set smartcase                   " ignore case unless it's uppercase.
 set incsearch                   " use incremental search
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"                                    TABS
+"                         ______        __
+"                        /_  __/____ _ / /_   _____
+"                         / /  / __ `// __ \ / ___/
+"                        / /  / /_/ // /_/ /(__  )
+"                       /_/   \__,_//_.___//____/
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 set tabstop=4           " a tab is 4 spaces
 set shiftwidth=4        " an indent is 4 spaces
@@ -139,8 +230,6 @@ function TabToggle()
 endfunction
 
 nmap <F3> mz:execute TabToggle()<CR>'z
-
-
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "                            Plugin Configuration
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -151,38 +240,12 @@ endif
 if $EMAIL != ''
     let g:email = $EMAIL
 endif
-
-" Plug 'powerline/powerline' -------------------------------------------------------------
-" try
-"     let g:powerline_pycmd = "py3"
-" endtry
-
-" Plug 'vim-airline/vim-airline' ---------------------------------------------------------
-" let g:airline_theme='solarized'
-let g:airline_theme='powerlineish'
-let g:airline_powerline_fonts = 1
-
-" Plug 'scrooloose/nerdtree' -------------------------------------------------------------
-if has("autocmd")
-    autocmd BufEnter *
-        \ if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) |
-        \   q |
-        \ endif
+if executable('git')
+    if has("autocmd")
+        autocmd BufNewFile * let g:templates_detect_git = 1
+    endif
 endif
 
-" Plug 'shime/vim-livedown' --------------------------------------------------------------
-" should markdown preview get shown automatically upon opening markdown buffer
-let g:livedown_autorun = 1
-" should the browser window pop-up upon previewing
-let g:livedown_open = 1
-" the port on which Livedown server will run
-let g:livedown_port = 1337
-" the browser to use, can also be firefox, chrome or other, depending on your executable
-let g:livedown_browser = "vivaldi-stable --app=http://localhost:" . g:livedown_port
-
-" Plug 'lervag/vimtex' -------------------------------------------------------------------
-let g:vimtex_enabled = 1
-let g:vimtex_view_method = 'zathura'
 
 " Plug 'JuliaEditorSupport/julia-vim' ----------------------------------------------------
 " set omnifunc=syntaxcomplete#Complete
@@ -199,24 +262,6 @@ let g:tagbar_type_julia = {
     \ }
 
 " Plug 'neoclide/coc.nvim' ---------------------------------------------------------------
-set updatetime=300
-let $NVIM_TUI_ENABLE_CURSOR_SHAPE=0
-
-" Don't pass messages to |ins-completion-menu|.
-set shortmess+=c
-
-" Always show the signcolumn, otherwise it would shift the text each time
-" diagnostics appear/become resolved.
-set signcolumn=yes
-
-inoremap <silent><expr> <CR> pumvisible() ? coc#_select_confirm()
-      \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
-" inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-
-" navigate pop up menu with TAB(to go down) and SHIFT-TAB (to go up)
-inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-
 "" Plug 'jpalardy/vim-slime' --------------------------------------------------------------
 "set splitbelow
 "set splitright
@@ -290,7 +335,6 @@ set pastetoggle=<F2>
 " let F4 toggle linewrap
 map <F4> :setlocal wrap!<CR>
 nmap <F5> :TagbarToggle<CR>
-map <C-n> :NERDTreeToggle<CR>
 
 let g:BASH_Ctrl_j = 'off'
 
@@ -333,3 +377,10 @@ nnoremap <C-ScrollWheelDown> <C-F>
 
 " Disable autoindenting
 nnoremap <F8> :setl noai nocin nosi inde=<CR>
+
+highlight ExtraWhitespace ctermbg=red guibg=red
+match ExtraWhitespace /\s\+$/
+autocmd BufWinEnter * match ExtraWhitespace /\s\+$/
+autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
+autocmd InsertLeave * match ExtraWhitespace /\s\+$/
+autocmd BufWinLeave * call clearmatches()

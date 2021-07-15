@@ -8,6 +8,7 @@ require'nvim-treesitter.configs'.setup {
     ignore_install = { "latex" },
     highlight = {
         enable = true,              -- false will disable the whole extension
+        disable = { "tex"},         -- list of languages that will be disabled
     },
 }
 EOF
